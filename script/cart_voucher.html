@@ -1,0 +1,295 @@
+<!-- CART VOUCHER -->
+<div class="cart-voucher px-12px">
+  <div class="wrapper-voucher d-flex gap-8 mb-3">
+    <div class="wrapper-voucher p-relative flex-1">
+      <input class="cart-voucher-input" type="text" id="js-voucher-input" placeholder="Nhập mã ưu đãi">
+      <a href="javascript:;" class="cart-btn cart-voucher-btn submit">Nhập</a>
+    </div>
+    <a href="javascript:;" class="cart-btn cart-voucher-btn popup" onclick="voucherPopupOpen();">Voucher</a>
+  </div>
+  <div id="js-voucher-message" class="text-12 my-3"></div>
+</div>
+
+<!-- CART VOUCHER POPUP -->
+<div class="cart-voucher-popup" id="js-cart-voucher-popup" style="display: none;">
+  <div class="v-popup-container">
+    <div class="d-flex align-items-center justify-content-between">
+      <p class="text-20 font-weight-500 m-0" style="line-height: 65px;">Chọn Voucher</p>
+      <a href="javascript:;" onclick="voucherPopupClose();">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" /></svg>
+      </a>
+    </div>
+
+    <div class="v-popup-holder mb-2">
+      <span>Mã Voucher</span>
+
+      <div class="v-popup-input d-flex">
+        <input type="text" id="js-v-popup-input" />
+        <a href="javascript:;" class="v-popup-btn btn-submit" onclick="voucherPopupSubmit()">ÁP DỤNG</a>
+      </div>
+    </div>
+
+    <p class="text-16 font-weight-600 text-uppercase text-center color-red mb-1" id="js-v-popup-message"></p>
+
+    <p class="mb-12px">Voucher có thể áp dụng</p>
+
+    <div class="v-popup-list" id="js-voucher-popup-list">
+      <!--Ajax holder-->
+    </div>
+
+    <div class="v-popup-bottom text-right">
+      <a href="javascript:;" class="v-popup-btn btn-back" onclick="voucherPopupClose()">TRỞ LẠI</a>
+      <a href="javascript:;" class="v-popup-btn btn-submit" onclick="voucherPopupSubmit()" style="margin-left: 32px;">ÁP
+        DỤNG</a>
+    </div>
+  </div>
+
+  <div class="v-popup-bg" onclick="voucherPopupClose();"></div>
+</div>
+
+<style>
+  .cart-page .cart-btn{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;color:#fff;width:100%;height:41px;background:#ff5c00;border-radius:5px;font-size:16px;text-transform:uppercase;font-weight:500;border:0;cursor:pointer}
+  .cart-page .cart-voucher .cart-voucher-wrapper{display:-webkit-box;display:-ms-flexbox;display:flex;gap:8px;margin-bottom:16px;padding:0 10px}
+  .cart-page .cart-voucher .cart-voucher-main{position:relative;-webkit-box-flex:1;-ms-flex:1;flex:1}
+  .cart-page .cart-voucher .cart-btn{max-width:80px;font-size:14px;text-transform:capitalize}
+  .cart-page .cart-voucher .cart-voucher-input{border:1px solid #d9d9d9;border-radius:5px;padding:10px 70px 10px 10px;outline-color:red;width:100%;height:42px}
+  .cart-page .cart-voucher .cart-voucher-btn.submit{position:absolute;top:2px;right:1.5px;font-size:14px;height:38px;max-width:60px;background:red;border-radius:4px}
+  .cart-page .cart-voucher .cart-voucher-alert{display:none;font-size:13px;margin:16px 10px;border:2px dashed #ff5c00;padding:10px}
+  .cart-page .cart-voucher-popup .v-popup-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:9999}
+  .cart-page .cart-voucher-popup .v-popup-container{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999;max-width:824px;max-height:-webkit-max-content;max-height:-moz-max-content;max-height:max-content;border-radius:10px;padding:0 10px 16px 10px;margin:auto;-webkit-box-shadow:0 1px 5px rgba(0,0,0,.3);box-shadow:0 1px 5px rgba(0,0,0,.3)}
+  .cart-page .cart-voucher-popup .v-popup-holder{padding:20px 25px 20px 33px;background:#f5f5f5;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;margin-bottom:20px}
+  .cart-page .cart-voucher-popup .v-popup-input{width:630px}
+  .cart-page .cart-voucher-popup .v-popup-input input{margin-right:5px;border:0;height:40px;padding-left:12px;border-radius:4px;background:#fff;width:calc(100% - 180px)}
+  .cart-page .cart-voucher-popup .v-popup-list{height:270px;overflow:auto;margin:0 0 20px 0}
+  .cart-page .cart-voucher-popup .v-popup-list::-webkit-scrollbar{width:6px}
+  .cart-page .cart-voucher-popup .v-popup-bottom{border-top:1px solid #ebebeb;margin:0 -10px;padding:16px 10px 0 10px;text-align:center}
+  .cart-page .cart-voucher-popup .v-popup-btn{color:#fff;display:inline-block;font-weight:700;font-size:16px;text-align:center;border-radius:4px;width:175px;line-height:40px}
+  .cart-page .cart-voucher-popup .v-popup-btn.btn-back{background:#789}
+  .cart-page .cart-voucher-popup .v-popup-btn.btn-submit{background:-o-linear-gradient(left,#ef702c,#ee2d24);background:-webkit-gradient(linear,left top,right top,from(#ef702c),to(#ee2d24));background:linear-gradient(90deg,#ef702c,#ee2d24)}
+  .cart-page .cart-voucher-popup .v-popup-item{margin-top:10px;display:-webkit-box;display:-ms-flexbox;display:flex;pointer-events:none}
+  .cart-page .cart-voucher-popup .v-popup-item.active .text{border-color:#ef702c}
+  .cart-page .cart-voucher-popup .v-popup-item.available{cursor:pointer;pointer-events:unset}
+  .cart-page .cart-voucher-popup .v-popup-item.available .code{background:-o-linear-gradient(left,#ef702c,#ee2d24);background:-webkit-gradient(linear,left top,right top,from(#ef702c),to(#ee2d24));background:linear-gradient(90deg,#ef702c,#ee2d24)}
+  .cart-page .cart-voucher-popup .v-popup-item.active .circle{border-color:#ef702c}
+  .cart-page .cart-voucher-popup .v-popup-item.active .circle::before{content:'';width:10px;height:10px;border-radius:50%;background:#ef702c;position:absolute;top:4px;left:4px}
+  .cart-page .cart-voucher-popup .v-popup-item:first-child{margin-top:0}
+  .cart-page .cart-voucher-popup .code{width:175px;background:#ccc;color:#fff;text-align:center;position:relative;padding:6px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;overflow:hidden}
+  .cart-page .cart-voucher-popup .code::after,.cart-page .cart-voucher-popup .code::before{content:'';position:absolute;top:0;bottom:0;background:-o-radial-gradient(0 .25rem,circle,#fff 0,#fff .1875rem,transparent 5px);background:radial-gradient(circle at 0 .25rem,#fff 0,#fff .1875rem,transparent 5px);width:5px;background-size:10px 8px;background-repeat:repeat-y}
+  .cart-page .cart-voucher-popup .code::after{right:-1px;-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg)}
+  .cart-page .cart-voucher-popup .code::before{left:-1px}
+  .cart-page .cart-voucher-popup .code b{width:100%;font-size:18px}
+  .cart-page .cart-voucher-popup .text{width:calc(100% - 175px);border:2px solid #f0f0f0;border-left:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;padding:18px 12px 18px 22px;line-height:1.6}
+  .cart-page .cart-voucher-popup .text p{margin:0 18px 0 0;width:calc(100% - 40px);white-space:pre-line}
+  .cart-page .cart-voucher-popup .circle{width:22px;height:22px;border-radius:50%;border:2px solid #bfbfbf;display:inline-block;position:relative}
+  .cart-page .cart-voucher-popup .no-voucher{height:100%}
+  .cart-page .cart-voucher-popup .no-voucher-img{padding-bottom:200px;display:block;background-position:center;background-repeat:no-repeat;background-size:contain}
+  @media (max-width:768px){
+  .cart-page .cart-voucher-popup{margin:auto 10px;max-height:520px}
+  .cart-page .cart-voucher-popup .code{width:140px}
+  .cart-page .cart-voucher-popup .code b{font-size:16px}
+  .cart-page .cart-voucher-popup .text{width:calc(100% - 140px)}
+  .cart-page .cart-voucher-popup .v-popup-container{left:5px;right:5px}
+  .cart-page .cart-voucher-popup .v-popup-holder{padding:15px 12px}
+  .cart-page .cart-voucher-popup .v-popup-input{-webkit-box-flex:1;-ms-flex:1;flex:1;margin-left:10px}
+  .cart-page .cart-voucher-popup .v-popup-input input{width:calc(100% - 100px);margin-right:10px}
+  .cart-page .cart-voucher-popup .v-popup-btn{max-width:90px}
+  .cart-page .cart-voucher-popup .v-popup-btn.btn-submit{max-width:90px;width:100%;font-size:15px}
+  .cart-page .cart-voucher-popup .v-popup-item.active .circle::before{width:9px;height:9px;top:5px;left:5px}
+  }
+</style>
+
+<!-- VOUCHER -->
+<script>
+  // VOUCHER SCRIPT
+  var no_voucher_image = "{{ 'edravn-static-image-no-voucher-1.png' | asset_url }}";
+  // var product_in_cart = [{% for _item in page.cart_items %}{% if forloop.index != 1 %}, {% endif %}{{ _item.item_info.id }}{% endfor %}];
+  var change_in_cart = 0;
+  var voucher_disable = [];
+  
+  function voucherSetup() {
+  	voucherListenHandle("#js-voucher-input");
+  	voucherPopupBuild("#js-voucher-popup-list");
+  }
+
+  function voucherListenHandle(target) {
+    const $message = $("#js-voucher-message");
+    const total_cart = $("#js-total-before-fee-discount").val();
+    const check_deal = $(".js-item-row-deal").length;
+
+    $(target).change(debounce(function () {
+      if (check_deal) $message.show().html('<b style="color: red;">Mã voucher không được áp dụng. Vui lòng xóa sản phẩm [DEAL] trong giỏ hàng</b>');
+      else {
+        const voucher_code = this.value.trim();
+        const voucher_error = voucher_disable.filter(voucher => voucher.code === voucher_code);
+
+        if (voucher_error.length > 0) {
+  		  const error = voucher_error[0].message ? voucher_error[0].message : "Voucher đã hết hạn hoặc quá số lượng sử dụng!";
+          const message = '<b id="js-coupon-info" data-type="error" style="color: red;">Lỗi xảy ra. ' + error + '</b>';
+          voucherSetHandle("", 0, message);
+          return;
+        }
+
+        if (voucher_code.length === 0) {
+          voucherSetHandle("", 0, "");
+          return;
+        }
+
+        const params = {
+          action_type: "check",
+          code: voucher_code,
+          order_value: total_cart,
+          product_ids: product_in_cart,
+        };
+
+        Hura.Ajax.post("coupon", params).then(function (voucher_info) {
+  		    //console.log(voucher_info);
+  
+          let voucher_note = "";
+          let voucher_message = voucher_info.message;
+          const voucher_off = voucher_info.total_cash_discount;
+          const voucher_discount = voucher_info.coupon_info.cash_discount;
+          const voucher_code = voucher_info.coupon_info.code;
+          const voucher_type = voucher_info.coupon_info.type;
+          const voucher_content = voucher_info.coupon_info.content;
+          const voucher_description = voucher_info.coupon_info.description;
+
+          if (voucher_info.status == "error") {
+            voucher_message = voucher_message.indexOf("Lỗi xảy ra") > -1 ? '<b style="color: #f00;">' + voucher_message + '</b>' : '<b id="js-coupon-info" data-type="error" style="color: #f00;">' + voucher_message + '</b>';
+            voucherSetHandle("", 0, voucher_message);
+            return;
+          }
+
+          switch (voucher_type) {
+            case "cash":
+              voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Trừ tiền mặt <span style='color: #29A07E;'>" + formatCurrency(voucher_off) + "₫</span>)</b>";
+              voucher_message = voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note);
+              break;
+
+            case "priceoff":
+              voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Giảm giá <span style='color: #29A07E;'>" + voucher_content + "%</span>)</b>";
+              voucher_message = voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note);
+              break;
+
+            case "pro":
+              voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Tặng sản phẩm: <a target='_blank' href='" + voucher_description + "' style='color: #29A07E;'>" + voucher_content + "</a>)</b>";
+              voucher_message = voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note);
+              break;
+
+            case "other":
+              break;
+          }
+
+          voucherSetHandle(voucher_code, voucher_off, voucher_message);
+        });
+      }
+    }, 100));
+  }
+
+  function voucherPopupBuild(holder) {
+  	voucherCheckReset(0);
+  
+    const params = {
+      action_type: "get-active-list",
+      limit: 50,
+    };
+
+    Hura.Ajax.post("coupon", params).then(function (response) {
+      //console.log("coupon", response);
+  
+  	  if (response.total === 0) {
+        $(holder).html(`
+          <div class="no-voucher text-center">
+            <i class="no-voucher-img lazy" style="background-image: url(${no_voucher_image});"></i>
+            <p class="text-20 font-weight-600">Chưa có mã voucher nào!</p>
+          </div>
+        `);
+  		  return;
+  	  }
+
+  	  const time_now = new Date().getTime() / 1000;
+  	  const html = response.data.map((voucher) => {
+        const check_time = voucher.to_time - time_now > 0;
+        const check_remain = voucher.total > voucher.total_use || voucher.total === 0;
+        const check_status = voucher.can_use_with_cart.status === "yes";
+        const check_all = check_time && check_remain && check_status;
+  
+        if (!check_all) voucher_disable.push({ code: voucher.code, message: voucher.can_use_with_cart.message });
+  
+  		  return `
+          <div class="v-popup-item ${check_all ? 'available js-v-popup-item' : ''}" onclick="voucherPopupSelected(this, '${voucher.code}');">
+            <div class="code">Nhập <b class="d-block text-18">${voucher.code}</b></div>
+            <div class="text"><p>${voucher.title}</p><i class="circle"></i></div>
+          </div>
+        `;
+  	  }).join("");
+
+      $(holder).html(html);
+    });
+  }
+  
+  function voucherCheckReset(change) {
+    change_in_cart = change;
+    voucher_disable = [];
+  }
+  
+  function voucherCheckExit(voucher_discount) {
+  	if (voucher_discount) {
+  	  $("#js-discount-voucher").val(voucher_discount);
+      $("#js-discount-price").html("- " + formatCurrency(voucher_discount));
+  	  return;
+  	}
+  
+    const target = "#js-coupon-info";
+  	if ($(target).length === 0) return;
+  
+  	const type = $(target).attr("data-type");
+    if (type !== "priceoff" && type !== "error") return;
+  
+	  $("#js-voucher-input").trigger("change");
+  }
+
+  function voucherSetHandle(code, discount, message) {
+    const voucher_message = "#js-voucher-message";
+    const voucher_code = "#js-coupon-code";
+    const voucher_discount = "#js-discount-voucher";
+    const voucher_container = "#js-discount-container";
+
+    $(voucher_code).val(code);
+    $(voucher_discount).val(discount);
+    message ? $(voucher_message).show().html(message) : $(voucher_message).hide();
+    discount ? $(voucher_container).show() : $(voucher_container).hide();
+
+    if (discount) calculateCartTotalPrice(discount);
+  }
+
+  function voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note) {
+    return "Bạn đang sử dụng mã coupon/voucher: <b id='js-coupon-info' style='color: #f00;font-size: 16px;' data-type='" + voucher_type + "'>" + voucher_code + "</b>" + voucher_note;
+  }
+
+  function voucherPopupSelected(_this, voucher) {
+    $(".js-v-popup-item").removeClass("active");
+    $("#js-v-popup-input").val(voucher);
+    $("#js-v-popup-message").html("");
+    $(_this).addClass("active");
+  }
+
+  function voucherPopupSubmit() {
+    const voucher = $("#js-v-popup-input").val();
+    $("#js-voucher-input").val(voucher);
+    $("#js-voucher-input").change();
+    voucherPopupClose();
+  }
+
+  function voucherPopupOpen() {
+    $("body").addClass("overflow-hidden");
+    $("#js-cart-voucher-popup").show();
+  	if (change_in_cart) voucherPopupBuild("#js-voucher-popup-list");
+  }
+
+  function voucherPopupClose() {
+    $("body").removeClass("overflow-hidden");
+    $(".js-v-popup-item").removeClass("active");
+    $("#js-v-popup-input").val("");
+    $("#js-cart-voucher-popup").hide();
+  }
+</script>

@@ -1,0 +1,60 @@
+{% assign _page_title = page.title -%}
+    {% if global.module.name == 'article' and global.module.view == 'home' -%}
+    {% assign _page_title = 'Tin tức' -%}
+    {% elsif global.module.name == 'product' and global.module.view == 'category' and page.current_category.meta_title.size > 4 -%}
+    {% assign _page_title = page.current_category.meta_title -%}
+    {% endif -%}
+    <title>{{ _page_title }}</title>
+
+    {% assign _page_description = page.description -%}
+    {% assign _page_keywords = page.keywords -%}
+    {% if global.module.module == "deal" -%}
+    {% assign _page_description = "Sản phẩm khuyễn mãi giá ưu đãi" -%}
+    {% assign _page_keywords = "Sản phẩm khuyễn mãi giá ưu đãi" -%}
+    {% elsif global.module.name == 'product' and global.module.view == 'category' -%}
+	{% if page.current_category.meta_description.size > 4 %}{% assign _page_description = page.current_category.meta_description %}{% endif -%}
+    {% if page.current_category.meta_keyword.size > 4 %}{% assign _page_keywords = page.current_category.meta_keyword %}{% endif -%}
+    {% endif -%}
+    <meta name="description" content="{{ _page_description|default: _page_title|replace: '"', "'" }}" />
+    <meta name="keywords"    content="{{ _page_keywords|default: _page_title|replace: '"', "'" }}" />
+	<meta name="twitter:card" 		content="summary_large_image" />
+    <meta name="twitter:site" 		content="@website" />
+    <meta property="fb:app_id"      content="" prefix="fb: https://ogp.me/ns/fb#">
+	<meta property="og:url"         content="{{ global.url }}" />
+    <meta property="og:title"       name="twitter:title" content="{{ _page_title|replace: '"', "'" }}" />
+    <meta property="og:description" name="twitter:description" content="{{ _page_description|default: _page_title|replace: '"', "'" }}" />
+    <meta property="og:image:alt"   name="twitter:image:alt" content="{{ _page_title|replace: '"', "'" }}" />
+
+    {% assign _og_type = 'website' -%}
+    {% if global.module.view == 'product-detail' %}{% assign _og_type = 'product' -%}
+    {% elsif global.module.name == 'article' %}{% assign _og_type = 'article' -%}
+    {% endif -%}
+    <meta property="og:type" content="{{ _og_type }}">
+
+    {% assign _og_image = global.settings.logo_file -%}
+    {% if global.module.view == 'product-detail' -%}
+    {% assign _og_image = page.product_info.productImage.original -%}
+    {% elsif global.module.name == 'product' and global.module.view == 'category' and page.current_category.img_big != '' and page.current_category.img_big != 0 -%}
+    {% assign _og_image = "/media/category/"|append: page.current_category.img_big -%}
+    {% elsif global.module.name == 'article' and global.module.view == 'category' and page.category_info.imgUrl != '' and page.category_info.imgUrl != 0 -%}
+    {% assign _og_image = "/media/category/"|append: page.category_info.imgUrl -%}
+    {% elsif global.module.name == 'article' and global.module.view == 'detail' and page.image != '' -%}
+    {% assign _og_image = page.image -%}
+    {% endif -%}
+	<meta property="og:image" name="twitter:image" content="{{ _og_image|prepend: global.domain }}" />
+
+    {% assign _canonical = global.url|replace: global.domain, '' -%}
+    {% if global.module.name == 'product' and global.module.view == 'category' -%}
+    {% assign _canonical = page.current_category.request_path -%}
+    {% elsif global.module.view == 'all-product' -%}
+    {% assign _canonical = "/san-pham" -%}
+    {% elsif global.module.view == 'product-search' -%}
+    {% assign _canonical = "/tim?q="|append: page.search_query -%}
+    {% elsif global.module.view == 'product-hot' or global.module.view == 'product-collection' or global.module.name == 'brand' or global.module.view == 'product-view-history' -%}
+    {% assign _canonical = global.module.match.0 -%}
+    {% elsif global.module.name == 'article' and global.module.view == 'category' -%}
+    {% assign _canonical = page.category_info.request_path -%}
+    {% elsif page.canonical.size > 4 -%}
+    {% assign _canonical = page.canonical|replace: global.domain, '' %}
+    {% endif -%}
+    <link rel="canonical" href="{{ _canonical|prepend: global.domain }}" >

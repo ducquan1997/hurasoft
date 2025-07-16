@@ -1,0 +1,517 @@
+<!--BREADCRUMB HURA 8-->
+{% if global.module.view != 'homepage' -%}
+<section class="section-breadcrumb routing">
+  <div class="global-breadcrumb container">
+    {% if global.module.name == 'product' and global.module.view == 'category' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      {% assign counter = 1 -%}
+      {% for path in page.current_category.path.path -%}
+      {% increment counter -%}
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ path.url }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ path.name }} </span>
+        </a>
+        <meta itemprop="position" content="{{ counter }}" />
+      </li>
+      {% endfor -%}
+    </ol>
+
+    {% elsif global.module.view == 'product-search' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tìm kiếm "{{ page.search_query }}" </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {% elsif global.module.view == 'product-hot' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ page.page_title }} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {% elsif global.module.view == 'product-collection' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ page.collection_info.name }} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {% elsif global.module.view == 'product-view-history' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Sản phẩm đã xem </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {% elsif global.module.name == 'tag' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tag: {{ page.tag_info.tag_name }} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {% elsif global.module.view == 'product-detail' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      {% assign counter = 1 -%}
+      {% for path in page.product_info.productPath.0.path -%}
+      {% increment counter -%}
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ path.url }}" itemprop="item"> <span itemprop="name"> {{ path.name }} </span> </a>
+        <meta itemprop="position" content="{{ counter }}" />
+      </li>
+      {% endfor -%}
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ page.product_info.productUrl }}" itemprop="item">
+          <span itemprop="name"> {{ page.product_info.productName }} </span>
+        </a>
+        <meta itemprop="position" content="{{ counter|plus: 1 }}" />
+      </li>
+    </ol>
+
+    {% elsif global.module.name == 'brand' and global.module.view == 'detail' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/brand" itemprop="item" class="nopad-l">
+          <span itemprop="name">Thương hiệu</span>
+        </a>
+        <meta itemprop="position" content="2">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/brand/{{ page.brand_info.brand_index }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ page.brand_info.name }} </span>
+        </a>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+
+    {% elsif global.module.name == 'article' and global.module.view == 'home' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/tin-tuc" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tin tức </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {% elsif global.module.name == 'article' and global.module.view == 'category' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/tin-tuc" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tin tức </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ page.category_info.name }} </span>
+        </a>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+
+    {% elsif global.module.name == 'article' and global.module.view == 'detail' -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/tin-tuc" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tin tức </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ page.article_detail.categoryInfo.0.request_path }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ page.article_detail.categoryInfo.0.name }} </span>
+        </a>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+
+    {% else -%}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ page.title }} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+    {% endif -%}
+  </div>
+</section>
+
+{% else -%}
+<section class="section-breadcrumb routing" style="display: none;">
+  <div class="global-breadcrumb container">
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+    </ol>
+  </div>
+</section>
+
+{% endif -%}
+
+<!-- HURA 7 -->
+{if="$module.name != 'home'"}
+<section class="section-breakcrumb routing">
+  <div class="global-breadcrumb container">
+    {if="$module.name == 'product' && $module.view == 'category'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+      {loop="$current_category.path.path"}
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{$value.url}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$value.name} </span>
+        </a>
+        <meta itemprop="position" content="{$counter + 2}" />
+      </li>
+      {/loop}
+    </ol>
+
+    {elseif="$module.view == 'search'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tìm kiếm "{$search_query}" </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {elseif="$module.view == 'product-hot'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$header.title} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {elseif="$module.view == 'collection'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$colletion_info.name} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {elseif="$module.view == 'product-view-history'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Sản phẩm đã xem </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {elseif="$module.view == 'product-tag'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tag: {$tag_info.tag_name} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {elseif="$module.view == 'product-detail'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      {$detail_counter = 2}
+      {loop="$product_info.productPath.0.path"}
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{$value.url}" itemprop="item"> <span itemprop="name"> {$value.name} </span> </a>
+        <meta itemprop="position" content="{$counter + 2}" />
+      </li>
+      {$detail_counter = $detail_counter + 1}
+      {/loop}
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{$product_info.productUrl}" itemprop="item">
+          <span itemprop="name"> {$product_info.productName} </span>
+        </a>
+        <meta itemprop="position" content="{$detail_counter}" />
+      </li>
+    </ol>
+    
+    {elseif="$module.name == 'brand' && $module.view == 'detail'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/brand" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Thương hiệu </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$brand_info.name} </span>
+        </a>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+
+    {elseif="$module.name == 'article' && $module.view == 'article-home'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/tin-tuc" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tin tức </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+
+    {elseif="$module.name == 'article' && $module.view == 'category'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/tin-tuc" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tin tức </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$category_info.name} </span>
+        </a>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+
+    {elseif="$module.name == 'article' && $module.view == 'detail'"}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="/tin-tuc" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tin tức </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{$article_detail.url}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$article_detail.title} </span>
+        </a>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+
+    {else}
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$header.title} </span>
+        </a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+    {/if}
+  </div>
+</section>
+
+{else}
+<section class="section-breakcrumb routing" style="display: none;">
+  <div class="global-breadcrumb container">
+    <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
+      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+        <a href="/" itemprop="item" class="nopad-l">
+          <span itemprop="name">Trang chủ</span>
+        </a>
+        <meta itemprop="position" content="1">
+      </li>
+    </ol>
+  </div>
+</section>
+{/if}

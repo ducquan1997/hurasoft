@@ -1,0 +1,47 @@
+{% if global.settings.popup_activate == '1' -%}
+<!-- BANNER POPUP -->
+<style>
+  .banner-popup-container{display:none}
+  .banner-popup-close{position:absolute;top:-35px;right:-5px}
+  .banner-popup-content{display:none;position:fixed;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);width:max-content;z-index:999999}
+  .banner-popup-image{max-width:90vw;max-height:90vh;width:auto;height:auto}
+  .banner-popup-background{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);z-index:99999}
+</style>
+
+<div class="banner-popup-container {% if global.settings.popup_display_option == 'homepage' %}display-homepage{% endif %}" id="js-banner-popup-container">
+  <div class="banner-popup-content">
+    <a class="banner-popup-close" href="javascript:;" title="Đóng" onclick="$('.banner-popup-container').hide();">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="32" height="32" fill="red"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+    </a>
+    <a href="{{ global.settings.popup_url }}" target="_blank">
+      <img class="banner-popup-image lazy" data-src="{{ global.settings.popup_file }}" alt="Banner popup quảng cáo" width="1200" height="600" />
+    </a>
+  </div>
+  <div class="banner-popup-background" onclick="$('.banner-popup-container').hide();"></div>    
+</div>
+{% endif -%}
+
+<script>
+  // GLOBAL BANNER POPUP
+  function globalBannerPopup() {
+    const target = "#js-banner-popup-container";
+    if ($(target).length === 0) return;
+
+    const module = "{{ global.module.name }}";
+    if ($(target).hasClass("display-homepage")) {
+      if (module === "home") displayPopup();
+      return;
+    }
+
+    const sess = sessionStorage.getItem("global_banner_popup");
+    if (sess) return;
+
+    displayPopup();
+
+    function displayPopup() {
+      setTimeout(function () {
+        $(target).show().find(".banner-popup-content").fadeIn(500);
+      }, 3000);
+    }
+  }
+</script>

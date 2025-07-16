@@ -1,0 +1,259 @@
+<!-- HTML -->
+<div class="adp-toc js-toc_container" id="js-adp-toc" style="margin-bottom: 1rem;">
+  <p class="adp-toc-heading adp-heading">
+    Mục lục
+    <button class="adp-toc-heading-btn" type="button" data-init="1" onclick="TOC_ToggleREC(this);">
+      Ẩn
+    </button>
+  </p>
+  <div class="js-toc-paragraph"></div>
+</div>
+
+<div class="adp-toc adp-toc-sticky js-toc_container" id="js-adp-toc-sticky">
+  <p class="adp-toc-heading adp-heading">
+    <span class="adp-toc-sticky-title" id="js-adp-toc-sticky-title">Mục lục</span>
+    <button class="adp-toc-heading-btn adp-toc-sticky-btn" type="button" data-init="0"
+      onclick="TOC_ToggleREC(this, 'sticky');">
+      Xem thêm
+    </button>
+  </p>
+  <div class="js-toc-paragraph"></div>
+</div>
+
+<!-- CSS PC -->
+ <style>
+  html{scroll-behavior:smooth}
+  
+  .scroll-mt{scroll-margin-top:102px}
+  .archor-text-group{display:block}
+  .archor-text-title{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:4px;font-size:18px;font-weight:700}
+  .archor-text-close{position:absolute;top:50%;right:0;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%)}
+  .archor-text-nav{font-size:15px;line-height:20px;margin-top:10px}
+  .archor-text-nav ol{list-style-type:none;counter-reset:item;padding-left:8px;margin-bottom:0;margin-top:10px}
+  .archor-text-nav li{display:table;counter-increment:item}
+  .archor-text-nav li:not(:last-child){margin-bottom:10px}
+  .archor-text-nav li:before{content:counters(item, ".") ". ";display:table-cell;min-width:14px;font-weight:700;padding-right:4px;white-space:nowrap}
+  .archor-text-nav a{color:#2842b3}
+  .archor-text-nav a:hover{color:#1877f2}
+  .archor-text-h2{font-weight:700}
+  .archor-text-h2+ol li:before{font-weight:400}
+  
+  .article-detail-page .adp-toc{padding:16px 14px;background:#f3f2f7}
+  .article-detail-page .adp-toc-heading{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;gap:8px;font-size:18px;font-weight:700;line-height:22px;margin-bottom:0}
+  .article-detail-page .adp-toc-heading-btn{font-size:16px;background:0 0;border:0;color:#1877f2;padding:0;outline: 0;cursor:pointer;}
+  .article-detail-page .adp-toc-sticky{display:none;position:fixed;top:38px;width:840px;padding:0;background:#fff;-webkit-box-shadow:0 1px 6px rgba(0,0,0,.3);box-shadow:0 1px 6px rgba(0,0,0,.3);z-index:9999}
+  .article-detail-page .adp-toc-sticky .adp-toc-heading{padding:14px 10px}
+  .article-detail-page .adp-toc-sticky .archor-text-group{max-height:calc(100vh - 92px);overflow:auto}
+  .article-detail-page .adp-toc-sticky .archor-text-nav{margin:0;padding:6px 10px 16px;margin-top:0;background:#f3f2f7}
+  .article-detail-page .adp-toc-sticky-title{-webkit-box-flex:1;-ms-flex:1;flex:1;font-size:17px;color:#2842b3}
+  .article-detail-page .adp-toc-sticky-btn{font-size:13px;padding:2px 8px;background:#eee;cursor:pointer;}
+  
+  @media (min-width: 1400px) {
+     .article-detail-page .adp-toc-sticky{width:951px;}
+  }
+  
+  @media (min-width: 1600px) {
+    .article-detail-page .adp-toc-sticky{width:1154px;}
+  }
+</style>
+
+<!-- CSS MB -->
+ <style>
+  html{scroll-behavior:smooth}
+  
+  .scroll-mt{scroll-margin-top:74px}
+  .archor-text-group{display:block}
+  .archor-text-title{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:4px;font-size:18px;font-weight:700}
+  .archor-text-close{position:absolute;top:50%;right:0;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%)}
+  .archor-text-nav{font-size:14px;line-height:20px;margin-top:10px}
+  .archor-text-nav ol{list-style-type:none;counter-reset:item;padding-left:10px;margin-bottom:0;margin-top:10px}
+  .archor-text-nav li{display:table;counter-increment:item}
+  .archor-text-nav li:not(:last-child){margin-bottom:10px}
+  .archor-text-nav li:before{content:counters(item, ".") ". ";display:table-cell;min-width:14px;font-weight:700;padding-right:4px;white-space:nowrap}
+  .archor-text-nav a{color:#2842b3}
+  .archor-text-nav a:hover{color:#2842b3}
+  .archor-text-h2{font-weight:700}
+  .archor-text-h2+ol li:before{font-weight:400}
+  
+  .article-detail-page .adp-toc{padding:12px 10px;background:#f3f2f7}
+  .article-detail-page .adp-toc-heading{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;gap:10px;font-size:16px;font-weight:700;line-height:20px;margin:0}
+  .article-detail-page .adp-toc-heading-btn{font-size:16px;background:0 0;border:0;color:#1877f2;padding:0;outline: 0;cursor:pointer;}
+  .article-detail-page .adp-toc-sticky{display:none;position:fixed;top:0;left:0;right:0;padding:0;background:#fff;-webkit-box-shadow:0 1px 6px rgba(0,0,0,.3);box-shadow:0 1px 6px rgba(0,0,0,.3);z-index:999999}
+  .article-detail-page .adp-toc-sticky .adp-toc-heading{padding:10px}
+  .article-detail-page .adp-toc-sticky .archor-text-group{max-height:calc(100vh - 103px);overflow:auto}
+  .article-detail-page .adp-toc-sticky .archor-text-nav{margin:0;padding:6px 10px 16px;margin-top:0;background:#f3f2f7}
+  .article-detail-page .adp-toc-sticky-title{-webkit-box-flex:1;-ms-flex:1;flex:1;color:#2842b3}
+  .article-detail-page .adp-toc-sticky-btn{font-size:13px;padding:6px 8px;background:#eee;cursor:pointer;}
+</style>
+
+<!-- SCRIPT -->
+<script>
+  // GET TABLE OF CONTENT (TOC) DETAIL ARTICLE
+  function TOC_Handle(target) {
+    const targets = $(`${target} h2, ${target} h3, ${target} h4`);
+    if (targets.length === 0) {
+      $("#js-adp-grid").addClass("no-anchor");
+      $("#js-adp-toc").hide();
+    } else {
+      TOC_Setup(targets);
+      TOC_Headings(targets);
+    }
+  }
+
+  function TOC_Headings(targets) {
+    targets.each(function () {
+      const text = $(this).text().trim();
+      if (text === "") return;
+
+      const id = TOC_HeadingREC(text);
+      $(this).attr("id", id).addClass("scroll-mt js-scroll-archor");
+    });
+  }
+
+  function TOC_Setup(targets) {
+    const result = document.createElement("ol");
+    let nodes = [];
+
+    for (var i = targets.length; i > -1; i--) {
+      if ($(targets[i]).text().trim() != '') nodes.unshift(targets[i]);
+    };
+
+    TOC_BuildREC(nodes, result, 2);
+
+    if (result.outerHTML === "<ol></ol>") return;
+
+    const html = `
+      <div class="archor-text-group">
+        <div class="archor-text-nav js-toc_nav">
+          ${result.outerHTML}
+        </div>
+      </div>
+    `;
+
+    $(".js-toc-paragraph").after(html);
+
+    TOC_Sticky();
+  }
+
+  function TOC_BuildREC(nodes, elm, lv) {
+    let node;
+
+    do {
+      node = nodes.shift();
+    } while (node && !(/^h[234]$/i.test(node.tagName)));
+
+    if (node) {
+      let ul, li, cnt;
+      let curLv = parseInt(node.tagName.substring(1));
+      let stt = 0;
+      if (curLv == lv) {
+        cnt = 0;
+      } else if (curLv < lv && 1 < 2) {
+        cnt = 0;
+        do {
+          elm = elm.parentNode.parentNode;
+          cnt--;
+        } while (cnt > (curLv - lv));
+      } else if (curLv > lv) {
+        cnt = 0;
+        do {
+          li = elm.lastChild;
+          if (li == null)
+            li = elm.appendChild(document.createElement("li"));
+          elm = li.appendChild(document.createElement("ol"));
+          cnt++;
+        } while (cnt < (curLv - lv) && 1 < 2);
+      }
+
+      const text = node.innerText.trim();
+      const text_id = TOC_HeadingREC(text);
+      const text_new = TOC_HeadingREC(text, "text");
+
+      li = elm.appendChild(document.createElement("li"));
+      li.innerHTML = `<a class="${curLv === 2 ? 'archor-text-h2' : ''}" href="#${text_id}" onclick="TOC_ScrollREC('${text_id}', this);">${text_new}</a>`;
+      TOC_BuildREC(nodes, elm, lv + cnt);
+    }
+  }
+
+  function TOC_HeadingREC(text, type) {
+    const text_regex = new RegExp("([A-z])", 'gm');
+    const text_arr = text.split(" ");
+    const text_check_1 = text_arr[0].match(text_regex);
+    const text_check_2 = text_arr[0].indexOf(".") != -1;
+
+    if (!text_check_1 && text_check_2) text_arr.shift();
+    const new_text = text_arr.join(" ");
+
+    if (type === "text") return new_text;
+    return convertToSlug(new_text);
+  }
+
+  function TOC_ToggleREC(_this, type) {
+    const $container = $(_this).closest(".js-toc_container");
+    $container.find(".js-toc_nav").toggle();
+
+    const current = $(_this).attr("data-init");
+    const init = current === "1" ? "0" : "1";
+    let html = current === "1" ? "Hiện" : "Ẩn";
+    if (type) html = current === "1" ? "Xem thêm" : "Thu gọn";
+
+    $(_this).html(html).attr("data-init", init);
+  }
+
+  function TOC_Sticky() {
+    const anchor = "#js-adp-toc-sticky";
+    if ($(anchor).length === 0) return;
+
+    const temp = 182; // margin-scroll-top
+    const holder = "#js-adp-toc";
+    const distance = $(holder).offset().top + $(holder).outerHeight();
+    let anchor_title = "";
+
+    $(anchor + ' .js-toc_nav').hide();
+
+    $(window).scroll(function () {
+      let check = isOnScreen("#footer-bottom");
+      let headerfixed = $("#nav").hasClass("fixed");
+
+      let scrollTop = $(document).scrollTop();
+      if (scrollTop > distance && !check && headerfixed) $(anchor).fadeIn();
+      else $(anchor).hide();
+
+      const targets = $(".js-scroll-archor").toArray().filter(item => $(item).offset().top - temp < scrollTop);//>
+      if (targets.length === 0) return;
+
+      const title = $(targets.slice(-1)[0]).text().trim();
+      if (anchor_title === title) return;
+
+      $("#js-adp-toc-sticky-title").text(title);
+      anchor_title = title;
+    });
+  }
+
+  function TOC_ScrollREC(id, _this) {
+    const type = $(_this).attr("data-type");
+    //document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+
+    if ($(_this).closest("#js-adp-toc-sticky").length === 0) return;
+    $(_this).closest("#js-adp-toc-sticky").find(".js-toc_nav").hide();
+    $(_this).closest("#js-adp-toc-sticky").find(".adp-toc-sticky-btn").text("Xem thêm").attr("data-init", "0");
+  }
+
+  // OPTION
+  function convertToSlug(e) {
+    let r = e;
+    return r
+      .toLowerCase()
+      .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+      .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+      .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+      .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+      .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+      .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+      .replace(/đ/g, "d")
+      .replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "")
+      .replace(/\u02C6|\u0306|\u031B/g, "")
+      .replace(/[^\w ]+/g, "")
+      .replace(/ +/g, "-");
+  }
+</script>

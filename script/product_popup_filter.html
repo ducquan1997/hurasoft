@@ -1,0 +1,185 @@
+<!-- HURA 7 -->
+<div class="cat-filter-item item-filter">
+  <h2 class="cat-filter-title" onclick="filterPopupOpen();">
+    <i class="fa fa-filter" aria-hidden="true" style="margin-right: 4px;"></i>
+    Lọc
+  </h2>
+</div>
+
+<div class="popup-filter-group js-popup-filter-group">
+  <div class="main-content">
+    <div class="popup-body">
+      {if="isset($brand_filter_list) && sizeof($brand_filter_list) > 0"}
+      <div class="js-filter-item popup-item">
+        <p class="popup-title">Thương hiệu</p>
+        <div class="popup-list js-brand-list">
+          {loop="$brand_filter_list"}
+          <a href="javascript:;" class='popup-select js-filter-select {if="$value.isCurrent == 1"}current{/if}'
+            data-brand="{$value.id}">
+            <span class="text-center">{$value.name} ({$value.count})</span>
+          </a>
+          {/loop}
+        </div>
+
+        {if="sizeof($brand_filter_list) > 6"}
+        <button type="button" class="popup-view-more" data-show="0" onclick="filterPopupViewMore(this)">
+          Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        </button>
+        {/if}
+      </div>
+      {/if}
+
+      {if="isset($price_filter_list) && sizeof($price_filter_list) > 0"}
+      <div class="js-filter-item popup-item">
+        <p class="popup-title">Giá bán</p>
+        <div class="popup-list js-price-list">
+          {loop="$price_filter_list"}
+          <a href="javascript:;" class='popup-select js-filter-select {if="$value.isCurrent == 1"}current{/if}'
+            data-max="{$value.max}" data-min="{$value.min}">
+            <span class="text-center">{$value.name} ({$value.count})</span>
+          </a>
+          {/loop}
+        </div>
+
+        {if="sizeof($price_filter_list) > 6"}
+        <button type="button" class="popup-view-more" data-show="0" onclick="filterPopupViewMore(this)">
+          Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        </button>
+        {/if}
+      </div>
+      {/if}
+
+      {if="isset($attribute_filter_list) && sizeof($attribute_filter_list) > 0"}
+      {loop="$attribute_filter_list"}
+      <div class="js-filter-item popup-item">
+        <p class="popup-title">{$value.attributeName}</p>
+        <div class="popup-list js-attr-list">
+          {loop="$value.filterList"}
+          <a href="javascript:;" class='popup-select js-filter-select {if="$value.isCurrent == 1"}current{/if}'
+            data-attr="{$value.id}">
+            <span class="text-center">{$value.name} ({$value.count})</span>
+          </a>
+          {/loop}
+        </div>
+
+        {if="sizeof($value.filterList) > 6"}
+        <button type="button" class="popup-view-more" data-show="0" onclick="filterPopupViewMore(this)">
+          Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+        </button>
+        {/if}
+      </div>
+      {/loop}
+      {/if}
+    </div>
+
+    <div class="popup-footer">
+      <a href="javascript:;" class="popup-btn btn-reset" onclick="filterPopupReset();">Xóa bộ lọc</a>
+      <a href="javascript:;" class="popup-btn btn-close" onclick="filterPopupClose();">Hủy bỏ</a>
+      <a href="javascript:;" class="popup-btn btn-submit" onclick="filterPopupSubmit();">Áp dụng</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* .product-page .popup-filter-group{background:rgba(0,0,0,.3);z-index:100000;position:fixed;top:0;left:0;right:0;bottom:0;display:none}
+  .product-page .popup-filter-group .main-content{height:100%;width:85%;position:absolute;top:0;right:0;bottom:0;background:#fff}
+  .product-page .popup-filter-group .popup-body{height:calc(100% - 54px);overflow:auto;padding:12px 10px}
+  .product-page .popup-filter-group .popup-title{font-weight:700;margin-bottom:10px;text-transform:uppercase;font-size:15px;color:#000}
+  .product-page .popup-filter-group .popup-list{display:-ms-grid;display:grid;-ms-grid-columns:1fr 6px 1fr;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px;overflow:hidden}
+  .product-page .popup-filter-group .popup-select{border:1px solid #e0e0e0;border-radius:4px;color:#333;font-size:14px;line-height:38px;height:38px;text-align:center}
+  .product-page .popup-filter-group .popup-select:nth-child(n+7){display:none}
+  .product-page .popup-filter-group .popup-select.current{background:#f38239;color:#fff}
+  .product-page .popup-filter-group .popup-select.icon{max-height:30px}
+  .product-page .popup-filter-group .popup-view-more{font-size:14px;color:#329ad1;padding:4px 0;display:block;margin:0 auto;border:0;background:#fff}
+  .product-page .popup-filter-group .popup-footer{padding:8px 10px;display:-webkit-box;display:-ms-flexbox;display:flex;text-align:center;-webkit-box-shadow:0 -1px 6px 1px #ebebeb;box-shadow:0 -1px 6px 1px #ebebeb;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:end}
+  .product-page .popup-filter-group .popup-btn{font-size:14px;padding:0 12px;color:#329ad1;line-height:36px;border-radius:5px;margin-left:8px;border:1px solid #329ad1;font-weight:600}
+  .product-page .popup-filter-group .popup-btn.btn-close{display:inline-block;text-align:center;border:1px solid red!important;border-radius:5px;width:84px;line-height:34px;color:#fff!important;background:red!important}
+  .product-page .popup-filter-group .popup-btn.btn-submit{background:#f38239;color:#fff;border-color:#f38239} */
+</style>
+
+<script>
+  $(document).ready(function () {
+    filterPopupHandler();
+  })
+
+  // FILTER POPUP
+  function filterPopupHandler() {
+    $('.js-filter-select').click(function () {
+      if ($(this).hasClass('current')) $(this).removeClass('current');
+      else {
+        $(this).parents('.js-filter-item').find('.js-filter-select').removeClass('current');
+        $(this).addClass('current');
+      }
+    });
+
+    $(".popup-filter-group").on("click", function (e) {
+      if (e.target === document.querySelector(".popup-filter-group")) {
+        filterPopupClose();
+      }
+    })
+  }
+
+  function filterPopupViewMore(_this) {
+    const isShow = parseInt($(_this).attr("data-show"));
+    const targets = $(_this).closest(".js-filter-item").find(".js-filter-select:nth-child(n + 7)");
+    const viewMore = 'Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>';
+    const viewLess = 'Thu gọn <i class="fa fa-angle-double-up" aria-hidden="true"></i>';
+
+    if (isShow) {
+      $(_this).html(viewMore).attr("data-show", "0");
+      $(targets).fadeOut(150);
+      return;
+    }
+
+    $(_this).html(viewLess).attr("data-show", "1");
+    $(targets).fadeIn(150);
+  }
+
+  function filterPopupSubmit() {
+    const keywords = "{$search_query}";
+    const href = location.href;
+    const destination = href.indexOf("tim?q=") !== -1 && keywords !== "" ? "/tim?q=" + keywords : location.pathname + "?";
+
+    const $brand = $('.js-brand-list a.current');
+    const $price = $('.js-price-list a.current');
+    const $attr = $('.js-attr-list a.current');
+
+    const brand = $brand.length ? '&brand=' + $brand.attr('data-brand') : '';
+    const max = $price.length ? '&max=' + $price.attr('data-max') : '';
+    const min = $price.length ? '&min=' + $price.attr('data-min') : '';
+
+    let attr = '';
+    $attr.each(function (index) {
+      attr += index !== 0 ? '-' + $(this).attr('data-attr') : '&filter=' + $(this).attr('data-attr');
+    });
+
+    const sort = GetURLParameter('sort') ? '&sort=' + GetURLParameter('sort') : '';
+    const link = destination + brand + max + min + attr + sort;
+    location.href = link;
+  }
+
+  function filterPopupOpen() {
+    $('.popup-filter-group').fadeIn(150);
+    $('body').addClass('overflow-hidden');
+    $('#js-p-filter-group .item.active').removeClass('active');
+  }
+
+  function filterPopupClose() {
+    $('.popup-filter-group').hide();
+    $('body').removeClass('overflow-hidden');
+  }
+
+  function filterPopupReset() {
+    const keywords = "{$search_query}";
+    const href = location.href;
+    const origin = href.indexOf("tim?q=") !== -1 && keywords !== "" ? "/tim?q=" + keywords : location.pathname;
+    location.href = origin;
+  }
+
+  function GetURLParameter(r) {
+    for (var t = window.location.search.substring(1).split("&"), i = 0; i < t.length; i++) { //>
+      var n = t[i].split("=");
+      if (n[0] == r) return n[1];
+    }
+  }
+</script>

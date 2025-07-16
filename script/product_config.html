@@ -1,0 +1,136 @@
+<style>
+  /* .product-detail-page .pro-config{font-size:15px}
+  .product-detail-page .pro-config .config-title{margin-bottom:16px}
+  .product-detail-page .pro-config .config-name{display:inline-block}
+  .product-detail-page .pro-config .config-name-selected{color:var(--color-primary);margin-left:8px}
+  .product-detail-page .pro-config .config-group:not(:last-child){margin-bottom:16px}
+  .product-detail-page .pro-config .config-list{list-style:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-flex:1;-ms-flex:1;flex:1;gap:8px}
+  .product-detail-page .pro-config .variant-item{display:block;line-height:42px;height:42px;padding:0 24px;background:#2f3033;color:#fff;border-radius:8px;-webkit-transition:all .3s;-o-transition:all .3s;transition:all .3s;cursor:pointer}
+  .product-detail-page .pro-config .variant-item.selected,.product-detail-page .pro-config .variant-item:hover{background:var(--color-primary)}
+  .product-detail-page .pro-config .variant-item.selected{pointer-events:none}
+  .product-detail-page .pro-config .variant-item.js-variant-color{font-size:0;width:42px;height:42px;padding:0;border:2px solid #d9d9d9;border-radius:50%}
+  .product-detail-page .pro-config .variant-item.js-variant-color.selected{-webkit-box-shadow:inset 0 0 0 2px #fff;box-shadow:inset 0 0 0 2px #fff;border-color:var(--color-primary)}
+  .product-detail-page .pro-config .variant-item.js-variant-image{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;background:#fff;width:90px;padding:5px 5px 85px 5px}
+  .product-detail-page .pro-config .variant-item.js-variant-image.selected,.product-detail-page .pro-config .variant-item.js-variant-image:hover{-webkit-box-shadow:inset 0 0 0 2px var(--color-primary);box-shadow:inset 0 0 0 2px var(--color-primary)}
+  .product-detail-page .pro-config .variant-item.js-variant-image img{position:absolute;bottom:0;right:0;top:0;left:0;margin:auto auto;border-radius:5px}
+  .product-detail-page .pro-config-alert{display:none;font-size:14px;font-weight:500;text-align:center;color:#fff;background:#2f3033;padding:10px 12px;margin:16px 0;border:3px solid var(--color-primary)} */
+</style>
+
+<div id="js-pro-config" class="pro-config"></div>
+<div id="js-pro-config-alert" class="pro-config-alert">
+  Cấu hình không có sẵn. Vui lòng chọn Cấu hình, Sản phẩm khác, hoặc Liên hệ lại cửa hàng để được tư vấn.
+</div>
+
+<script>
+  // CONFIG PRODUCT HANDLER HURA 7
+  // const v_raw = JSON.parse({$product_info.config|json_encode});
+
+  // CONFIG PRODUCT HANDLER HURA 8
+  function productDetailConfig(id) {
+    Hura.Ajax.get("product", { action_type: "basic-info", id: id }).then(function (results) {
+      const v_raw = results.variant_built.match(/\x3Cscript type='hura8\/tpl'>(.*)\x3C\/script>/).pop();
+      const v_list = JSON.parse(v_raw);
+      const v_attrs = results.variant_option;
+      if (v_list.length === 0) return;
+
+      _build();
+      _handle();
+
+      // BUILD CONFIG
+      function _build() {
+        let html = '';
+
+        for (let key in v_attrs) {
+          const attr_name = v_attrs[key].label;
+          const attr_list = v_attrs[key].values;
+          const attr_html = attr_list.map((item) => {
+            const display = item.image ? `<img src="${item.image}" alt="${item.label}" width="80" height="80" />` : item.label;
+            const color = key === "mau-sac" && item.code && !item.image;
+            const option = color ? "js-variant-color" : item.image ? "js-variant-image" : "";
+            const style = color ? `style="background-color: ${item.code};"` : "";
+            return `
+              <li class="variant-item js-variant-item ${option}" title="${item.label}" data-label="${item.label}" data-value="${item.label}" ${style}>
+                ${display}
+              </li>
+            `;
+          }).join("");
+
+          html += `
+            <div class="config-group js-config-group" data-key="${key}">
+              <p class="config-title">
+                <b class="config-name">${attr_name}</b>
+                <b>:</b>
+                <b class="config-name-selected js-config-name-selected"></b>
+              </p>
+              <ul class="config-list">
+                ${attr_html}
+              </ul>
+            </div>
+          `;
+        }
+
+        $("#js-pro-config").html(html).show();
+      }
+
+      // HANDLE CONFIG
+      function _handle() {
+        const group = ".js-config-group";
+        const items = ".js-variant-item";
+
+        $(items).on("click", function () {
+          const $group = $(this).closest(group);
+          const label = $(this).attr("data-label");
+
+          $group.find(".js-config-name-selected").html(label);
+          $group.find(items).removeClass("selected");
+          $(this).addClass("selected");
+
+          _display();
+        })
+
+        // FIRST CONFIG CLICK ONCE GROUP
+        $(group).find(items + ":first-child").click();
+      }
+
+      // DISPLAY CONFIG
+      function _display() {
+        $("#js-product-quantity").attr("value", "0");
+
+        const items = $(".js-variant-item.selected").toArray().map((item) => [$(item).parents(".js-config-group").attr("data-key"), $(item).attr("data-value")]);
+        const selected = Object.fromEntries(items);
+        const variant = v_list.filter(v => Object.entries(selected).sort().toString() === Object.entries(v.attribute).sort().toString())[0];
+        const alert = "#js-pro-config-alert";
+
+        if (!variant) {
+          $(alert).show();
+          return;
+        }
+
+        // CHANGE DISPLAY
+        const variant_name = variant.label !== "" ? variant.label : Object.values(variant.attribute).join(" - ");
+        const variant_price = variant.sale_price ? formatCurrency(variant.sale_price) + " VNĐ" : "Liên hệ";
+        $("#js-variant-name").html(`(${variant_name})`); // CHANGE NEW NAME
+        $("#js-variant-price").html(variant_price); // CHANGE NEW PRICE
+
+        // SET DATA
+        $("#js-product-price").attr("value", variant.sale_price);
+        $("#js-product-quantity").attr("value", variant.stock_quantity);
+        $("#js-product-variant-id").attr("value", variant.id);
+        $("#js-product-variant-name").attr("value", variant_name);
+        
+        if (variant.thumbnail != "0" && variant.thumbnail != "") _image(); // CHANGE NEW IMAGE
+        if (variant.stock_quantity == 0) $(alert).fadeIn(); // ARLET NO STOCK QUANTITY
+        else $(alert).hide();
+
+        // CHANGE IMAGE WHEN CLICK (SWIPER JS, url = url_image_original, data-index on element class swiper-slide)
+        function _image() {
+          const target = `.gallery-top [data-src="/media/product/${variant.thumbnail}"]`;
+          if ($(target).length === 0) return;
+
+          const index = parseInt($(target).closest('.swiper-slide').attr('data-index'));
+          if (index || index === 0) galleryTop.slideTo(index, 1000, true);
+        }
+      }
+    })
+  }
+</script>

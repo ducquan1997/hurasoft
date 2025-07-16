@@ -1,0 +1,1215 @@
+<!-- COMPARE PAGE PC -->
+<style>
+  .compare-page{padding:30px 0;background:#fff;font-size:14px;line-height:1.5}
+  .compare-page ol,.compare-page ul{padding-left:16px}
+  .compare-page li:not(:last-child){margin-bottom:8px}
+  .compare-page table{border-collapse:collapse;width:100%}
+  .compare-page td{border:1px solid #969292;padding:7px;font-size:14px;line-height:19px}
+  .compare-page .compare-title{cursor:pointer;font-weight:700;font-size:16px;text-transform:uppercase;line-height:24px;display:table;margin:0 0 10px}
+  .compare-page .compare-btn{position:relative;color:#fff;font-weight:700;text-transform:uppercase;border-radius:3px;padding:7px;line-height:20px;margin:0;display:block;text-align:center;z-index:0}
+  .compare-page .compare-btn::before{content:"";position:absolute;top:0;left:0;bottom:0;right:0;background:#d11607;z-index:-2}
+  .compare-page .compare-btn::after{content:"";position:absolute;top:0;left:0;bottom:0;right:100%;background:#fb210f;transition:all .6s;z-index:-1}
+  .compare-page .compare-btn:hover::after{right:0;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+  .compare-page .compare-icon{transform:translateY(3px)}
+  .compare-page .compare-icon.rotate{transform:translateY(3px) rotate(180deg)}
+  .compare-page .compare-box{display:flex;flex-wrap:wrap;border:1px solid #e0e0e0;margin:0 0 30px}
+  .compare-page .compare-box .box-item{width:25%;padding:10px;background:#fff;border-right:1px solid #e0e0e0}
+  .compare-page .compare-box .box-item:first-child{font-weight:700;font-size:16px}
+  .compare-page .compare-box .box-item:nth-child(4){border-right:0}
+  .compare-page .compare-attribute .compare-box{margin:0;border-bottom:0}
+  .compare-page .compare-attribute .compare-box:last-child{border-bottom:1px solid #e0e0e0;margin:0 0 30px}
+  .compare-page .compare-attribute .compare-box:hover .box-item{background:#f5f5f5}
+  .compare-page .compare-attribute .box-item{border-bottom:0}
+  .compare-page .compare-attribute .compare-featured .box-item{background:#ccedff!important}
+  .compare-page .compare-attribute .compare-featured:hover .box-item{background:#9eddff!important}
+  .compare-page .compare-empty{text-align:center}
+  .compare-page .compare-empty-heading{font-size:24px;padding:100px 0 160px;color:red}
+  .compare-page .compare-empty-back{font-size:16px;font-weight:600}
+  .compare-page .compare-add{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;font-size:16px;font-weight:500;background:#fff;color:#8e8e8e;border:0;outline:0;cursor:pointer}
+  .compare-page .compare-add:hover{color:#fb210f}
+  .compare-page .compare-add:hover .compare-add-icon{border-color:#fb210f}
+  .compare-page .compare-add:hover .compare-add-icon svg{fill:#fb210f}
+  .compare-page .compare-add-icon{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:70px;height:70px;margin:0 auto 16px;border-radius:8px;border:2px dashed #8e8e8e}
+  .compare-page .compare-bar{box-shadow:0 0 10px rgba(102,102,102,.3);border-left:0;border-top:0}
+  .compare-page .compare-bar .compare-box.dragover{position:relative;z-index:9}
+  .compare-page .compare-bar .compare-box.dragover::after{content:"";position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);z-index:-1}
+  .compare-page .compare-bar .compare-box.dragover .product-summary{z-index:-1}
+  .compare-page .compare-bar .box-heading{font-size:18px}
+  .compare-page .compare-bar .box-item:first-child{font-size:16px;line-height:1.5;color:#666;padding:15px;font-weight:400}
+  .compare-page .compare-bar .box-label{display:table;font-size:14px;font-weight:500;margin:15px auto 0;color:#d11607;background:#f4f9ff;border-radius:40px;padding:8px 20px;cursor:pointer;border:1px solid #e1e1e1}
+  .compare-page .compare-bar .box-input{width:16px;height:16px;margin:0 6px 0 0;vertical-align:text-top}
+  .compare-page .compare-bar .box-list{margin:10px 0}
+  .compare-page .compare-bar .box-list-item{font-size:16px;text-transform:uppercase;color:#222;padding:12px 0;border-top:1px solid #ccc}
+  .compare-page .compare-bar .product-box{padding:7px 12px 12px;position:relative;overflow:hidden}
+  .compare-page .compare-bar .product-image{display:block;padding-bottom:60%;position:relative;margin:0 0 12px}
+  .compare-page .compare-bar .product-picture{position:absolute;inset:0;max-width:100%;max-height:100%;width:auto;height:auto;display:block;margin:auto}
+  .compare-page .compare-bar .product-name{display:table;font-weight:500;min-height:42px}
+  .compare-page .compare-bar .product-price{margin:8px 0 5px;font-weight:700;font-size:18px;line-height:20px;color:#d70018}
+  .compare-page .compare-bar .product-btn{background:#fff;border:0;outline:0;cursor:pointer}
+  .compare-page .compare-bar .product-btn:hover svg{fill:#d11607}
+  .compare-page .compare-bar .product-delete{display:table;margin:auto 0 5px auto}
+  .compare-page .compare-bar .product-market{display:block;line-height:20px;min-height:20px;color:#666;margin:0 0 10px}
+  .compare-page .compare-bar-sticky{display:none;position:sticky;top:0;background:#fff;z-index:999}
+  .compare-page .compare-bar-sticky .compare-box{margin:0}
+  .compare-page .compare-bar-sticky .box-label{margin-top:4px}
+  .compare-page .compare-bar-sticky .product-box{display:flex;gap:8px;padding:8px}
+  .compare-page .compare-bar-sticky .product-wrapper{width:60px}
+  .compare-page .compare-bar-sticky .product-picture{margin:0}
+  .compare-page .compare-bar-sticky .product-image{padding-bottom:100%;margin-bottom:0}
+  .compare-page .compare-bar-sticky .product-info{flex:1}
+  .compare-page .compare-bar-sticky .product-name{min-height:32px;font-size:12px;line-height:16px}
+  .compare-page .compare-bar-sticky .product-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:4px}
+  .compare-page .compare-bar-sticky .product-price{font-size:14px;line-height:14px;margin:0}
+  .compare-page .compare-bar-sticky .product-market{display:none}
+  .compare-page .compare-bar-sticky .product-btn{display:inline-block;font-size:12px;line-height:24px;padding:0 10px}
+  .compare-page .compare-bar-sticky .compare-add{font-size:14px}
+  .compare-page .compare-bar-sticky .compare-add-icon{width:35px;height:35px;margin:0 auto 8px;border-radius:5px}
+  .compare-page .compare-bar-sticky .compare-add-icon svg{width:15px;height:15px}
+  .compare-page .compare-dropzone{position:relative}
+  .compare-page .compare-dropzone::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1}
+  .compare-page .compare-dropzone.dragmove{box-shadow:inset 0 0 0 3px #e0e0e0}
+  .compare-page .compare-dropzone.dragover::after{background:rgba(255,255,255,.7);border:3px solid red;z-index:9}
+  .compare-page .compare-dropzone:hover .compare-move{display:block}
+  .compare-page .compare-draggable.dragging{background:#fbfbfb;opacity:.5}
+  .compare-page .compare-move{display:none;position:absolute;top:10px;left:10px;border:0;outline:0;background:0 0;cursor:pointer;z-index:9}
+</style>
+
+<div class="compare-page" id="js-compare-page">
+  <div class="container">
+
+    {% if page.compare_count > 0 -%}
+    <!--BAR-->
+    <div class="compare-bar" id="js-compare-bar">
+      <div class="compare-box" id="js-compare-products">
+        <div class="box-item product-summary">
+          <h1 class="box-heading">So sánh sản phẩm</h1>
+
+          <div class="box-list">
+            {% for _item in page.compare_list.product_info -%}
+            <p class="box-list-item">{{ forloop.index }}. <b>{{ _item.productName }}</b></p>
+            {% endfor -%}
+          </div>
+
+          {% if page.compare_list.attribute -%}
+          <label class="box-label" for="js-product-compare-featured">
+            <input class="box-input js-product-compare-featured" type="checkbox" id="js-product-compare-featured"/>
+            <span>Hiển thị điểm khác biệt</span>
+          </label>
+          {% endif -%}
+        </div>
+
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item product-box compare-dropzone js-compare-dropzone">
+          <div class="compare-draggable js-compare-draggable" data-id="{{ _item.productId }}" data-order="{{ forloop.index }}">
+            <button class="compare-move js-compare-move" type="button" title="Di chuyển">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M278.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l32 0 0 96-96 0 0-32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9l-64 64c-12.5 12.5-12.5 32.8 0 45.3l64 64c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6l0-32 96 0 0 96-32 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8l-32 0 0-96 96 0 0 32c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l64-64c12.5-12.5 12.5-32.8 0-45.3l-64-64c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 32-96 0 0-96 32 0c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64z"/></svg>
+            </button>
+
+            <button class="product-btn product-delete" type="button" title="Xóa" onclick="globalCompare.remove('{{ _item.productId }}')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="17" height="17"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+            </button>
+
+            <div class="product-wrapper">
+              <a class="product-image" href="{{ _item.productUrl }}">
+                <img class="product-picture" src="{{ _item.productImage.large }}" alt="{{ _item.productName }}" width="165" height="165"/>
+              </a>
+            </div>
+
+            <div class="product-info">
+              <a class="product-name" href="{{ _item.productUrl }}">{{ _item.productName }}</a>
+              <p class="product-price">
+                {% if _item.price > 0 -%}
+                {{ _item.price|format_price }} <u>đ</u>
+                {% else -%}
+                Liên hệ
+                {% endif -%}
+              </p>
+              <del class="product-market">
+                {% if _item.marketPrice > _item.price and _item.price > 0 -%}
+                {{ _item.marketPrice|format_price }} <u>đ</u>
+                {% endif -%}
+              </del>
+              <a href="{{ _item.productUrl }}" class="product-btn compare-btn">Đặt mua</a>
+            </div>
+          </div>
+        </div>
+        {% endfor -%}
+        
+        {% if page.compare_list.product_info.size < 3 and 1 < 3 -%}
+        <div class="box-item product-box">
+          <button class="compare-add" type="button" onclick="globalCompare.searchPopup();">
+            <p class="compare-add-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#8e8e8e" width="30" height="30"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+            </p>
+            <p class="compare-add-title">Thêm sản phẩm</p>
+          </button>
+        </div>
+        {% endif -%}
+      </div>
+    </div>
+    
+    <!--BAR-->
+    <div class="compare-bar compare-bar-sticky" id="js-compare-bar-sticky">
+      <div class="compare-box">
+        <div class="box-item">
+          {% if page.compare_list.attribute -%}
+          <label class="box-label" for="js-product-compare-featured-2">
+            <input class="box-input js-product-compare-featured" type="checkbox" id="js-product-compare-featured-2"/>
+            <span>Hiển thị điểm khác biệt</span>
+          </label>
+          {% endif -%}
+        </div>
+
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item product-box" data-id="{{ _item.productId }}" data-order="{{ forloop.index }}">
+          <div class="product-wrapper">
+            <a class="product-image" href="{{ _item.productUrl }}">
+              <img class="product-picture" src="{{ _item.productImage.large }}" alt="{{ _item.productName }}" width="165" height="165"/>
+            </a>
+          </div>
+          
+          <div class="product-info">
+            <a class="product-name" href="{{ _item.productUrl }}">{{ _item.productName }}</a>
+            <div class="product-bottom">
+              <p class="product-price">
+                {% if _item.price > 0 -%}
+                {{ _item.price|format_price }} <u>đ</u>
+                {% else -%}
+                Liên hệ
+                {% endif -%}
+              </p>
+              <del class="product-market">
+                {% if _item.marketPrice > _item.price and _item.price > 0 -%}
+                {{ _item.marketPrice|format_price }} <u>đ</u>
+                {% endif -%}
+              </del>
+              <a href="{{ _item.productUrl }}" class="product-btn compare-btn">Đặt mua</a>
+            </div>
+          </div>
+        </div>
+        {% endfor -%}
+        
+        {% if page.compare_list.product_info.size < 3 and 1 < 3 -%}
+        <div class="box-item product-box">
+          <button class="compare-add" type="button" onclick="globalCompare.searchPopup();">
+            <p class="compare-add-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#8e8e8e" width="30" height="30"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+            </p>
+            <p class="compare-add-title">Thêm sản phẩm</p>
+          </button>
+        </div>
+        {% endif -%}
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    {% assign _checkSumary = 0 -%}
+    {% for _item in page.compare_list.product_info -%}
+    {% if _item.productSummary %}{% assign _checkSumary = 1 %}{% endif -%}
+    {% endfor -%}
+
+    {% if _checkSumary == 1 -%}
+    <div class="compare-summary js-slide-container">
+      <h2 class="compare-title" onclick="$(this).find('.js-slide-icon').toggleClass('rotate').closest('.js-slide-container').find('.js-slide-content').slideToggle();">
+        <svg class="compare-icon js-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM377 271c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-87-87-87 87c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 167c9.4-9.4 24.6-9.4 33.9 0L377 271z"/></svg>
+        So sánh nhanh
+      </h2>
+
+      <div class="compare-box js-slide-content">
+        <div class="box-item">So sánh nhanh</div>
+
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item">
+          {% if _item.productSummary -%}
+          {% assign _summary = _item.productSummary|get_line -%}
+          <ul class="summary-list">
+            {% for _item in _summary -%}
+            <li class="summary-list-item">{{ _item }}</li>
+            {% endfor -%}
+          </ul>
+          {% endif -%}
+        </div>
+        {% endfor -%}
+      </div>
+    </div>
+    {% endif -%}
+
+    <!-- SPEC -->
+    {% assign _checkSpec = 0 -%}
+    {% for _item in page.compare_list.product_info -%}
+    {% if _item.productSpec %}{% assign _checkSpec = 1 %}{% endif -%}
+    {% endfor -%}
+
+    {% if _checkSpec == 1 -%}
+    <div class="compare-spec js-slide-container">
+      <h2 class="compare-title" onclick="$(this).find('.js-slide-icon').toggleClass('rotate').closest('.js-slide-container').find('.js-slide-content').slideToggle();">
+        <svg class="compare-icon js-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM377 271c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-87-87-87 87c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 167c9.4-9.4 24.6-9.4 33.9 0L377 271z"/></svg>
+        Thông tin sản phẩm
+      </h2>
+
+      <div class="compare-box js-slide-content">
+        <div class="box-item">Thông tin sản phẩm</div>
+
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item">
+          {{ _item.productSpec }}
+        </div>
+        {% endfor -%}
+      </div>
+    </div>
+    {% endif -%}
+
+    <!-- ATTRIBUTE -->
+    {% if page.compare_list.attribute -%}
+    <div class="compare-attribute js-slide-container">
+      <h2 class="compare-title" onclick="$(this).find('.js-slide-icon').toggleClass('rotate').closest('.js-slide-container').find('.js-slide-content').slideToggle();">
+        <svg class="compare-icon js-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM377 271c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-87-87-87 87c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 167c9.4-9.4 24.6-9.4 33.9 0L377 271z"/></svg>
+        Thông số kỹ thuật
+      </h2>
+
+      <div class="js-slide-content">
+        {% for _item in page.compare_list.attribute -%}
+        <div class="compare-box js-compare-table-attr">
+          <div class="box-item">{{ _item.name }}</div>
+          {% for _item in _item.product_list -%}
+          <div class="box-item js-compare-table-value">{{ _item }}</div>
+          {% endfor -%}
+        </div>
+        {% endfor -%}
+      </div>
+    </div>
+    {% endif -%}
+
+    {% else -%}
+    <div class="compare-empty">
+      <h1 class="compare-empty-heading">Bạn chưa chọn sản phẩm nào để so sánh !</h1>
+      <a class="compare-empty-back" href="/">← Quay lại trang chủ</a>
+    </div>    
+
+    {% endif -%}
+
+  </div>
+</div>
+
+<!-- COMPARE PAGE MB -->
+<style>
+  .w-100{width:100%}
+  .d-none{display:none}
+  .d-invisible{visibility:hidden}
+  .compare-page{background:#fff;font-size:14px;line-height:1.5}
+  .compare-page ol,.compare-page ul{padding-left:16px}
+  .compare-page li:not(:last-child){margin-bottom:8px}
+  .compare-page table{border-collapse:collapse;width:100%}
+  .compare-page td{border:1px solid #969292;padding:7px;font-size:14px;line-height:19px}
+  .compare-page .compare-container{padding:0}
+  .compare-page .compare-title{position:relative;display:flex;justify-content:space-between;font-size:16px;font-weight:700;line-height:24px;text-transform:uppercase;margin:0 0 16px;padding:0 8px 4px;cursor:pointer}
+  .compare-page .compare-title::after{content:"";position:absolute;bottom:0;left:8px;right:8px;border:1px solid #000}
+  .compare-page .compare-btn{position:relative;color:#fff;font-weight:700;text-transform:uppercase;border-radius:3px;padding:7px;line-height:20px;margin:0;display:block;text-align:center;z-index:0}
+  .compare-page .compare-btn::before{content:"";position:absolute;top:0;left:0;bottom:0;right:0;background:#d11607;z-index:-2}
+  .compare-page .compare-btn::after{content:"";position:absolute;top:0;left:0;bottom:0;right:100%;background:#fb210f;transition:all .6s;z-index:-1}
+  .compare-page .compare-btn:hover::after{right:0;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+  .compare-page .compare-icon.rotate{transform:rotate(180deg)}
+  .compare-page .compare-box{display:flex;flex-wrap:wrap;border:1px solid #e0e0e0;margin:0 0 20px}
+  .compare-page .compare-box .box-item{width:33.33%;padding:8px;border-right:1px solid #e0e0e0}
+  .compare-page .compare-box .box-item:nth-child(3){border-right:0}
+  .compare-page .compare-attribute{text-align:center}
+  .compare-page .compare-attribute .compare-box{margin:0 0 10px}
+  .compare-page .compare-attribute .compare-box:hover{background:#f5f5f5}
+  .compare-page .compare-attribute .compare-featured{background:#ccedff!important}
+  .compare-page .compare-attribute .compare-featured:hover{background:#9eddff!important}
+  .compare-page .compare-attribute .compare-heading{font-size:15px;font-weight:600;text-decoration:underline;padding:0 8px;margin-bottom:8px}
+  .compare-page .compare-attribute .box-item{border-bottom:0}
+  .compare-page .compare-empty{text-align:center}
+  .compare-page .compare-empty-heading{font-size:24px;padding:100px 0 160px;color:red}
+  .compare-page .compare-empty-back{font-size:16px;font-weight:600}
+  .compare-page .compare-add{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;font-size:14px;font-weight:500;background:#fff;color:#8e8e8e;border:0;outline:0;cursor:pointer}
+  .compare-page .compare-add:hover{color:#fb210f}
+  .compare-page .compare-add:hover .compare-add-icon{border-color:#fb210f}
+  .compare-page .compare-add:hover .compare-add-icon svg{fill:#fb210f}
+  .compare-page .compare-add-icon{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:45px;height:45px;margin:0 auto 16px;border-radius:8px;border:2px dashed #8e8e8e}
+  .compare-page .compare-add-icon svg{width:20px;height:20px}
+  .compare-page .compare-bar{border-left:0;border-top:0}
+  .compare-page .compare-bar .box-heading{font-size:18px}
+  .compare-page .compare-bar .box-label{display:table;font-size:13px;font-weight:500;margin:15px auto 0;color:#d11607;padding:2px 0;cursor:pointer}
+  .compare-page .compare-bar .box-input{width:16px;height:16px;margin:0 6px 0 0;vertical-align:text-top}
+  .compare-page .compare-bar .box-list{margin:10px 0}
+  .compare-page .compare-bar .box-list-item{font-size:16px;text-transform:uppercase;color:#222;padding:12px 0;border-top:1px solid #ccc}
+  .compare-page .compare-bar .product-box{padding:6px;position:relative;overflow:hidden}
+  .compare-page .compare-bar .product-image{display:block;padding-bottom:60%;position:relative;margin:0 0 12px}
+  .compare-page .compare-bar .product-picture{position:absolute;inset:0;max-width:100%;max-height:100%;width:auto;height:auto;display:block;margin:auto}
+  .compare-page .compare-bar .product-name{font-size:14px;line-height:20px;font-weight:500;min-height:40px}
+  .compare-page .compare-bar .product-price{margin:4px 0 0;font-weight:700;font-size:14px;line-height:18px;color:#d70018}
+  .compare-page .compare-bar .product-btn{font-size:13px;line-height:28px;padding:0 4px;background:#fff;border:0;outline:0;cursor:pointer}
+  .compare-page .compare-bar .product-btn:hover svg{fill:#d11607}
+  .compare-page .compare-bar .product-delete{display:table;margin:auto 0 5px auto}
+  .compare-page .compare-bar .product-market{display:block;line-height:20px;min-height:20px;color:#666;margin:0 0 6px}
+  .compare-page .compare-bar-sticky{display:none;position:sticky;top:0;box-shadow:0 1px 6px rgba(0,0,0,.3);background:#fff;z-index:999}
+  .compare-page .compare-bar-sticky .compare-box{margin:0}
+  .compare-page .compare-bar-sticky .box-label{margin-top:4px;padding-bottom:6px}
+  .compare-page .compare-bar-sticky .product-box{display:flex;gap:4px}
+  .compare-page .compare-bar-sticky .product-wrapper{width:36px}
+  .compare-page .compare-bar-sticky .product-picture{margin:0}
+  .compare-page .compare-bar-sticky .product-image{padding-bottom:100%;margin-bottom:0}
+  .compare-page .compare-bar-sticky .product-info{flex:1}
+  .compare-page .compare-bar-sticky .product-name{min-height:32px;font-size:12px;line-height:16px}
+  .compare-page .compare-bar-sticky .product-bottom{margin-top:4px}
+  .compare-page .compare-bar-sticky .product-price{font-size:12px;line-height:14px;margin-bottom:4px}
+  .compare-page .compare-bar-sticky .product-market{display:none}
+  .compare-page .compare-bar-sticky .product-btn{display:inline-block;font-size:10px;line-height:22px;padding:0 8px}
+  .compare-page .compare-bar-sticky .compare-add{font-size:13px}
+  .compare-page .compare-bar-sticky .compare-add-icon{width:30px;height:30px;margin:0 auto 8px;border-radius:3px}
+  .compare-page .compare-bar-sticky .compare-add-icon svg{width:12px;height:12px}
+  .compare-page .compare-layout-1 .box-item{width:50%}
+  .compare-page .compare-layout-1 .box-item:nth-child(2){border-right:0}
+  .compare-page .compare-layout-1 .box-item:nth-child(3){width:100%;padding:0;border-top:1px solid #e0e0e0}
+  .compare-page .compare-layout-1 .compare-difference{width:100%}
+  .compare-page .compare-layout-2 .compare-difference{width:50%}
+  .compare-page .compare-layout-2 .compare-add{flex-direction:row;padding:6px}
+  .compare-page .compare-layout-2 .compare-add-icon{width:25px;height:25px;font-size:10px;margin:0 6px 0 0;border-width:1px;border-radius:5px}
+  .compare-page .compare-layout-2 .compare-add-icon svg{width:12px;height:12px}
+  .compare-page .compare-layout-2 .compare-bar-sticky .box-item:nth-child(3){position:absolute;bottom:0;width:50%;right:0;border-top:0}
+  .compare-page .compare-layout-2 .compare-bar-sticky .compare-add{background:0 0}
+  .compare-page .compare-layout-2 .compare-bar-sticky .compare-add-icon{width:20px;height:20px;border-radius:3px}
+</style>
+
+<div class="compare-page" id="js-compare-page">
+  <div class="compare-container container{% if page.compare_count < 3 %} compare-layout-1{% endif %}{% if page.compare_count == 2 %} compare-layout-2{% endif %}">
+    <h1 class="d-none">So sánh sản phẩm</h1>
+
+    {% if page.compare_count > 0 -%}
+    <!--BAR-->
+    <div class="compare-bar" id="js-compare-bar">
+      <div class="compare-box">
+        
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item product-box" data-id="{{ _item.productId }}" data-order="{{ forloop.index }}">
+          <button class="product-btn product-delete" type="button" title="Xóa" onclick="globalCompare.remove('{{ _item.productId }}')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="17" height="17"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+          </button>
+
+          <div class="product-wrapper">
+            <a class="product-image" href="{{ _item.productUrl }}">
+              <img class="product-picture" src="{{ _item.productImage.large }}" alt="{{ _item.productName }}" width="165" height="165"/>
+            </a>
+          </div>
+          
+          <div class="product-info">
+            <a href="{{ _item.productUrl }}">
+              <h3 class="product-name line-clamp-2">{{ _item.productName }}</h3>
+            </a>
+            <p class="product-price">
+              {% if _item.price > 0 -%}
+              {{ _item.price|format_price }} <u>đ</u>
+              {% else -%}
+              Liên hệ
+              {% endif -%}
+            </p>
+            <del class="product-market">
+              {% if _item.marketPrice > _item.price and _item.price > 0 -%}
+              {{ _item.marketPrice|format_price }} <u>đ</u>
+              {% endif -%}
+            </del>
+            <a href="{{ _item.productUrl }}" class="product-btn compare-btn">Đặt mua</a>
+          </div>
+        </div>
+        {% endfor -%}
+        
+        {% if page.compare_list.product_info.size < 3 and 1 < 3 -%}
+        <div class="box-item product-box">
+          <button class="compare-add" type="button" onclick="globalCompare.searchPopup();">
+            <p class="compare-add-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#8e8e8e" width="30" height="30"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+            </p>
+            <p class="compare-add-title">Thêm sản phẩm</p>
+          </button>
+        </div>
+        {% endif -%}
+      </div>
+    </div>
+    
+    <!--BAR-->
+    <div class="compare-bar compare-bar-sticky" id="js-compare-bar-sticky">
+      <div class="compare-box">
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item product-box" data-id="{{ _item.productId }}" data-order="{{ forloop.index }}">
+          <div class="product-wrapper">
+            <a class="product-image" href="{{ _item.productUrl }}">
+              <img class="product-picture" src="{{ _item.productImage.large }}" alt="{{ _item.productName }}" width="165" height="165"/>
+            </a>
+          </div>
+          
+          <div class="product-info">
+            <a class="product-name line-clamp-2" href="{{ _item.productUrl }}">{{ _item.productName }}</a>
+            <div class="product-bottom">
+              <p class="product-price">
+                {% if _item.price > 0 -%}
+                {{ _item.price|format_price }} <u>đ</u>
+                {% else -%}
+                Liên hệ
+                {% endif -%}
+              </p>
+              <del class="product-market">
+                {% if _item.marketPrice > _item.price and _item.price > 0 -%}
+                {{ _item.marketPrice|format_price }} <u>đ</u>
+                {% endif -%}
+              </del>
+              <a href="{{ _item.productUrl }}" class="product-btn compare-btn">Đặt mua</a>
+            </div>
+          </div>
+        </div>
+        {% endfor -%}
+        
+        {% if page.compare_list.product_info.size < 3 and 1 < 3 -%}
+        <div class="box-item product-box {% if page.compare_list.attribute.size == 0 %}w-100{% endif %}">
+          <button class="compare-add" type="button" onclick="globalCompare.searchPopup();">
+            <p class="compare-add-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#8e8e8e" width="30" height="30"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+            </p>
+            <p class="compare-add-title">Thêm sản phẩm</p>
+          </button>
+        </div>
+        {% endif -%}
+      </div>
+      
+      <div class="box-item compare-difference">
+        {% if page.compare_list.attribute -%}
+        <label class="box-label {% if page.compare_list.attribute.size == 0 and page.compare_count == 3 %}d-none{% elsif page.compare_list.attribute.size == 0 %}d-invisible{% endif %}" for="js-product-compare-featured-2">
+          <input class="box-input js-product-compare-featured" type="checkbox" id="js-product-compare-featured-2" style="transform: translateY(-1px);"/>
+          <span>Hiển thị điểm khác biệt</span>
+        </label>
+        {% endif -%}
+      </div>
+    </div>
+    
+    <!--<div class="text-15 px-2 mb-2">
+      <label class="box-label" for="js-product-compare-featured-2">
+        <input class="box-input js-product-compare-featured" type="checkbox" id="js-product-compare-featured-1"/>
+        <b>Hiển thị điểm khác biệt</b>
+      </label>
+    </div>-->
+
+    <!-- SUMMARY -->
+    {% assign _checkSumary = 0 -%}
+    {% for _item in page.compare_list.product_info -%}
+    {% if _item.productSummary %}{% assign _checkSumary = 1 %}{% endif -%}
+    {% endfor -%}
+
+    {% if _checkSumary == 1 -%}
+    <div class="compare-summary js-slide-container">
+      <h2 class="compare-title" onclick="$(this).find('.js-slide-icon').toggleClass('rotate').closest('.js-slide-container').find('.js-slide-content').slideToggle();">
+        So sánh nhanh
+        <svg class="compare-icon js-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM377 271c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-87-87-87 87c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 167c9.4-9.4 24.6-9.4 33.9 0L377 271z"/></svg>
+      </h2>
+
+      <div class="compare-box js-slide-content">
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item">
+          {% if _item.productSummary -%}
+          {% assign _summary = _item.productSummary|get_line -%}
+          <ul class="summary-list">
+            {% for _item in _summary -%}
+            <li class="summary-list-item">{{ _item }}</li>
+            {% endfor -%}
+          </ul>
+          {% endif -%}
+        </div>
+        {% endfor -%}
+      </div>
+    </div>
+    {% endif -%}
+
+    <!-- SPEC -->
+    {% assign _checkSpec = 0 -%}
+    {% for _item in page.compare_list.product_info -%}
+    {% if _item.productSpec %}{% assign _checkSpec = 1 %}{% endif -%}
+    {% endfor -%}
+
+    {% if _checkSpec == 1 -%}
+    <div class="compare-spec js-slide-container">
+      <h2 class="compare-title" onclick="$(this).find('.js-slide-icon').toggleClass('rotate').closest('.js-slide-container').find('.js-slide-content').slideToggle();">
+        Thông tin sản phẩm
+        <svg class="compare-icon js-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM377 271c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-87-87-87 87c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 167c9.4-9.4 24.6-9.4 33.9 0L377 271z"/></svg>
+      </h2>
+
+      <div class="compare-box js-slide-content">
+        {% for _item in page.compare_list.product_info -%}
+        <div class="box-item">
+          {{ _item.productSpec }}
+        </div>
+        {% endfor -%}
+      </div>
+    </div>
+    {% endif -%}
+
+    <!-- ATTRIBUTE -->
+    {% if page.compare_list.attribute -%}
+    <div class="compare-attribute js-slide-container">
+      <h2 class="compare-title" onclick="$(this).find('.js-slide-icon').toggleClass('rotate').closest('.js-slide-container').find('.js-slide-content').slideToggle();">
+        Thông số kỹ thuật
+        <svg class="compare-icon js-slide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM377 271c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-87-87-87 87c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 167c9.4-9.4 24.6-9.4 33.9 0L377 271z"/></svg>
+      </h2>
+
+      <div class="js-slide-content">
+        {% for _item in page.compare_list.attribute -%}
+        <div class="compare-heading">{{ _item.name }}</div>
+        <div class="compare-box js-compare-table-attr">
+          {% for _item in _item.product_list -%}
+          <div class="box-item js-compare-table-value">{{ _item }}</div>
+          {% endfor -%}
+        </div>
+        {% endfor -%}
+      </div>
+    </div>
+    {% endif -%}
+
+    {% else -%}
+    <div class="compare-empty">
+      <h1 class="compare-empty-heading">Bạn chưa chọn sản phẩm nào để so sánh !</h1>
+      <a class="compare-empty-back" href="/">← Quay lại trang chủ</a>
+    </div>    
+
+    {% endif -%}
+
+  </div>
+</div>
+
+<!-- COMPARE MODAL -->
+<style>
+  .gtoast-holder{position:relative}
+  .gtoast-container{position:absolute;top:10px;left:100%;max-width:370px;width:100%;z-index:99999999}
+  .gtoast-success{--color:#074c1d;--background:#ebfbee;--line:#218e39;--box-shadow:#cbe0ce}
+  .gtoast-error{--color:#b9281d;--background:#fff5f4;--line:#c3231f;--box-shadow:#edd3d3}
+  .gtoast-warning{--color:#9f8a4e;--background:#fff9dc;--line:#dc8610;--box-shadow:#f7e3c3}
+  .gtoast-item{position:relative;width:100%;font-size:14px;line-height:18px;padding:20px;margin-bottom:10px;background:var(--background);color:var(--color);border-radius:8px;box-shadow:1px 5px 5px 0 var(--box-shadow);transform:translateX(100%);animation:toast-show 5s ease-in-out;overflow:hidden}
+  .gtoast-item::after{content:"";position:absolute;top:0;left:0;width:0;height:5px;background:var(--line);animation:toast-line 3s ease-in-out;animation-delay:1s;animation-fill-mode:forwards}
+  .gtoast-title{font-size:20px;line-height:30px;margin-bottom:4px}
+  .gtoast-close{position:absolute;top:50%;right:20px;transform:translateY(-50%);display:flex;border:0;outline:0;background:0 0;cursor:pointer}
+  .gtoast-close-icon{fill:var(--color)}
+  @keyframes toast-line{
+  0%{width:0}
+  100%{width:100%}
+  }
+  @keyframes toast-show{
+  0%{transform:translateX(0)}
+  20%{transform:translateX(calc(-100% - 10px))}
+  40%{transform:translateX(calc(-100% - 10px))}
+  60%{transform:translateX(calc(-100% - 10px))}
+  80%{transform:translateX(calc(-100% - 10px))}
+  100%{transform:translateX(0)}
+  }
+  .global-compare-btn{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;font-size:15px;line-height:14px;padding:5px;background:#fff;color:#f12027;border:0;outline:0;border-radius:5px;cursor:pointer}
+  .global-compare-btn::before{content:"";display:inline-block;width:14px;height:14px;margin-right:5px;background-repeat:no-repeat;background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZjEyMDI3Ij48cGF0aCBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHptMTQ0IDI3NmMwIDYuNi01LjQgMTItMTIgMTJoLTkydjkyYzAgNi42LTUuNCAxMi0xMiAxMmgtNTZjLTYuNiAwLTEyLTUuNC0xMi0xMnYtOTJoLTkyYy02LjYgMC0xMi01LjQtMTItMTJ2LTU2YzAtNi42IDUuNC0xMiAxMi0xMmg5MnYtOTJjMC02LjYgNS40LTEyIDEyLTEyaDU2YzYuNiAwIDEyIDUuNCAxMiAxMnY5Mmg5MmM2LjYgMCAxMiA1LjQgMTIgMTJ2NTZ6Ii8+PC9zdmc+")}
+  .global-compare-btn.selected{background:#f12027;color:#fff}
+  .global-compare-btn.selected::before{background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMTczLjkgNDM5LjRsLTE2Ni40LTE2Ni40Yy0xMC0xMC0xMC0yNi4yIDAtMzYuMmwzNi4yLTM2LjJjMTAtMTAgMjYuMi0xMCAzNi4yIDBMMTkyIDMxMi43IDQzMi4xIDcyLjZjMTAtMTAgMjYuMi0xMCAzNi4yIDBsMzYuMiAzNi4yYzEwIDEwIDEwIDI2LjIgMCAzNi4ybC0yOTQuNCAyOTQuNGMtMTAgMTAtMjYuMiAxMC0zNi4yIDB6Ii8+PC9zdmc+")}
+  .global-compare-popup{position:fixed;bottom:60px;left:20px;font-size:15px;line-height:38px;color:#fff;background:red;font-weight:500;padding:0 16px;border-radius:20px;-webkit-box-shadow:0 1px 5px rgb(0 0 0 / 20%);box-shadow:0 1px 5px rgb(0 0 0 / 20%);z-index:999;cursor:pointer;display:none}
+  .global-compare-popup.bounce{-webkit-animation-name:bounce;animation-name:bounce;-webkit-animation-duration:1.5s;animation-duration:1.5s;-webkit-animation-iteration-count:4;animation-iteration-count:4}
+  .global-compare-group button,.global-compare-popup button,.global-compare-search button{border:0;outline:0;background:0 0;cursor:pointer}
+  .global-compare-group{display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:1100px;width:100%;background:#fff;border-radius:10px 0 0 0;-webkit-box-shadow:0 1px 8px rgb(0 0 0 / 25%);box-shadow:0 1px 8px rgb(0 0 0 / 25%);z-index:9999}
+  .global-compare-group .gtoast-container{top:100%;left:50%;transform:translateX(-50%)}
+  .global-compare-group .gtoast-item{animation:toast-compare 5s ease-in-out}
+  .global-compare-group .cg-close{position: absolute;top: -36px;right: 0;display: block;display: flex;align-items: center;gap: 4px;font-weight: 500;line-height: 36px;padding: 0 16px;background: #fff;border-radius: 8px 8px 0 0;box-shadow: 0px 1px 8px rgb(0 0 0 / 25%);z-index: -1;}
+  .global-compare-group .cg-container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;gap:20px;padding:12px;background:#fff;border-radius: 10px 0 0 0}
+  .global-compare-group .cg-products{display:grid;grid-template-columns:1fr 1fr 1fr;flex:1;gap:10px;width:100%}
+  .global-compare-group .cg-products .cg-product{position:relative;display:block;padding:12px;border:1px dashed #ccc;border-radius:5px}
+  .global-compare-group .cg-products .cg-product-pic{display:flex;min-height:80px}
+  .global-compare-group .cg-products .cg-product-img{display:block;max-width:80px;max-height:80px;margin:auto}
+  .global-compare-group .cg-products .cg-product-name{-o-text-overflow:ellipsis;text-overflow:ellipsis;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:18px;text-align:center;margin-top:8px}
+  .global-compare-group .cg-products .cg-product-close{position:absolute;top:10px;right:10px;color:#000;z-index:1}
+  .global-compare-group .cg-products .cg-product-search{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;border-color:transparent}
+  .global-compare-group .cg-products .cg-product-search-icon{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:44px;height:44px;font-size:18px;margin:0 auto 11px;border-radius:5px;border:1px dashed;-webkit-filter:invert(77%) sepia(15%) saturate(0%) hue-rotate(229deg) brightness(96%) contrast(91%);filter:invert(77%) sepia(15%) saturate(0%) hue-rotate(229deg) brightness(96%) contrast(91%)}
+  .global-compare-group .cg-btn-group{min-width:200px}
+  .global-compare-group .cg-btn-item{display:block;max-width:200px;-webkit-box-flex:1;-ms-flex:1;flex:1;font-size:14px;font-weight:600;line-height:40px;text-align:center;border-radius:5px;color:#fff}
+  .global-compare-group .cg-btn-compare{background:#d91605}
+  .global-compare-group .cg-btn-compare:hover{-webkit-box-shadow:0 1px 10px rgba(217,22,5,.5);box-shadow:0 1px 10px rgba(217,22,5,.5)}
+  .global-compare-group .cg-btn-delete-all{height:40px;line-height:36px;margin-top:10px;color:#333}
+  .global-compare-group .cg-btn-delete-all:hover{color:var(--red)}
+  .global-compare-group .cg-btn-text{font-size:13px;line-height:18px;margin-bottom:20px}
+  .global-compare-search{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);z-index:9999}
+  .global-compare-search .cs-container{position:absolute;max-width:640px;width:100%;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);margin:10px;background:#fff;padding:12px;border-radius:5px 0 5px 5px}
+  .global-compare-search .cs-close{position:absolute;bottom:calc(100% - 1px);right:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:4px;background:#fff;border-radius:5px 5px 0 0;padding:8px 12px 9px}
+  .global-compare-search .cs-title{font-size:16px;line-height:24px;text-align:center;margin:16px 0}
+  .global-compare-search .cs-empty{font-size:16px;line-height:24px;font-weight:500;text-align:center;color:var(--red);padding-top:24px}
+  .global-compare-search .cs-bar{position:relative}
+  .global-compare-search .cs-bar-input{width:100%;height:40px;font-size:15px;padding:10px 12px 10px 32px;-webkit-box-sizing:border-box;box-sizing:border-box;border:1px solid #e1e1e1;border-radius:5px}
+  .global-compare-search .cs-bar-btn{position:absolute;top:0;left:0;width:20px;height:40px;margin-left:10px}
+  .global-compare-search .cs-results{height:455px;overflow:auto;margin-top:10px}
+  .global-compare-search .cs-results::-webkit-scrollbar{width:10px}
+  .global-compare-search .cs-results::-webkit-scrollbar-track{background:#dbdbdb;border-radius:5px;border-left:2px solid #fff}
+  .global-compare-search .cs-results::-webkit-scrollbar-thumb{background:#f07a0c;border-radius:5px;border-left:2px solid #fff}
+  .global-compare-search .cs-results::-webkit-scrollbar-thumb:hover{background:var(--color-primary)}
+  .global-compare-search .cs-result-item{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;align-items:flex-start;gap:10px;padding:10px;font-size:15px;line-height:20px;border:1px solid #e1e1e1;border-top:0}
+  .global-compare-search .cs-result-item:first-child{border-top:1px solid #e1e1e1;border-top-left-radius:5px;border-top-right-radius:5px}
+  .global-compare-search .cs-result-item:last-child{border-bottom-left-radius:5px;border-bottom-right-radius:5px}
+  .global-compare-search .cs-result-image{width:70px}
+  .global-compare-search .cs-result-info{-webkit-box-flex:1;-ms-flex:1;flex:1}
+  .global-compare-search .cs-result-name{font-size:15px;font-weight:400;margin-bottom:8px}
+  .global-compare-search .cs-result-price{font-weight:500;color:var(--red)}
+  .global-compare-search .cs-retult-btn{align-self:flex-end}
+  @-webkit-keyframes bounce{
+  0%{-webkit-box-shadow:0 0 0 0 rgb(255,0,0,.7);box-shadow:0 0 0 0 rgb(255,0,0,.7)}
+  50%{-webkit-box-shadow:0 0 3px 7px rgb(255,0,0,.7);box-shadow:0 0 3px 7px rgb(255,0,0,.7)}
+  100%{-webkit-box-shadow:0 0 0 0 rgb(255,0,0,.7);box-shadow:0 0 0 0 rgb(255,0,0,.7)}
+  }
+  @keyframes bounce{
+  0%{-webkit-box-shadow:0 0 0 0 rgb(255,0,0,.7);box-shadow:0 0 0 0 rgb(255,0,0,.7)}
+  50%{-webkit-box-shadow:0 0 3px 7px rgb(255,0,0,.7);box-shadow:0 0 3px 7px rgb(255,0,0,.7)}
+  100%{-webkit-box-shadow:0 0 0 0 rgb(255,0,0,.7);box-shadow:0 0 0 0 rgb(255,0,0,.7)}
+  }
+  @keyframes toast-compare{
+  0%{transform:translateY(0)}
+  20%{transform:translateY(calc(-100% - 35px))}
+  40%{transform:translateY(calc(-100% - 35px))}
+  60%{transform:translateY(calc(-100% - 35px))}
+  80%{transform:translateY(calc(-100% - 35px))}
+  100%{transform:translateY(0)}
+  }
+  @media (max-width:576px){
+  .global-compare-group .cg-container{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;padding:12px 10px}
+  .global-compare-group .cg-products .cg-product{padding:8px 4px}
+  .global-compare-group .cg-products .cg-product-name{min-height:auto}
+  .global-compare-group .cg-products .cg-product-close{top:4px;right:4px}
+  .global-compare-group .cg-btn-group{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;gap:8px;width:100%}
+  .global-compare-group .cg-btn-text{display:none}
+  .global-compare-group .cg-btn-item{width:100%}
+  .global-compare-group .cg-btn-delete-all{font-weight:400;line-height:38px;margin-top:0;background:#205b9e;color:#fff}
+  .global-compare-search .cs-results{max-height:calc(100% - 96px)}
+  .global-compare-search .cs-container{transform:translateY(-50%);left:0;right:0;width:auto;height:90vh}
+  }
+</style>
+
+<div class="global-compare-popup bounce" id="js-global-compare-popup" onclick="globalCompare.open();">
+  So sánh (<span id="js-global-compare-popup-num">0</span>)
+</div>
+
+<div class="global-compare-group" id="js-global-compare-group">
+  <a class="cg-close" href="javascript:;" onclick="globalCompare.close();">
+    Thu gọn
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="17" height="17"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+  </a>
+  <div class="cg-alert" id="js-cg-alert"></div>
+  <div class="cg-container">
+    <div class="cg-products" id="js-cg-products">
+      <!-- Holder -->
+    </div>
+    <div class="cg-btn-group">
+      <p class="cg-btn-text">So sánh tối đa 3 sản phẩm</p>
+      <a class="cg-btn-item cg-btn-compare" href="javascript:;" onclick="globalCompare.submit();">SO SÁNH</a>
+      <a class="cg-btn-item cg-btn-delete-all" href="javascript:;" onclick="globalCompare.removeAll();">Xóa tất cả</a>
+    </div>
+  </div>
+</div>
+
+<div class="global-compare-search" id="js-global-compare-search">
+  <div class="cs-bg w-100 h-100" onclick="globalCompare.searchPopup();"></div>
+  <div class="cs-container">
+    <button type="button" class="cs-close" onclick="globalCompare.searchPopup();">
+      Đóng
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="13" height="13"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
+    </button>
+    <div class="cs-bar">
+      <input type="text" class="cs-bar-input" id="js-cs-bar-input" placeholder="Nhập tên sản phẩm để tìm" autocomplete="off">
+      <svg class="cs-bar-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" fill="#a9a9a9"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" /></svg>
+    </div>
+    <h2 class="cs-title" id="js-cs-title">Kết quả tìm kiếm</h2>
+    <div class="cs-results" id="js-cs-results">
+      <!--Ajax holder-->
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE SCRIPT -->
+<script>
+  $(document).ready(function () {
+    globalCompareHandle();
+  })
+
+  function globalCompareHandle() {
+    globalCompare.setup();
+    globalCompare.search();
+    globalComparePage();
+  }
+</script>
+
+<!-- COMPARE MAIN -->
+<script>
+  var page_compare_data = [
+    
+    // {% if page.compare_list.product_info.size > 0 -%}
+  	// {% for _item in page.compare_list.product_info -%}
+  	// {
+  	//   id: "{{ _item.productId }}",
+  	//   url: "{{ _item.productUrl }}",
+  	//   name: "{{ _item.productName }}",
+    //   image: "{{ _item.productImage.large }}",
+  	//   categories: "{{ _item.categories|map: 'id'|join: ',' }}",
+  	// },
+  	// {% endfor -%}
+    // {% endif %}
+  ];
+</script>
+
+<script>
+  const globalCompare = (() => {
+    // Main
+    const c_page = $("#js-compare-page").length,
+      c_store = "global_compare_data",
+      c_main = "#js-global-compare-group",
+      c_popup = "#js-global-compare-popup",
+      c_numb = "#js-global-compare-popup-num",
+      c_btn = ".js-global-compare-btn";
+
+    if (c_page) {
+      localStorage.setItem(c_store, JSON.stringify(page_compare_data));
+      $(c_popup).addClass("d-none");
+      $(c_main).addClass("d-none");
+    }
+
+    let c_data = localStorage.getItem(c_store) ? JSON.parse(localStorage.getItem(c_store)) : [];
+
+    const _setup = () => {
+      if (c_data.length === 0) return;
+      $(c_popup).fadeIn();
+      $(c_numb).html(c_data.length);
+      _selected();
+    }
+
+    const _selected = (type) => {
+      if (c_data.length === 0) return;
+      const targets = c_data.map((item) => c_btn + `[data-id='${item.id}']`).join(", ");
+      if (type === "remove-all") $(targets).removeClass("selected");
+      else $(targets).addClass("selected");
+    }
+
+    const _add = (_this) => {
+      let error = "";
+      const id = $(_this).attr("data-id");
+      const url = $(_this).attr("data-url");
+      const name = $(_this).attr("data-name");
+      const image = $(_this).attr("data-image");
+      const categories = $(_this).attr("data-categories");
+      const target = c_btn + `[data-id='${id}']`;
+      const selected = $(_this).hasClass("selected");
+      const compared = c_data.filter((item) => item.id === id).length !== 0;
+
+      if (compared && !selected) error = "Bạn đã chọn sản phẩm này để so sánh rồi!";
+      else if (c_data.length === 3 && !selected) error = "Bạn chỉ có thể chọn tối đa 3 sản phẩm!";
+      else {
+        const data = selected ? c_data.filter((item) => item.id !== id) : [...c_data, { id: id, url: url, name: name, image: image, categories: categories }];
+        _setData(data);
+
+        $(target).toggleClass("selected");
+        $(c_popup).hide();
+
+        if (c_page) _submit();
+      }
+
+      _render(error);
+    }
+
+    const _render = (error) => {
+      if (c_data.length === 0) {
+        $(c_main).slideUp();
+        $(c_popup).hide();
+        return;
+      }
+
+      const products = c_data.map((item) => `
+        <div class="cg-product js-cg-product">
+          <a class="cg-product-close" href="javascript:;" title="Xóa" onclick="globalCompare.remove('${item.id}');">❌</a>
+          <a class="cg-product-pic" href="${item.url}" title="${item.name}">
+            <img class="cg-product-img" src="${item.image}" alt="${item.name}" width="80" height="80" />
+          </a>
+          <a href="${item.url}"><p class="cg-product-name" title="${item.name}">${item.name}</p></a>
+        </div>
+      `).join("");
+      const search = `
+        <div class="cg-product cg-product-search js-cg-product">
+          <button type="button" onclick="globalCompare.searchPopup();">
+            <p class="cg-product-search-icon">➕</p>
+            <p class="cg-product-search-icon-title">Thêm sản phẩm</p>
+          </button>
+        </div>
+      `;
+      const html = c_data.length > 2 ? products : products + search;
+
+      $("#js-cg-products").html(html);
+      $(c_numb).html(c_data.length);
+      _toast(error, c_main);
+
+      if (window.screen.availWidth <= 768) {//>
+        $(c_popup).show().removeClass("bounce");
+        setTimeout(function () { $(c_popup).addClass("bounce") }, 100)
+      } else {
+        $(c_main).slideDown();
+      }
+    }
+
+    const _submit = () => {
+      const params = c_data.map((item) => item.id).join(",");
+      const compare = "so-sanh?list=" + params;
+      location.href = compare;
+    }
+
+    const _remove = (id) => {
+      const target = c_btn + `[data-id='${id}']`;
+      $(target).removeClass("selected");
+
+      const data = c_data.filter((item) => item.id !== id);
+      _setData(data);
+      _render();
+
+      if (c_page) _submit();
+    }
+
+    const _removeAll = () => {
+      $(c_main).slideUp();
+      $(c_popup).hide();
+
+      _selected("remove-all");
+      _setData([]);
+
+      if (c_page) _submit();
+    }
+
+    const _open = () => {
+      _render();
+      $(c_popup).hide();
+      $(c_main).slideDown();
+    }
+
+    const _close = () => {
+      $(c_main).slideUp();
+      $(c_popup).fadeIn();
+    }
+
+    const _setData = (data) => {
+      c_data = data;
+      localStorage.setItem(c_store, JSON.stringify(c_data));
+    }
+
+    const _toast = (error, holder) => {
+      const target = holder + " .js-gtoast-container";
+      if (!error) {
+        if ($(target).length) $(target).hide();
+        return;
+      }
+
+      $(c_main).slideDown();
+      $(c_popup).hide();
+
+      const html = `
+        <div class="gtoast-item gtoast-error">
+          <h2 class="gtoast-title">Lỗi xảy ra!</h2>
+          <p class="gtoast-text">${error}</p>
+          <button class="gtoast-close" type="button" onclick="$('${target}').fadeOut();">
+            <svg class="gtoast-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20" height="20"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
+          </button>
+        </div>
+      `;
+
+      if ($(target).length === 0) {
+        $(holder).append('<div class="gtoast-container js-gtoast-container">' + html + '</div>');
+        return;
+      }
+
+      $(target).html(html).show();
+    }
+
+    // Search
+    let cs_temp = false;
+    const cs_input = "#js-cs-bar-input",
+      cs_title = "#js-cs-title",
+      cs_results = "#js-cs-results";
+
+    const _search = () => {
+      $(cs_input).on("keyup", debounce(function (e) {
+        const value = e.target.value;
+        if (!value) {
+          _searchViewed();
+          return;
+        }
+
+        Hura.Ajax.get("search", { action: "search", action_type: "search", sort: "order", limit: 20, q: value }).then(function (results) {
+          const data = results.list;
+          if (data.length === 0) {
+            $(cs_title).html("Không có kết quả");
+            $(cs_results).html("<div class='cs-empty'><p>Không tìm thấy sản phẩm phù hợp.</p><p>Vui lòng thử lại với từ khóa khác...</p></div>");
+            return;
+          }
+
+          const ids = data.map(i => i.id).join(",");
+          Hura.Ajax.get("product", { action_type: "product-list", ids: ids, show: data.length }).then(function (results2) {
+            const data = results2.list.map(item => {
+              return {
+                id: item.productId,
+                url: item.productUrl,
+                title: item.productName,
+                image: item.productImage.large,
+                price: item.price,
+                categories: item.categories.map(i => i.id).join(",")
+              }
+            })
+
+            _searchRender(data, "result");
+          })
+        })
+      }, 500));
+    }
+
+    const _searchRender = (data, type) => {
+      const title = type === "result" ? "Kết quả tìm kiếm" : "Sản phẩm bạn vừa xem";
+      const html = data.map((item) => `
+        <div class="cs-result-item">
+          <div class="cs-result-image">
+            <a href="${item.url}" target="_blank" class="si-block">
+              <img src="${item.image}" alt="${item.title}" class="si-content">
+            </a>
+          </div>
+          <div class="cs-result-info">
+            <a href="${item.url}" target="_blank" title="${item.title}"><h3 class="cs-result-name line-clamp-2">${item.title}</h3></a>
+            <p class="cs-result-price">${item.price > 0 ? formatCurrency(item.price) + "₫" : "Liên hệ"}</p>
+          </div>
+          <button class="cs-retult-btn global-compare-btn js-global-compare-btn" type="button" data-id="${item.id}" data-url="${item.url}" data-name="${item.title}" data-image="${item.image.replace('/75_', '/250_')}" data-categories="${item.categories}" onclick="globalCompare.searchAdd(this);">
+            So sánh
+          </button>
+        </div>
+      `).join("");
+
+      $(cs_title).html(title);
+      $(cs_results).html(html);
+      _selected();
+    }
+
+    const _searchViewed = () => {
+      Hura.Ajax.post("user", { action_type: "product-view-history" }).then(function (results) {
+        if (results.list.length === 0) return;
+
+        const data = results.list.map(item => {
+          return {
+            id: item.productId,
+            url: item.productUrl,
+            title: item.productName,
+            image: item.productImage.large,
+            price: item.price,
+            categories: item.categories.map(i => i.id).join(",")
+          }
+        })
+
+        _searchRender(data, "viewed");
+      });
+    }
+
+    const _searchAdd = (_this) => {
+      const id = $(_this).attr("data-id");
+      const isSelected = c_data.filter(item => item.id === id).length !== 0;
+
+      if (isSelected) {
+        _toast("Bạn đã chọn so sánh sản phẩm này rồi!", "#js-global-compare-search");
+        return;
+      }
+
+      _add(_this);
+      _searchPopup();
+    }
+
+    const _searchPopup = () => {
+      $("#js-global-compare-search").fadeToggle();
+      $("body").toggleClass("overflow-hidden");
+      $(cs_input).focus();
+
+      _toast("", "#js-global-compare-search");
+
+      if (cs_temp) return;
+      cs_temp = true;
+      _searchViewed();
+    }
+
+    const _searchIntersect = (...rest) => {
+      const arr = [...rest].join(",").split(",");
+      return count = arr.flat().reduce((acc, curr) => {
+        acc[curr] = (acc[curr] || 0) + 1;
+        return acc;
+      }, {});
+    };
+
+    return {
+      setup: _setup,
+      selected: _selected,
+      add: _add,
+      remove: _remove,
+      removeAll: _removeAll,
+      open: _open,
+      close: _close,
+      submit: _submit,
+      search: _search,
+      searchAdd: _searchAdd,
+      searchPopup: _searchPopup,
+    }
+  })();
+</script>
+
+<!-- COMPARE PAGE -->
+<script>
+  function globalComparePage() {
+    const page = "#js-compare-page";
+    if ($(page).length === 0) return;
+
+    _bar();
+    _sort();
+    _diffirences();
+
+    function _bar() {
+      const bar = "#js-compare-bar-sticky";
+      if ($(bar).length === 0) return;
+
+      $(window).scroll(function () {
+        const target = isOnScreen("#js-compare-bar");
+        if (target) $(bar).hide();
+        else $(bar).slideDown();
+      });
+    }
+
+    function _diffirences() {
+      let count = false;
+      const checkbox = ".js-product-compare-featured";
+      if ($(checkbox).length === 0) return;
+
+      $(checkbox).on("change", function () {
+        const checked = $(checkbox + ":checked").length;
+        const attrs = ".js-compare-table-attr";
+        const values = ".js-compare-table-value";
+
+        if (checked < 2 && count) {//>
+          count = false;
+          $(checkbox).prop('checked', false);
+          $(attrs + "," + values).removeClass("compare-featured");
+          return;
+        }
+
+        count = true;
+        $(checkbox).prop('checked', true);
+        $(attrs).each(function () {
+          const arr = $(this).find(values).toArray().map(td => $(td).text().trim());
+          const uniq = [...new Set(arr)];
+          if (uniq.length === 1) return;
+          $(this).hasClass("type-mobile") ? $(this).find(values).toggleClass("compare-featured") : $(this).toggleClass("compare-featured");
+        })
+      })
+    }
+
+    function _sort() {
+      const s_move = ".js-compare-move", s_draggable = ".js-compare-draggable", s_dropzone = ".js-compare-dropzone", s_container = "#js-compare-products";
+      let dropzone, dragged, replaced;
+
+      _sortMove();
+      _sortSources();
+      _sortDropzone();
+
+      /* events fired on the move element hold */
+      function _sortMove() {
+        const moves = document.querySelectorAll(s_move);
+        if (moves.length === 0) return;
+
+        moves.forEach(move => {
+          move.addEventListener("mousedown", (e) => {
+            _sortReset(true, e.target);
+          });
+
+          move.addEventListener("mouseup", (e) => {
+            _sortReset(false, e.target);
+          });
+        })
+      }
+
+      /* events fired on the draggable target */
+      function _sortSources() {
+        const sources = document.querySelectorAll(s_draggable);
+        if (sources.length === 0) return;
+
+        sources.forEach(source => {
+          // force draggable false
+          Array.from(source.getElementsByTagName("*")).forEach(elm => elm.setAttribute("draggable", "false"));
+          // drag
+          source.addEventListener("drag", (e) => {
+
+          });
+          // drag start
+          source.addEventListener("dragstart", (e) => {
+            dragged = e.target;
+            dropzone = e.target.closest(s_dropzone);
+            e.target.classList.add("dragging");
+          });
+          // drag end
+          source.addEventListener("dragend", (e) => {
+            e.target.classList.remove("dragging");
+            _sortReset(false, e.target);
+
+            if (replaced && replaced !== dragged) {
+              dropzone.innerHTML = "";
+              dropzone.appendChild(replaced);
+              // redirect to new compare url
+              setTimeout(function () {
+                const targets = Array.from(document.querySelectorAll(s_draggable));
+                const ids = targets.map(el => el.getAttribute("data-id")).join(",");
+                location.href = "so-sanh?list=" + ids;
+              }, 300)
+            }
+          });
+        });
+      }
+
+      /* events fired on the drop targets */
+      function _sortDropzone() {
+        const dropzones = document.querySelectorAll(s_dropzone);
+        if (dropzones.length === 0) return;
+
+        dropzones.forEach(dropzone => {
+          // drag over
+          dropzone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            if (!e.target.classList.contains(s_dropzone.substring(1))) {
+              e.target.closest(s_dropzone) ? e.target.closest(s_dropzone).classList.add("dragover") : null;
+            }
+          }, false);
+          // drag enter
+          dropzone.addEventListener("dragenter", (e) => {
+            if (e.target.classList.contains(s_dropzone.substring(1))) {
+              e.target.classList.add("dragover");
+            }
+          });
+          // drag leave
+          dropzone.addEventListener("dragleave", (e) => {
+            if (e.target.classList.contains(s_dropzone.substring(1))) {
+              e.target.classList.remove("dragover");
+            }
+          });
+          // drag drop
+          dropzone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            replaced = e.target.querySelector(s_draggable);
+            if (e.target.classList.contains(s_dropzone.substring(1))) {
+              e.target.classList.remove("dragover");
+              e.target.innerHTML = "";
+              e.target.appendChild(dragged);
+            }
+          });
+        })
+      }
+
+      /* reset display */
+      function _sortReset(result, target) {
+        const draggable = result ? "true" : "false";
+        target.closest(s_draggable).setAttribute("draggable", draggable);
+
+        const container = document.querySelector(s_container);
+        result ? container.classList.add("dragover") : container.classList.remove("dragover");
+
+        const dropzones = document.querySelectorAll(s_dropzone);
+        dropzones.forEach(dropzone => {
+          result ? dropzone.classList.add("dragmove") : dropzone.classList.remove("dragmove");
+        })
+      }
+    }
+  }
+</script>
+

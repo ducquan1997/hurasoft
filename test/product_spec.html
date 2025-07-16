@@ -1,0 +1,109 @@
+{if="$product_info.productTechnicalTable"}
+<style>
+  /* .product-spec-featured{padding: 12px;margin: 12px 0;border: 1px solid #dedede;border-radius: 10px;}
+  .product-spec-featured-title{display: flex;font-size: 16px;font-weight: 700;line-height: 20px;margin-bottom: 12px;}
+  .product-spec-featured-view{margin-left: auto;text-decoration: underline;color: #007bff;font-size: 14px;}
+  .product-spec-featured-view:hover{color: #d52632;}
+  .product-spec-featured-item{display: flex;align-items: center; gap: 10px;padding: 8px 12px;background: #f9fafb;border-radius: 8px;color: #090d14;}
+  .product-spec-featured-item:not(:last-child){margin-bottom: 8px;}
+  .product-spec-featured-item .psft-info{width: 120px;}
+  .product-spec-featured-item .psft-group{flex: 1;}
+  .product-spec-featured-item .psft-label{font-size: 12px;color: #6b7280}
+  .product-spec-featured-item .psft-value{font-size: 14px;font-weight: 700;}
+  .product-spec-featured-item .psft-group{display: flex;flex-wrap: wrap;}
+  .product-spec-featured-item .psft-group-item{position: relative;width: 33.33%;font-size: 13px;line-height: 17px;padding: 0 8px 8px;color: #7b8393;text-align: center;}
+  .product-spec-featured-item .psft-group-image{display: inline-block;width: 32px;height: 32px;background-size: contain;background-position: center;filter: invert(50%) sepia(15%) saturate(380%) hue-rotate(180deg) brightness(100%) contrast(80%);}
+  .product-spec-featured-item .psft-group-icon{position: absolute;left: 50%;transform: translateX(-50%);bottom: -1px;}
+  .product-spec-featured-item .psft-group-item.active{font-weight: 700;color: inherit;}
+  .product-spec-featured-item .psft-group-item.active .psft-group-image{filter: unset;}
+  
+  .loader{width:50px;padding:8px;margin:50px auto;aspect-ratio:1;border-radius:50%;background:#d52632;--_m:conic-gradient(#0000 10%,#000),linear-gradient(#000 0 0) content-box;-webkit-mask:var(--_m);mask:var(--_m);-webkit-mask-composite:source-out;mask-composite:subtract;animation:l3 1s infinite linear}
+  @keyframes l3{to{transform:rotate(1turn)}} */
+</style>
+
+<div class="product-spec-featured" id="js-product-spec-featured">
+  <p class="product-spec-featured-title">
+    Thông số nổi bật
+    <a href="javascript:;" class="product-spec-featured-view" data-src="#productSpec-popup" data-fancybox>
+      Xem chi tiết
+    </a>
+  </p>
+
+  <div class="product-spec-featured-list" id="js-product-spec-featured-list">
+    <!--Ajax holder-->
+    <div class="loader"></div>
+  </div>
+</div>
+{/if}
+
+<script>
+  function getProTechSpecFeatured() {
+    const target = "#js-product-spec-featured-list";
+    const cat_id = "{$product_info.categoryInfo.0.id}";
+    const raw = `{$product_info.productTechnicalRaw|json_encode}`;
+    if (!raw || !cat_id) return;
+
+    const data = JSON.parse(raw);
+    const names = Object.values(data["attribute-name"]);
+    const values = Object.values(data["attribute-value"]);
+
+    if (values.length === 0) return;
+
+    const specs = names.map(attr => {
+      const value_id = data["attribute-value"][attr.id][0].id;
+      const value_name = data["attribute-value"][attr.id][0].name;
+
+      return { name: attr.name, image: attr.comment, value_id: value_id, value_name: value_name };
+    })
+
+    $.getJSON("/ajax/get_json.php", {
+      action: "category",
+      action_type: "filter",
+      id: cat_id
+    }, function (result) {
+      const catFilter = result.filter;
+      if (catFilter.length === 0) return;
+
+      const html = specs.map(spec => {
+        const specFilter = catFilter.filter(flt => flt.attributeName === spec.name)[0].filterList;
+        const specIndex = specFilter.findIndex(flt => flt.id === spec.value_id);
+        if (specIndex === -1) return;
+
+        const specProGroup =
+          specFilter.length < 4 ? specFilter :
+            specIndex === 0 ? specFilter.slice(specIndex, specIndex + 3) :
+              specIndex === specFilter.length - 1 ? specFilter.slice(specIndex - 3, specIndex) : specFilter.slice(specIndex - 1, specIndex + 2); //>
+
+        const specSelectedIcon = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="7" height="6" viewBox="0 0 7 6" fill="#000" class="psft-group-icon">
+            <path d="M3.83606 0.00976562L6.98227 5.33502H0.689846L3.83606 0.00976562Z" fill="inherit"></path>
+          </svg>
+        `;
+
+        const specGlobalImage = spec.image ? `<i class="psft-group-image" style="background-image: url(${spec.image});"></i>` : "";
+
+        const specProGroupHTML = specProGroup.map(item => `
+          <div class="psft-group-item ${item.id === spec.value_id ? 'active' : ''}">
+            ${specGlobalImage}
+            <p>${item.name}</p>
+            ${item.id === spec.value_id ? specSelectedIcon : ''}
+          </div>
+        `).join("");
+
+        return `
+          <div class="product-spec-featured-item">
+            <div class="psft-info">
+              <p class="psft-label">${spec.name}</p>
+              <p class="psft-value">${spec.value_name}</p>
+            </div>
+            <div class="psft-group">
+              ${specProGroupHTML}
+            </div>
+          </div>
+  		  `;
+      }).join("");
+
+      $(target).html(html);
+    });
+  }
+</script>

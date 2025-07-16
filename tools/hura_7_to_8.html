@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer code template Hura 7 to Hura 8</title>
+
+  <!-- STYLE GLOBAL -->
+  <style>
+    :root {
+      --color-primary: #673ab7;
+      --color-secondary: #dadce0;
+      --white: #fff;
+      --black: #000;
+      --red: #e80000;
+      --blue: #0083fd;
+      --gray: #a2a2a2;
+      --gray-2: #d9d9d9;
+      --box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    *,
+    ::after,
+    ::before {
+      padding: 0;
+      margin: 0;
+      -webkit-box-sizing: inherit;
+      box-sizing: inherit;
+    }
+
+    html {
+      font-size: 14px;
+    }
+
+    body {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      font-family: Inter, sans-serif;
+      color: #000;
+      word-break: break-word;
+      line-height: calc(100% + 6px);
+      font-weight: 500;
+      background-color: #fff;
+      letter-spacing: 0.15px;
+    }
+
+    a {
+      text-decoration: none;
+      font-size: inherit;
+      line-height: inherit;
+      color: inherit;
+    }
+
+    a:hover {
+      color: var(--color-primary);
+    }
+
+    a.default {
+      text-decoration: underline;
+    }
+
+    a.default:hover {
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      height: auto;
+    }
+
+    input {
+      max-width: 100%;
+      outline-color: var(--color-primary);
+    }
+
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+      font-family: inherit;
+    }
+
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-ms-input-placeholder,
+    textarea::-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+      font-family: inherit;
+    }
+
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-ms-input-placeholder,
+    textarea::-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+      font-family: inherit;
+    }
+
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-ms-input-placeholder,
+    textarea::-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+      font-family: inherit;
+    }
+
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-ms-input-placeholder,
+    textarea::-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-webkit-input-placeholder,
+    textarea::-webkit-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-moz-placeholder,
+    textarea::-moz-placeholder {
+      font-family: inherit;
+    }
+
+    input:-ms-input-placeholder,
+    textarea:-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input::-ms-input-placeholder,
+    textarea::-ms-input-placeholder {
+      font-family: inherit;
+    }
+
+    input,
+    input::placeholder,
+    select,
+    textarea,
+    textarea::placeholder {
+      font-family: inherit;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button {
+      opacity: 1;
+    }
+
+    textarea {
+      display: inherit;
+      resize: none;
+      outline-color: var(--color-primary);
+    }
+
+    @media (max-width: 576px) {
+
+      input[type="email"]:focus,
+      input[type="password"]:focus,
+      input[type="text"]:focus,
+      select:focus,
+      textarea:focus {
+        font-size: 16px !important;
+      }
+    }
+
+    button {
+      outline: 0;
+      border: 0;
+      background: 0 0;
+      cursor: pointer;
+      font-size: inherit;
+      font-family: inherit;
+      line-height: inherit;
+    }
+  </style>
+
+  <!-- STYLE MAIN -->
+  <style>
+    .container {
+      max-width: 1220px;
+      width: 100%;
+      margin: 48px auto;
+    }
+
+    .transfer-page .t-heading-primary {
+      font-size: 24px;
+      line-height: 30px;
+      margin-bottom: 16px;
+    }
+
+    .transfer-page .t-textarea {
+      width: 100%;
+      height: 500px;
+      border: 1px solid #dedede;
+    }
+
+    .transfer-page .t-textarea.disabled {
+      display: none;
+    }
+
+    .transfer-page .t-btn {
+      display: block;
+      margin: 24px auto;
+      line-height: 40px;
+      padding: 0 20px;
+      background: red;
+      color: #fff;
+      border-radius: 5px;
+    }
+
+    .transfer-page .t-btn-inline {
+      display: inline-block;
+      margin: 24px 10px;
+    }
+
+    .transfer-page .t-btn:hover {
+      box-shadow: 0 1px 10px rgba(255, 0, 0, 0.5);
+    }
+
+    .transfer-page .t-btn-copy {
+      background: var(--color-primary);
+    }
+
+    .transfer-page .t-btn-copy:hover {
+      box-shadow: 0 1px 10px rgba(103, 58, 183, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- MAIN CONTENT -->
+  <main class="transfer-page">
+    <div class="container">
+      <div class="t-container">
+        <div class="t-block" id="js-block-source">
+          <h2 class="t-heading-primary">Hura 7</h2>
+          <div id="js-source-template" class="t-textarea"></div>
+          <button type="button" id="js-transfer-btn" class="t-btn" onclick="transferTemplateHura()">CHUYỂN ĐỔI</button>
+        </div>
+
+        <div class="t-block" id="js-block-destination" style="display: none;">
+          <h2 class="t-heading-primary">Hura 8</h2>
+          <div id="js-destination-template" class="t-textarea"></div>
+          <div style="text-align: center;">
+            <button type="button" class="t-btn t-btn-inline t-btn-copy" onclick="copyClipBoard(this)">COPY</button>
+            <button type="button" class="t-btn t-btn-inline t-btn-reset" onclick="resetGoToTop()">RESET</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SCRIPT -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.min.js"></script>
+  <script>
+    // ALL REGEX [regex, replace]
+    const replacements = [
+      ['\\{loop="(.*?)"\\}', "{% for _item in $1 -%}"],
+      ['\\{\\if=\\"(.*?)"\\}', "{% if $1 -%}"],
+      ['\\{elseif\\=\\"(.*?)"\\}', "{% elsif $1 -%}"],
+      ['\\{\\$value\\.(.*?)\\}', "{{ _item.$1 }}"],
+      ['\\{include\\=\\"(.*?)"\\}', "{% include '$1' %}"],
+      ["\\{\\#IMAGE_PATH\\#\\}((.*?)\\.\\w{3})", "{{ '$1' | asset_url }}"],
+      ["\\$banner\\.(.*)\\[\\'(.*)\\'\\]", "banner.$1.$2"],
+      ["\\{\\else\\}", "{% else -%}"],
+      ["\\{\\/if\\}", "{% endif -%}"],
+      ["\\{\\/loop\\}", "{% endfor -%}"],
+
+      ["\\{\\$header.(.*?)\\}", "{{ page.$1 }}"],
+      ["\\{\\$about_us\\}", "{{ page.about_us }}"],
+      ['\\"\\{\\#\\INCLUDE_PATH\\#\\}(.*?)\\?(.*?)\\"', `"{{ '$1' | asset_url }}?$2"`],
+      ["\\{\\#\\CURRENT_DOMAIN\\#\\}", "{{ global.domain }}"],
+      ["\\{\\#\\CURRENT_URL\\#\\}", "{{ global.url }}"],
+      ["\\$module", "global.module"],
+      ["\\{\\$settings\\.(.*?)\\}", "{{ global.settings.$1 }}"],
+      ["\\$settings", "global.settings"],
+      ["\\{\\$customer_info.(.*?)\\}", "{{ global.customer_info.$1 }}"],
+      ["\\$customer_info", "global.customer_info"],
+      ["\\$is_admin_login", "global.is_admin_login"],
+      ["\\$current_page_url", "global.url"],
+
+      ["\\{\\$section_content\\}", "{{ page_content }}"],
+      ["\\{\\$current_category.(.*?)\\}", "{{ page.current_category.$1 }}"],
+      ["\\$current_category.(.*?)", "page.current_category.$1"],
+      ["\\$product_list", "page.product_list"],
+      ["\\$sort_by_collection", "page.sort_by_collection"],
+      ["\\$paging_collection", "page.paging_collection"],
+      ["\\$category_collection", "page.category_collection"],
+      ["\\$brand_filter_list", "page.brand_filter_list"],
+      ["\\$price_filter_list", "page.price_filter_list"],
+      ["\\$attribute_filter_list", "page.attribute_filter_list"],
+
+      ["\\{\\$product_info.(.*?)\\}", "{{ page.product_info.$1 }}"],
+      ["\\$product_info", "page.product_info"],
+
+      ["\\{\\$cart_items.(.*?)\\}", "{{ page.cart_items.$1 }}"],
+      ["\\$cart_items", "page.cart_items"],
+      ["\\$province_list", "page.province_list"],
+      ["\\$payment_method", "page.payment_method"],
+      ["\\$shipping_method", "page.shipping_method"],
+      ["\\$send_order_status", "page.send_order_status"],
+
+      ["\\{\\$account_content\\}", "{{ page.account_content }}"],
+      ["\\{\\$account_info\\.(.*?)\\}", "{{ account.account_info.$1 }}"],
+      ["\\$account_info\\.(.*?)", "account.account_info.$1"],
+      ["\\{\\$order_info\\.(.*?)\\}", "{{ account.order_info.$1 }}"],
+      ["\\$order_info\\.(.*?)", "account.order_info.$1"],
+      ["\\$order_list", "account.order_list"],
+
+      ["\\{\\$page_info.content\\}", "{{ page.content.content }}"],
+
+      ["\\{\\$category_info\\.(.*?)\\}", "{{ page.category_info.$1 }}"],
+      ["\\$category_info", "page.category_info"],
+      ["\\{\\$article_detail\\.(.*?)\\}", "{{ page.article_detail.$1 }}"],
+      ["\\$article_detail", "page.article_detail"],
+      ["\\$article_category.article.0", "component.article.all_category.article"],
+      ["\\$article_list", "page.article_list"],
+
+      ["\\isset\\((.*?)\\)", "$1"],
+      ["sizeof\\((.*?)\\)", "$1.size"],
+      ["strpos\\((.*?),(.*?)\\)", '$1 contains $2'],
+
+      ["\\|\\|", "or"],
+      ["\\&\\&", "and"],
+
+      ["\\$product_category\\[0]", "component.product.all_category"],
+      ["\\$article_category.article\\[0]", "component.article.all_category.article"],
+      ["\\$value\\.", "_item."],
+    ];
+
+    // CREATE ACE EDITOR HTML
+    const editor_1 = ace.edit("js-source-template");
+    const editor_2 = ace.edit("js-destination-template");
+
+    // SET ACE EDTIOR OPTION
+    $(document).ready(function () {
+      editor_1.setOptions({
+        mode: "ace/mode/html",
+        fontSize: "16px",
+        tabSize: 2
+      })
+      editor_2.setOptions({
+        mode: "ace/mode/html",
+        fontSize: "16px",
+        tabSize: 2
+      })
+    })
+
+    // TRANSFER TEMPLATE
+    function transferTemplateHura() {
+      const result = "#js-block-destination";
+      const template = editor_1.getValue();
+
+      if (!template) {
+        alert("Chưa nhập template cho Hura 7!");
+        return;
+      }
+
+      editor_2.setValue(rePlaceVariantTemplate(replacements, template));
+
+      $(result).fadeIn();
+      setTimeout(function () {
+        document.querySelector(result).scrollIntoView({ behavior: 'smooth' });
+      }, 500)
+    }
+
+    // REGEX REPLACE
+    function rePlaceVariantTemplate(rpm, tpl) {
+      let result = tpl;
+      for (let [x, y] of rpm) result = result.replace(new RegExp(x, 'gm'), y);
+      return result;
+    }
+
+    // COPY
+    function copyClipBoard(_this) {
+      const copyText = editor_2.getValue();
+      navigator.clipboard.writeText(copyText);
+
+      $(_this).html('COPIED');
+      setTimeout(() => {
+        $(_this).html('COPY');
+      }, 3000);
+    }
+
+    // RESET
+    function resetGoToTop() {
+      location.reload();
+    }
+  </script>
+</body>
+
+</html>

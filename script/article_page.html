@@ -1,0 +1,566 @@
+<!-- FIND TABLE OF CONTENT (TOC) ARTICLE DETAIL -->
+<div id="js-toc-fixed" class="archor-text-fixed"></div>
+<div id="js-toc-paragraph"></div>
+
+<style>
+  /* .scroll-mt{scroll-margin-top:60px}
+  .archor-text-group{display:block;padding:15px;background:#eaf9f8;border:2px dotted #089bcc}
+  .archor-text-title{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:4px;font-size:18px;font-weight:700}
+  .archor-text-close{position:absolute;top:50%;right:0;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%)}
+  .archor-text-nav{font-size:15px;line-height:20px;margin-top:10px}
+  .archor-text-nav ol{list-style-type:none;counter-reset:item;padding-left:0;margin-bottom:0}
+  .archor-text-nav li{display:table;counter-increment:item;margin:4px 0}
+  .archor-text-nav li:before{content:counters(item, ".") ". ";display:table-cell;min-width:14px;font-weight:700;padding-right:4px;white-space:nowrap}
+  .archor-text-nav a{color:#333}
+  .archor-text-nav a:hover{color:red}
+  .archor-text-h2{font-weight:700}
+  .archor-text-h2+ol li:before{font-weight:400}
+  .archor-text-fixed{display:none;position:fixed;top:15%;left:20px;max-width:95%;z-index:999}
+  .archor-text-fixed .archor-text-title{cursor:pointer}
+  .archor-text-fixed .archor-text-sub, .archor-text-fixed .archor-text-close, .archor-text-fixed .archor-text-nav{display:none}
+  .archor-text-fixed .archor-text-group{margin-top:0;-webkit-box-shadow:0 1px 5px rgba(0,0,0,.2);box-shadow:0 1px 5px rgba(0,0,0,.2)}
+  .archor-text-fixed .archor-text-nav ol{max-height:65vh;overflow:auto}
+  @media (max-width:576px){
+  .archor-text-group{padding:12px}
+  .archor-text-fixed{top:10%;right:5px;left:unset}
+  .archor-text-fixed .archor-text-nav ol{max-height:55vh}
+  } */
+</style>
+
+<script>
+  // GET TABLE OF CONTENT (TOC) DETAIL ARTICLE
+  function TOC_Handle(target) {
+    const targets = $(`${target} h2, ${target} h3, ${target} h4`);
+    if (targets.length === 0) return;
+
+    TOC_Setup(targets);
+    TOC_Headings(targets);
+  }
+
+  function TOC_Headings(targets) {
+    targets.each(function () {
+      const text = $(this).text().trim();
+      if (text === "") return;
+
+      const id = TOC_HeadingREC(text);
+      $(this).attr("id", id).addClass("scroll-mt");
+    });
+  }
+
+  function TOC_Setup(targets) {
+    const result = document.createElement("ol");
+    let nodes = [];
+
+    for (var i = targets.length; i > -1; i--) {
+      if ($(targets[i]).text().trim() != '') nodes.unshift(targets[i]);
+    };
+
+    TOC_BuildREC(nodes, result, 2);
+
+    if (result.outerHTML === "<ol></ol>") return;
+
+    const html = `
+      <div class="archor-text-group js-toc_container">
+        <div class="archor-text-title" onclick="TOC_ToggleREC(this);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22"><path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
+          <b>Mục lục <span class="archor-text-sub">nội dung</span></b>
+          <a class="archor-text-close js-toc_close" href="javascript:;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="18" height="18"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+          </a>
+        </div>
+        <div class="archor-text-nav js-toc_nav">
+          ${result.outerHTML}
+        </div>
+      </div>
+    `;
+
+    $("#js-toc-paragraph").after(html);
+
+    const anchor = "#js-toc-fixed";
+    const height = parseInt($('#js-toc-paragraph+.archor-text-group').height());
+    const distance = 500 + height;
+
+    $(anchor).html(html).find(".js-toc_container").attr("data-type", "archor-fixed").find("a").attr("data-type", "archor-close");
+    $(window).scroll(function () {
+      let scrollTop = $(document).scrollTop();
+      if (scrollTop > distance) $(anchor).fadeIn();
+      else $(anchor).hide();
+    });
+  }
+
+  function TOC_BuildREC(nodes, elm, lv) {
+    let node;
+
+    do {
+      node = nodes.shift();
+    } while (node && !(/^h[234]$/i.test(node.tagName)));
+
+    if (node) {
+      let ul, li, cnt;
+      let curLv = parseInt(node.tagName.substring(1));
+      let stt = 0;
+      if (curLv == lv) {
+        cnt = 0;
+      } else if (curLv < lv && 1 < 2) {
+        cnt = 0;
+        do {
+          elm = elm.parentNode.parentNode;
+          cnt--;
+        } while (cnt > (curLv - lv));
+      } else if (curLv > lv) {
+        cnt = 0;
+        do {
+          li = elm.lastChild;
+          if (li == null)
+            li = elm.appendChild(document.createElement("li"));
+          elm = li.appendChild(document.createElement("ol"));
+          cnt++;
+        } while (cnt < (curLv - lv) && 1 < 2);
+      }
+
+      const text = node.innerText.trim();
+      const text_id = TOC_HeadingREC(text);
+      const text_new = TOC_HeadingREC(text, "text");
+
+      li = elm.appendChild(document.createElement("li"));
+      li.innerHTML = `<a class="${curLv === 2 ? 'archor-text-h2' : ''}" href="javascript:;" onclick="TOC_ScrollREC('${text_id}', this);">${text_new}</a>`;
+      TOC_BuildREC(nodes, elm, lv + cnt);
+    }
+  }
+
+  function TOC_HeadingREC(text, type) {
+    const text_regex = new RegExp("([A-z])", 'gm');
+    const text_arr = text.split(" ");
+    const text_check_1 = text_arr[0].match(text_regex);
+    const text_check_2 = text_arr[0].indexOf(".") != -1;
+
+    if (!text_check_1 && text_check_2) text_arr.shift();
+    const new_text = text_arr.join(" ");
+
+    if (type === "text") return new_text;
+    return convertToSlug(new_text);
+  }
+
+  function TOC_ToggleREC(_this) {
+    const $container = $(_this).closest(".js-toc_container");
+    $container.find(".js-toc_nav").toggle();
+
+    const type = $container.attr("data-type");
+    if (!type) return;
+
+    $container.find(".js-toc_close").toggle();
+  }
+
+  function TOC_ScrollREC(id, _this) {
+    const type = $(_this).attr("data-type");
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    if (type) TOC_ToggleREC(_this);
+  }
+
+  // OPTION
+  function convertToSlug(e) {
+    let r = e;
+    return r
+      .toLowerCase()
+      .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+      .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+      .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+      .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+      .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+      .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+      .replace(/đ/g, "d")
+      .replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "")
+      .replace(/\u02C6|\u0306|\u031B/g, "")
+      .replace(/[^\w ]+/g, "")
+      .replace(/ +/g, "-");
+  }
+</script>
+
+<!-- SETUP PRODUCT WITH IDS ARTICLE DETAIL -->
+<script>
+  function productsByIdsSetup(target) {
+    if ($(target).length === 0) return;
+
+    const content = $(target).html();
+    const matches = content.match(/\[Products([:[0-9,\s]+)]/g);
+    if (!matches) return;
+
+    matches.forEach(function (match, index) {
+      const target = `:contains('${match}'):last`;
+      const html = `
+        <div class='products-by-ids-container'>
+          <div class='swiper swiper-products-by-ids' id="js-pbi-swiper-${index}">
+            <div class='swiper-wrapper' id='js-pbi-holder-${index}'>
+              <div class="loading-progress">
+                <div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div>
+                <div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div>
+              </div>
+            </div>
+            <div class='swiper-button-next swiper-btn-custom'></div>
+            <div class='swiper-button-prev swiper-btn-custom'></div>
+          </div>
+        </div>
+      `;
+      $(target).replaceWith(html);
+
+      const slider = "#js-pbi-swiper-" + index;
+      isOnScreenHandle({
+        id: slider,
+        loadFn: function () {
+          _ajax();
+        }
+      });
+
+      function _ajax() {
+        const ids = match.replace('[Products:', '').replace(']', '').replace(' ', '').trim();
+        const holder = "#js-pbi-holder-" + index;
+
+        Hura.Ajax.get("product", { action_type: "product-list", ids: ids, show: 30 }).then(function (data) {
+          if (data.total === 0) {
+            $(holder).closest(".products-by-ids-container").hide();
+            return;
+          }
+
+          const sortIds = ids.split(",");
+          const dataNew = [...data.list].sort((a, b) => sortIds.indexOf(a.id + "") - sortIds.indexOf(b.id + ""));
+          let html = Hura.Template.parse(`<div class="swiper-slide">${product_tpl}</div>`, dataNew);
+          Hura.Template.render(holder, html);
+
+          new Swiper(slider, {
+            slidesPerView: 4,
+            spaceBetween: 10,
+            speed: 1000,
+            rewind: true,
+            autoplay: {
+              delay: 3500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: "true",
+            },
+            navigation: {
+              nextEl: slider + " .swiper-button-next",
+              prevEl: slider + " .swiper-button-prev",
+            },
+            breakpoints: {
+              1600: {
+                slidesPerView: 5,
+              },
+            },
+          });
+        })
+      }
+    });
+  }
+</script>
+
+<!-- SETUP ARICLE SURVERY FORM -->
+<style>
+  /* .survey-article button{cursor:pointer;border:0;outline:0}
+  .survey-article .survey-box{background:#e2e8ed;border-radius:10px;padding:20px;margin:20px 0}
+  .survey-article .survey-title{font-size:26px;font-weight:700;line-height:1.2;margin:0 0 16px}
+  .survey-article .survey-summary{font-size:16px;line-height:1.2;margin:0 0 16px}
+  .survey-article .survey-btn{background:#51be9d;padding:7px 50px;border-radius:40px;font-weight:600;color:#fff;display:inline-block;margin-top:4px;font-size:16px}
+  .survey-article .survey-btn:hover{background:#32a784;box-shadow:0 1px 5px rgba(0,0,0,.3)}
+  .survey-article .survey-form{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:999}
+  .survey-article .survey-form-bg{position:absolute;top:0;right:0;left:0;bottom:0;background:rgba(0,0,0,.5);z-index:1}
+  .survey-article .survey-form-heading{position:relative;font-size:20px;font-weight:700;line-height:26px;padding-right:30px;color:#0067ab}
+  .survey-article .survey-form-heading-close{position:absolute;top:-10px;right:-10px;font-size:20px;background:0 0}
+  .survey-article .survey-form-main{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);max-width:700px;width:100%;background:#fff;z-index:1;padding:20px;border-radius:15px}
+  .survey-article .survey-form-content{padding:20px 20px 0}
+  .survey-article .survey-form-item{display:none}
+  .survey-article .survey-form-item:first-child{display:block}
+  .survey-article .survey-form-question{font-weight:700;margin:0 0 12px}
+  .survey-article .survey-form-answer{margin-bottom:8px}
+  .survey-article .survey-form-btn{padding:10px 30px;border-radius:5px;font-size:14px;margin:16px 10px 0 0}
+  .survey-article .survey-form-btn.prev{background:#0067ab}
+  .survey-article .survey-form-btn.close{background:red}
+  .survey-article .survey-form-result-title{font-size:20px;color:red;margin-bottom:0}
+  .survey-article .survey-form-result-list{max-height:492px;overflow:auto}
+  .survey-article .survey-form-result-item{margin:16px 0}
+  .survey-article .survey-form-result-item.space:not(:last-child){border-bottom:1px solid #dedede;padding-bottom:16px} */
+</style>
+
+<script>
+  function articleSurveySetup(target) {
+    if ($(target).length === 0) return;
+
+    const content = $(target).html();
+    const all_matches = content.match(/\[Khao_sat_nhanh\=(.*?)\]/gm);
+    if (!all_matches) return;
+
+    let content_holder = content;
+    all_matches.forEach(function (match, index) {
+      content_holder = content_holder.replace(
+        match,
+        `
+          <div class="survey-article survey-container js-survey-container" id="js-survey-container-${index}">
+            <!--Ajax load-->
+          </div>
+        `
+      );
+    });
+
+    $(target).html(content_holder);
+    articleSurveyBuild(all_matches);
+  }
+
+  function articleSurveyBuild(all_matches) {
+    all_matches.forEach(function (match, index) {
+      const holder = `#js-survey-container-${index}`;
+      const url = match.replace('[Khao_sat_nhanh=', '').replace(']', '').replace(' ', '').trim();
+
+      if ($(holder).hasClass("ajax-loaded")) return;
+
+      $(holder).load(url + "?type=ajax", function (response, status, xhr) {
+        if (status !== "success") return;
+
+        const target = holder + " .js-survey-form";
+        const limit = $(target + " tr").length;
+        const title = $(holder + " .js-survey-title").text().trim();
+
+        const content = $(target + " tr").toArray().map((row, row_index) => {
+          const question = $(row).find("td:nth-child(1)").text().trim();
+          const answers = $(row).find("td:nth-child(2)").text().trim().split("\n").map((answer, answer_index) => `
+            <div class="survey-form-answer">
+              <label>
+                <input type="radio" name="question-${index}-${row_index}" value="${answer}" ${answer_index === 0 ? 'checked' : ''} style="transform: translateY(1px);">
+                <span>${answer}</span>
+              </label>
+            </div>
+          `).join("");
+          const correct = $(row).find("td:nth-child(3)").text().trim();
+          const description = $(row).find("td:nth-child(4)").text().trim();
+
+          return `
+            <div class="survey-form-item js-survey-form-item" data-id="${row_index}">
+              <p class="survey-form-question">${row_index + 1}. ${question}</p>
+              <div class="survey-form-answers js-survey-form-answers">
+                ${answers}
+              </div>
+              <input type="hidden" class="js-survey-form-question" value="${question}">
+              <input type="hidden" class="js-survey-form-correct" value="${correct}">
+              <input type="hidden" class="js-survey-form-description" value="${description}">
+            </div>
+          `;
+        }).join("");
+
+        const html = `
+          <div class="survey-form-bg js-survey-form-bg" onclick="$(this).closest('.js-survey-form').hide();"></div>
+          <div class="survey-form-main">
+            <div class="survey-form-heading">
+              <span>${title}</span>
+              <button class="survey-form-heading-close" type="button" title="Đóng" onclick="$(this).closest('.js-survey-form').hide();">❌</button>
+            </div>
+            <div class="survey-form-content js-survey-form-content" data-id="0" data-limit="${limit}">
+              ${content}
+              <div class="survey-form-item js-survey-form-item js-survey-form-result" data-id="${limit}">
+                <!--Result holder-->
+              </div>
+            </div>
+            <button class="survey-btn survey-form-btn prev js-survey-form-btn" type="button" data-value="-1" onclick="articleSurveyActition(this);" style="display: none;">
+              Trở lại
+            </button>
+            <button class="survey-btn survey-form-btn next js-survey-form-btn" type="button" data-value="1" onclick="articleSurveyActition(this);">
+              Tiếp tục
+            </button>
+          </div>
+        `;
+
+        $(target).html(html);
+        $(holder).addClass("ajax-loaded");
+      });
+    })
+  }
+
+  function articleSurveyActition(_this) {
+    const $container = $(_this).closest(".js-survey-form");
+    const $listItem = $container.find(".js-survey-form-content");
+
+    const id = parseInt($listItem.attr("data-id"));
+    const limit = parseInt($listItem.attr("data-limit"));
+    const value = parseInt($(_this).attr("data-value"));
+
+    const idNew = id + value >= 0 ? id + value : 0;
+    $listItem.attr("data-id", idNew);
+
+    $container.find(".js-survey-form-item").hide();
+    $container.find(`.js-survey-form-item[data-id='${idNew}']`).fadeIn();
+
+    const $btn = $container.find(".js-survey-form-btn");
+    const $btn_prev = $container.find(".js-survey-form-btn.prev");
+
+    $btn.show();
+    if (idNew === 0) $btn_prev.hide();
+    if (idNew === limit) {
+      $btn.hide();
+      articleSurveySubmit(_this);
+    }
+  }
+
+  function articleSurveySubmit(_this) {
+    let check = 0;
+    const $container = $(_this).closest(".js-survey-form");
+    const $holder = $container.find(".js-survey-form-result");
+    const $items = $container.find(".js-survey-form-item:not(:last-child)");
+
+    const results = $items.toArray().map((item, index) => {
+      const question = $(item).find(".js-survey-form-question").val();
+      const correct = $(item).find(".js-survey-form-correct").val();
+      const description = $(item).find(".js-survey-form-description").val();
+      const answer = $(item).find(".js-survey-form-answers input[type='radio']:checked").val();
+
+      let answer_html = '<b style="color: red">' + answer + ' <i class="fa fa-times-circle" aria-hidden="true" style="margin-left: 4px;"></i></b>';
+      if (answer === correct) {
+        check++;
+        answer_html = '<b style="color: green">' + answer + ' <i class="fa fa-check-circle" aria-hidden="true" style="margin-left: 4px;"></i></b>';
+      }
+
+      return `
+        <p class="survey-form-result-item"><b>${index + 1}. ${question}</b></p>
+        <p class="survey-form-result-item"><b>Bạn chọn:</b> ${answer_html}</p>
+        <p class="survey-form-result-item"><b>Câu trả lời đúng:</b> <b style="color: green;">${correct}</b></p>
+        <p class="survey-form-result-item space"><b>Giải thích:</b> ${description}</p>
+      `;
+    }).join("");
+
+    const html = `
+      <p class="survey-form-question survey-form-result-title">
+        Chúc mừng bạn đã hoàn thành trắc nghiệm với tỷ lệ: <b style="color: cornflowerblue;">${check}/${$items.length}</b>
+      </p>
+      <div class="survey-form-result-list">
+        ${results}
+      </div>
+      <div style="text-align: center;">
+        <button class="survey-btn survey-form-btn reset" type="button" onclick="articleSurveyReset(this);">
+          Khảo sát lại
+        </button>
+        <button class="survey-btn survey-form-btn close" type="button" onclick="$(this).closest('.js-survey-form').hide();">
+          Đóng
+        </button>  
+      </div>
+    `;
+
+    $holder.html(html);
+  }
+
+  function articleSurveyReset(_this) {
+    const $container = $(_this).closest(".js-survey-form");
+    const $target = $container.find(".js-survey-form-answers .survey-form-answer:first-child input[type='radio']");
+
+    $container.find(".js-survey-form-item").hide();
+    $container.find(".js-survey-form-item[data-id='0']").fadeIn();
+    $container.find(".js-survey-form-content").attr("data-id", 0);
+    $container.find(".js-survey-form-btn.next").show();
+    $target.prop("checked", true);
+  }
+</script>
+
+<!-- SETUP ARTCLE NEW IN ARTICLE HOME WITH PAGING -->
+<style>
+  /* .a-paging{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;gap:8px}
+  .a-pagging-btn{position:relative;display:none;font-size:14px;line-height:36px;border-radius:5px;border:0;cursor:pointer;width:36px;height:36px;text-align:center}
+  .a-pagging-btn.display,.a-pagging-btn:first-child,.a-pagging-btn:last-child{display:inline-block}
+  .a-pagging-btn.current,.a-pagging-btn:hover{background:var(--color-primary);color:#fff}
+  .a-pagging-btn.current{pointer-events:none}
+  .a-pagging-btn.space::after{content:"...";position:absolute;bottom:-13px;color:#000}
+  .a-pagging-btn.space.space-first{margin-right:16px}
+  .a-pagging-btn.space.space-first::after{right:-18px}
+  .a-pagging-btn.space.space-last{margin-left:16px}
+  .a-pagging-btn.space.space-last::after{left:-18px} */
+</style>
+
+<div class="art-home-container" id="js-art-home-container" style="scroll-margin-top: 100px;">
+  <h2 class="article-box-heading">Tin mới nhất</h2>
+
+  <div class="art-home-list" id="js-art-home-list">
+    <!-- Ajax holder -->
+  </div>
+
+  <div class="art-home-paging a-paging" id="js-art-home-paging">
+    <!-- Ajax holder -->
+  </div>
+</div>
+
+{% raw %}
+<script>
+  const art_home_new_tpl = ``;
+</script>
+{% endraw %}
+
+<script>
+  // Get articles per page
+  function getArtNewPerPage(page, show) {
+    const params = {
+      action_type: "list",
+      sort: "new",
+      page: page,
+      show: show,
+    };
+
+    Hura.Ajax.get("article", params).then(function (data) {
+      //console.log(data);
+
+      const data_length = data.list.length;
+      const total_paging = Math.ceil(data.total / show);
+      const target = "#js-art-home-list";
+      const paging = "#js-art-home-paging";
+
+      if (data_length === 0) return;
+      let html = Hura.Template.parse(art_home_new_tpl, data.list);
+      Hura.Template.render(target, html);
+
+      if ($(paging).hasClass("loaded")) return;
+      createArtNewPerPagePaging(total_paging, show, paging);
+    });
+  }
+
+  // Create articles paging page list
+  function createArtNewPerPagePaging(total, show, target) {
+    let html = "";
+    for (let i = 0; i < total; i++) {
+      html += `
+        <button type="button" class="a-pagging-btn js-a-pagging-btn" onclick="handlerArtNewPerPagePaging(this, ${i + 1}, ${show}, ${total})">
+          ${i + 1}
+        </button>
+      `;
+    }
+    $(target).html(html).addClass("loaded");
+
+    const first = ".js-a-pagging-btn:first-child";
+    const last = ".js-a-pagging-btn:last-child";
+
+    $(first).addClass("current").addClass("space-first");
+    $(last).addClass("space-last");
+
+    if (total > 7) $(last).addClass("space");
+    displayArtNewPerPagePaging('.js-a-pagging-btn', 4, total, 0);
+  }
+
+  // Handler articles when paging page is clicked
+  function handlerArtNewPerPagePaging(_this, page, show, total) {
+    getArtNewPerPage(page, show);
+
+    const btn = ".js-a-pagging-btn";
+    const first = ".js-a-pagging-btn:first-child";
+    const last = ".js-a-pagging-btn:last-child";
+
+    $(btn).removeClass("current").removeClass("display");
+    $(_this).addClass("current");
+
+    page > 4 ? $(first).addClass("space") : $(first).removeClass("space");
+    total - 4 > page && total > 7 ? $(last).addClass("space") : $(last).removeClass("space");
+
+    displayArtNewPerPagePaging(btn, page, total, 1);
+  }
+
+  // Display articles paging by curent page number
+  function displayArtNewPerPagePaging(btn, page, total, scroll) {
+    let index_1 = page - 3 > 0 ? page - 3 : 1;
+    let index_2 = page + 3 > total ? total : page + 3;
+
+    index_1 = page + 3 > total ? total - 6 : index_1;
+    index_2 = page < 5 ? 7 : index_2;
+
+    $(btn + `:nth-child(n+${index_1}):nth-child(-n+${index_2})`).addClass("display");
+    if (scroll) document.querySelector('#js-art-home-container').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>

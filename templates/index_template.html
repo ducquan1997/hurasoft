@@ -1,0 +1,213 @@
+<!-- HURA 8 -->
+<!-- INDEX TEMPLATE -->
+<!-- 
+{% if global.url contains "?type=ajax" -%}
+{{ page_content }}
+
+{% else -%}
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="document" name="resource-type" />
+    
+    {% if global.module.module == 'error' and global.module.view == '404_not_found' -%}
+    <meta name="robots" content="noindex, nofollow" />
+    {% else -%}
+    <meta name="robots" content="index, follow" />
+    {% endif -%}
+
+    {% include 'other/meta_seo' %}
+
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ global.domain }}" href="/product.rss" />
+    <link rel="shortcut icon" href="{{ global.domain }}{{ 'favicon.ico' | asset_url }}" type="image/x-icon" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+
+    <link rel="stylesheet" href="{{ global.domain }}{{ 'library.css' | asset_url }}?v=1.0" />
+    <link rel="stylesheet" href="{{ global.domain }}{{ 'style_pc.css' | asset_url }}?v=1.0" />
+  </head>
+
+  <body>
+    {% if global.module.module == 'error' and global.module.view == '404_not_found' -%}
+    {{ page_content }}
+    
+    {% else -%}
+    {% include 'other/header' %}
+
+    {% include 'other/breadcrumb' %}
+
+    {{ page_content }}
+
+    {% include 'other/footer' %}
+
+    {% include 'javascript/index' %}
+    
+    <div id="google_translate_element2"></div>
+    <style type="text/css">body{top:0!important}font{background:transparent!important;box-shadow:unset!important}#goog-gt-tt{display:none!important}.goog-te-banner-frame{display:none!important}.goog-te-menu-value:hover{text-decoration:none!important}#google_translate_element2{display:none!important}.skiptranslate{display:none}</style>
+    <script type="text/javascript">function googleTranslateElementInit2(){new google.translate.TranslateElement({pageLanguage:"vi",autoDisplay:!1},"google_translate_element2");var e=document.getElementById("goog-gt-tt");e.parentNode.removeChild(e)}</script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2" type="text/javascript"></script>
+    <script src="{{ 'translate.js' | asset_url }}?v=1.0"></script>
+    
+    {% endif -%}
+
+    <div class="global-popup-frame">
+      <div class="global-popup-modal"></div>
+    </div>
+
+    <div class="success-cart hide">
+      <div class="success-cart-content">
+        <svg class="success-cart-svg" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path class="success-cart-circle" d="M13 1C6.372583 1 1 6.372583 1 13s5.372583 12 12 12 12-5.372583 12-12S19.627417 1 13 1z"/><path class="success-cart-tick" d="M6.5 13.5L10 17 l8.808621-8.308621"/></g></svg>
+        <p class="success-cart-text">Thêm sản phẩm vào giỏ hàng <br />thành công!</p>
+      </div>
+    </div>
+
+  </body>
+</html>
+
+{% endif -%} -->
+
+<!-- INDEX SCRIPT -->
+<!-- <script src="{{ 'vendors.js' | global_asset_url }}"></script>
+<script src="{{ 'hura8.js' | global_asset_url }}"></script>
+<script src="{{ 'library.js' | asset_url }}?v=1.0"></script>
+
+{% include 'javascript/tpl' %}
+{% include "javascript/global" %}
+
+{% if global.module.name == 'home' -%}
+{% include 'javascript/homepage' %}
+
+{% elsif global.module.name == 'product' and global.module.view == 'category' or global.module.view == 'product-collection' or global.module.view == 'product-search' or global.module.module == 'brand' or global.module.module == 'tag' or global.module.view == 'product-hot' or global.module.view == 'product-view-history' or global.module.view == 'all-product' -%}
+
+
+{% elsif global.module.view == 'product-detail' -%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+{% elsif global.module.name == 'article' -%}
+
+
+{% elsif global.module.name == 'cart' -%}
+
+
+{% elsif global.module.module == 'customer' or global.module.module == 'account' -%}
+
+
+{% endif %}
+
+<script>
+  $(document).ready(function () {
+    globalHandle();
+
+    {% if global.module.view == "homepage" -%}
+  	homepageHandle();
+  
+  	{% elsif global.module.name == 'product' and global.module.view == 'category' or global.module.view == 'product-collection' or global.module.view == 'product-search' or global.module.module == 'brand' or global.module.module == 'tag' or global.module.view == 'product-hot' or global.module.view == 'product-view-history' or global.module.view == 'all-product' -%}
+  
+
+    {% elsif global.module.view == "product-detail" -%}
+
+  
+  	{% elsif global.module.name == 'article' -%}
+
+  
+  	{% elsif global.module.name == 'cart' -%}
+
+
+    {% endif %}
+  });
+</script> -->
+
+<!-- HURA 7 -->
+<!-- {if="strpos($current_page_url,'?type=ajax') > 0 "}
+{$section_content}
+
+{else}
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="resource-type" content="document" />
+    <meta name="robots" content="index, follow" />
+
+    <title>{$header.title}</title>
+    <meta name="description" content="{$header.description}" />
+    <meta name="keywords"    content="{$header.keywords}" />
+
+    <meta property="fb:app_id"      content="" prefix="fb: https://ogp.me/ns/fb#">
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="{$header.title}" />
+    <meta property="og:description" content="{$header.description}" />
+    <meta property="og:url"         content="{#CURRENT_URL#}" />
+    <meta property="og:image:alt"   content="{$header.title}" />
+
+    {$logo = $settings.logo_file}
+    {if="$module.view == 'product-detail'"}
+    <meta property="og:image" content="{#CURRENT_DOMAIN#}{$product_info.productImage.original}" />
+    {elseif="$module.name == 'product' && $module.view == 'category'"}
+    <meta property="og:image" content=`{#CURRENT_DOMAIN#}{if="$current_category.img_big != '' && $current_category.img_big != 0"}/media/category/{$current_category.img_big}{else}{$logo}{/if}` />
+    {elseif="$module.name == 'article' && $module.view == 'category'"}
+    <meta property="og:image" content=`{#CURRENT_DOMAIN#}{if="$category_info.imgUrl != '' && $category_info.imgUrl != 0"}{$category_info.imgUrl}{else}{$logo}{/if}` />
+    {elseif="$module.name == 'article' && $module.view == 'detail'"}
+    <meta property="og:image" content="{#CURRENT_DOMAIN#}{$article_detail.image.original}" />
+    {else}
+    <meta property="og:image" content="{#CURRENT_DOMAIN#}{$logo}" />
+    {/if}
+
+    {if="$module.name == 'product'"}
+    {if="$module.view == 'category'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$current_category.request_path}">
+    {elseif="$module.view == 'search'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/tim?q={$search_query}">
+    {elseif="$module.view == 'product-hot'"}
+    {if="$header.title == 'Sản phẩm được hỏi nhiều'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-hot">
+    {elseif="$header.title == 'Sản phẩm mới'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-moi">
+    {elseif="$header.title == 'Sản phẩm xả hảng'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-xa-hang">
+    {elseif="$header.title == 'Sản phẩm bán chạy'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-ban-chay">
+    {/if}
+    {elseif="$module.view == 'view-history'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-da-xem">
+    {elseif="$module.view == 'product-tag'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/tag/{$tag_info.tag_url}">
+    {elseif="$module.view == 'colletion'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$collection_info.url}">
+    {else}<link rel="canonical" href="{#CURRENT_URL#}">
+    {/if}
+    {elseif="$module.name == 'brand'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/brand/{$brand_info.brand_index}">
+    {elseif="$module.name == 'article'"}
+    {if="$module.view == 'category'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$category_info.request_path}">
+    {else}<link rel="canonical" href="{#CURRENT_URL#}">
+    {/if}
+    {elseif="strlen($header.canonical) > 4"}
+    {if="strpos($header.canonical, 'hurasoft.vn') > 0"}<link rel="canonical" href="{$header.canonical}" important="CHANGE DOMAIN WEBSITE replace 'hurasoft.vn'">
+    {else}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$header.canonical}">
+    {/if}
+    {else}<link rel="canonical" href="{#CURRENT_URL#}">
+    {/if}
+
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {#CURRENT_DOMAIN#}" href="/product.rss" />
+    <link rel="shortcut icon" href="{#CURRENT_DOMAIN#}{#INCLUDE_PATH#}favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/sf-pro-display?styles=98774,98773,98770">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="{#CURRENT_DOMAIN#}{#INCLUDE_PATH#}library_css.css?v=1.0" />
+    <link rel="stylesheet" href="{#CURRENT_DOMAIN#}{#INCLUDE_PATH#}style.css?v=1.0" />
+  </head>
+
+  <body>
+    {include 'other/header'}
+
+    {include 'other/breadcrumb'}
+
+    {$section_content}
+
+    {include 'other/footer'}
+
+    {include 'javascript/index'}
+  </body>
+</html>
+
+{/if} -->

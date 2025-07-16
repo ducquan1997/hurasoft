@@ -1,0 +1,300 @@
+<!-- HTML/CSS -->
+<style>
+  .homepage .section-support .support-container{font-size:14px;line-height:32px}
+  .homepage .section-support .support-grid{display:-ms-grid;display:grid;-ms-grid-columns:1fr 16px 1fr 16px 1fr 16px 1fr;grid-template-columns:repeat(4,1fr);gap:16px}
+  .homepage .section-support .support-heading{font-size:36px;font-weight:600;line-height:44px;color:#003c50;padding-bottom:32px;text-align:center}
+  .homepage .section-support .support-navbar{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;gap:10px;padding:15px 0;visibility:hidden}
+  .homepage .section-support .support-navbar .sn-item{display:-webkit-box;display:-ms-flexbox;display:flex}
+  .homepage .section-support .support-navbar .sn-item:hover svg{opacity:.7}
+  .homepage .section-support .support-suggests .ss-item{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;background:#728388;color:#fff;cursor:pointer}
+  .homepage .section-support .support-suggests .ss-item.active{-webkit-box-shadow:rgba(0,0,0,.35) 0 5px 15px;box-shadow:rgba(0,0,0,.35) 0 5px 15px;-webkit-transition:-webkit-box-shadow .2s;transition:-webkit-box-shadow .2s;-o-transition:box-shadow .2s;transition:box-shadow .2s;transition:box-shadow .2s,-webkit-box-shadow .2s;transition:box-shadow .2s,-webkit-box-shadow .2s;transition:box-shadow .2s,-webkit-box-shadow .2s;background:#003c50;pointer-events:none}
+  .homepage .section-support .support-suggests .ss-item:hover{background:#003c50}
+  .homepage .section-support .support-suggests .ss-title{-webkit-box-flex:1;-ms-flex:1;flex:1;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:16px;font-weight:500;line-height:22px;text-align:center;padding:15px 10px}
+  .homepage .section-support .support-tab{display:inline-block;min-width:210px;font-size:16px;font-weight:600;line-height:50px;padding:0 15px;margin:25px 0 15px;background:var(--color-primary);color:#fff}
+  .homepage .section-support .support-note{text-align:center}
+  .homepage .section-support .support-recommended{position:relative;max-width:1000px;width:100%;margin:0 auto}
+  .homepage .section-support .support-recommended .p-item{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;gap:40px;padding:20px;background:#fff;border-color:var(--color-primary)}
+  .homepage .section-support .support-recommended .p-content{max-width:350px;text-align:left;padding:0}
+  .homepage .section-support .support-recommended .p-image{min-width:300px;border:0}
+  .homepage .section-support .support-recommended .p-name{font-size:28px;line-height:36px;height:auto;margin-bottom:16px}
+  .homepage .section-support .support-recommended .p-price-sale{font-size:30px;line-height:40px}
+  .homepage .section-support .support-recommended .p-price-contact{font-size:24px;line-height:28px}
+  .homepage .section-support .support-recommended .p-price-market{font-size:20px;line-height:30px}
+  .homepage .section-support .support-recommended .p-choice{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;gap:4px;line-height:20px;margin-bottom:12px}
+  .homepage .section-support .support-recommended .p-recommended{-webkit-box-flex:1;-ms-flex:1;flex:1}
+  .homepage .section-support .support-recommended .p-recommended-btn{display:inline-block;font-size:16px;font-weight:600;line-height:46px;background:-o-linear-gradient(right,#002b3a 0,#ed1b24 100%);background:-webkit-gradient(linear,right top,left top,color-stop(0,#002b3a),to(#ed1b24));background:linear-gradient(270deg,#002b3a 0,#ed1b24 100%);color:#fff;padding:0 20px;margin-top:24px}
+  .homepage .section-support .support-recommended .p-recommended-btn:hover{background:-o-linear-gradient(left,#002b3a 0,#ed1b24 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,#002b3a),to(#ed1b24));background:linear-gradient(90deg,#002b3a 0,#ed1b24 100%)}
+  .homepage .section-support .support-recommended-sticker{position:absolute;top:20px;left:20px}
+</style>
+
+<div class="section-support my-32px" id="js-section-support">
+  <div class="container">
+    <div class="support-container" id="js-support-container">
+      <div class="support-navbar" id="js-support-navbar">
+        <button class="sn-item" type="button" title="Prev" aria-label="Prev" onclick="supportSearchProducts.navbar('prev');">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="var(--color-primary)" width="28" height="28"><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+        </button>
+        <button class="sn-item" type="button" title="Restart" aria-label="Restart" onclick="supportSearchProducts.navbar('restart');">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="var(--color-primary)" width="28" height="28"><path d="M142.9 142.9c-17.5 17.5-30.1 38-37.8 59.8c-5.9 16.7-24.2 25.4-40.8 19.5s-25.4-24.2-19.5-40.8C55.6 150.7 73.2 122 97.6 97.6c87.2-87.2 228.3-87.5 315.8-1L455 55c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2l0 128c0 13.3-10.7 24-24 24l-8.4 0c0 0 0 0 0 0L344 224c-9.7 0-18.5-5.8-22.2-14.8s-1.7-19.3 5.2-26.2l41.1-41.1c-62.6-61.5-163.1-61.2-225.3 1zM16 312c0-13.3 10.7-24 24-24l7.6 0 .7 0L168 288c9.7 0 18.5 5.8 22.2 14.8s1.7 19.3-5.2 26.2l-41.1 41.1c62.6 61.5 163.1 61.2 225.3-1c17.5-17.5 30.1-38 37.8-59.8c5.9-16.7 24.2-25.4 40.8-19.5s25.4 24.2 19.5 40.8c-10.8 30.6-28.4 59.3-52.9 83.8c-87.2 87.2-228.3 87.5-315.8 1L57 457c-6.9 6.9-17.2 8.9-26.2 5.2S16 449.7 16 440l0-119.6 0-.7 0-7.6z"/></svg>
+        </button>
+        <button class="sn-item" type="button" title="Next" aria-label="Next" onclick="supportSearchProducts.navbar('next');">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="var(--color-primary)" width="28" height="28"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+        </button>
+      </div>
+
+      <div class="support-main" id="js-support-main">
+        <div class="support-main" id="js-support-main">
+          
+          <div class="ph-item"><div class="support-heading ph-temp" style="min-height: 44px;margin-bottom: 32px;"></div></div>
+          
+          <ul class="support-suggests support-grid list">
+            {% for i in (1..4) -%}
+            <li class="ss-item js-ss-item ph-item"><div class="ss-image p-2"><div class="si-block ph-temp"><div class="p-pic si-content"></div></div></div><div class="ss-title px-2"><div class="ph-temp" style="min-height: 22px;"></div></div></li>
+            {% endfor -%}
+            <!--Ajax holder-->
+          </ul>
+
+        </div>
+
+        <!--Ajax holder-->
+      </div>
+
+      <div class="support-wrapper js-support-show" style="display: none;">
+        <div class="support-results support-grid my-4" id="js-support-results">
+          <!--Ajax holder-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+  /*
+  - copy mẫu, [thuoc_tinh] = tên thuộc tính, [cau_hoi] = câu hỏi gợi ý, [tu_khoa] = từ khóa trả lời
+
+    {
+      thuoc_tinh: " tên thuộc tính ",
+      cau_hoi: " câu hỏi gợi ý ",
+      tu_khoa: " từ khóa trả lời ",
+    },
+  
+  */
+
+  var sf_data = [
+    {
+      thuoc_tinh: " Business Type ",
+      cau_hoi: " Who are you looking for safety glasses for? ",
+      tu_khoa: " You are ",
+    },
+    {
+      thuoc_tinh: " Industry ",
+      cau_hoi: " What industry do you apply safety glasses to? ",
+      tu_khoa: " Industry you apply ",
+    },
+    {
+      thuoc_tinh: " Search Purpose ",
+      cau_hoi: " What is the purpose of your goggles? ",
+      tu_khoa: " Your purpose ",
+    },
+  ];
+</script>
+
+<script>
+  const supportSearchProducts = (() => {
+    let sf_index = -1;
+    let sf_state = [];
+
+    const _setup = (id) => {
+      if (!sf_data) return;
+
+      const url = "/ajax/get_json.php?action=category&action_type=filter&id=" + id;
+      _ajax(url);
+    }
+
+    const _ajax = (url) => {
+      Hura.Ajax.getUrl(url).then(function (results) {
+  		if (results.filter.length === 0 && sf_index === -1) {
+  		  $("#js-section-support").hide();
+  		  return;
+  		}
+  
+        _ajaxAsync();
+
+        async function _ajaxAsync(params) {
+          const data_support = results.filter.filter(i => sf_data.filter(s => s.thuoc_tinh.trim() === i.name.trim()).length);
+          const data_new = data_support.map(i => {
+            const name = i.name.trim();
+            const selected = i.is_selected;
+            const question = sf_data.filter(f => f.thuoc_tinh.trim() === name)[0].cau_hoi;
+            const key = sf_data.filter(f => f.thuoc_tinh.trim() === name)[0].tu_khoa;
+            const answers = i.value_list.map(v => {
+              return {
+                id: v.id,
+                name: v.name,
+                image: v.description ? v.description : "https://placehold.co/150x150?text=" + v.name,
+                url: "/ajax/" + v.url.split("/ajax/")[1].trim(),
+                selected: v.is_selected,
+              }
+            });
+
+            return {
+              question: question,
+              answers: answers,
+              selected: selected,
+              key: key,
+            }
+          });
+
+          const ajax = url.replace("action=category", "action=product").replace("action_type=filter", "action_type=product-list") + "&sort=order";
+          const data_ajax = await Hura.Ajax.getUrl(ajax).then((results) => results.list);
+
+          const data_filter = data_new.filter(i => !i.selected)[0];
+          const data_products = data_filter ? data_ajax : data_ajax.slice(1, data_ajax.length);
+          const data_values = data_filter ? data_filter : { question: " Our top recommendations for you ", recommended: data_ajax.slice(0, 1), selected: 0 }
+          const data_final = { values: data_values, products: data_products };
+
+          sf_index++;
+          sf_state = [...sf_state[sf_index] ? sf_state.filter((a, i) => i < sf_index) : sf_state, data_final];//>
+
+          _render(data_final);
+        }
+      });
+    }
+
+    const _click = (_this) => {
+      const id = $(_this).attr("data-id");
+      const url = $(_this).attr("data-url");
+
+      sf_state = sf_state.map((a, i) => {
+        if (i === sf_index) {
+          return { ...a, values: { ...a.values, answers: a.values.answers.map(a => { return { ...a, selected: a.id + "" === id ? true : false } }) } };
+        }
+        return a;
+      });
+
+      $(".js-ss-item").removeClass("active");
+      $(_this).addClass("active");
+
+      _ajax(url);
+    }
+
+    const _navbar = (type) => {
+      let data, index;
+
+      if (type === "restart") {
+        index = 0;
+        sf_state = [
+          {
+            ...sf_state[index],
+            values: {
+              ...sf_state[index].values,
+              answers: sf_state[index].values.answers.map(a => { return { ...a, selected: false } })
+            }
+          }
+        ];
+      } else {
+        index = type === "next" ? sf_index + 1 : sf_index - 1;
+      }
+
+      data = sf_state[index];
+      if (!data) return;
+
+      sf_index = index;
+      _render(data);
+    }
+
+    const _render = (data) => {
+      _renderMain();
+      _renderProducts();
+      _renderDisplay();
+      globalProductVariants();
+
+      function _renderMain() {
+        const question = data.values.question;
+        const answers = data.values.answers;
+        const recommended = data.values.recommended;
+        const bestchoice = recommended ? _bestchoice() : "";
+        const main = recommended ? bestchoice : answers.map(a => `
+          <div class="ss-item js-ss-item ${a.selected ? 'active' : ''}" data-id="${a.id}" data-url="${a.url}" onclick="supportSearchProducts.click(this);">
+            <p class="ss-image si-block">
+              <img class="si-content object-cover" src="${a.image}" alt="${a.name}" width="300" height="300" />
+            </p>
+            <h3 class="ss-title">${a.name}</h3>
+          </div>
+        `).join("");
+
+        const html = `
+          <h2 class="support-heading">${question}</h2>
+          <div class="${recommended ? 'support-recommended' : 'support-suggests support-grid list'}">
+            ${main}
+          </div>
+          <div class="support-note js-support-show" style="display: none;">
+            ${recommended ? '<p style="padding: 10px;"></p>' : '<p class="support-tab">RESULT</p>'}
+            <p><b>${recommended ? 'You can refer to more products that suit your requirements below:' : 'We are still developing products for your specific requirements. Here are some alternatives:'}</b></p>
+          </div>
+        `;
+
+        $("#js-support-main").html(html);
+
+        function _bestchoice() {
+          const product = recommended[0];
+          const choice = sf_state.slice(0, sf_state.length - 1).map(i => `
+            <p class="p-choice">
+              <img src="{{ 'everestsafety-icon-check-green-2.png' | asset_url }}" alt="Check" width="20" height="20" /> 
+              <span>${i.values.key} : <b>${i.values.answers.filter(s => s.selected)[0].name}</b></span>
+            </p>
+          `).join("");
+
+          return `
+            <div class="p-item type-3 js-p-item">
+              <div class="p-image" title="${product.productName}">
+                <div class="si-block">
+                  <img class="si-content js-p-picture" src="${product.productImage.large}" alt="${product.productName}" width="288" height="288">
+                </div>
+              </div>
+              <div class="p-content">
+                <h3 class="p-name">${product.productName}</h3>
+                ${choice}
+              </div>
+              <div class="p-recommended">
+                <p class="p-price-sale">
+                  ${product.price === 0 ? '<span class="p-price-contact">Contact</span>' : formatCurrency(product.price) + ' VND'}
+                </p>
+                ${Object.keys(product.variant_option).length === 0 ? '' : '<div class="p-variant js-p-variant" data-id="' + product.productId + '"></div>'}
+                <a class="p-recommended-btn" href="${product.productUrl}" target="_blank">
+                  GO TO PRODUCT
+                </a>
+              </div>
+            </div>
+            <img class="support-recommended-sticker" src="{{ 'everestsafety-icon-best-choice-2.png' | asset_url }}" alt="Best choice" width="80" height="80">
+          `;
+        }
+      }
+
+      function _renderProducts() {
+        const holder = "#js-support-results";
+        const products = data.products;
+
+        if (sf_index === 0 || products.length === 0) {
+          $(holder).hide();
+          return;
+        }
+
+        let html = Hura.Template.parse(product_tpl, products);
+        $(holder).show().html(html);
+      }
+
+      function _renderDisplay() {
+        sf_index === 0 || data.products.length === 0 ? $(".js-support-show").hide() : $(".js-support-show").show();
+        sf_index > 0 ? $("#js-support-navbar").css("visibility", "visible") : undefined;
+      }
+    }
+
+    return {
+      setup: _setup,
+      navbar: _navbar,
+      click: _click,
+    }
+  })();
+</script>

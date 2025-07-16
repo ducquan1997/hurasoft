@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stitches</title>
+
+  <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../libs/bootstrap/css/bootstrap-responsive.min.css">
+  <link rel="stylesheet" href="../libs/stitches/css/stitches-1.3.5.min.css">
+
+  <style>
+    .tool i {
+      display: inline-block;
+    }
+
+    .tool textarea {
+      width: -webkit-fill-available;
+    }
+
+    .tool input {
+      margin-bottom: 0;
+    }
+
+    .tool .wrapper {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .tool .wrapper-2 {
+      gap: 10px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <!-- ICON MAP GENARATOR -->
+    <div id="js-icon-map-genarator">
+      <h2 style="margin: 20px 0 20px">
+        ICON MAP GENARATOR
+      </h2>
+      <div class="stitches">
+        <img src="../libs/stitches/img/test/github.png" data-name="github" />
+        <img src="../libs/stitches/img/test/gmail.png" data-name="gmail" />
+        <img src="../libs/stitches/img/test/linkedin.png" data-name="linkedin" />
+        <img src="../libs/stitches/img/test/stackoverflow.png" data-name="stackoverflow" />
+        <img src="../libs/stitches/img/test/tumblr.png" data-name="tumblr" />
+        <img src="../libs/stitches/img/test/twitter.png" data-name="twitter" />
+      </div>
+    </div>
+
+    <!-- ORIGINAL ICON -->
+    <div id="js-icon-map-tools" class="tool" style="margin-bottom: 50px;">
+      <h2 style="margin: 60px 0 20px">
+        CSS RESTORE
+      </h2>
+      <div class="wrapper" style="margin-bottom: 16px;">
+        <h4 class="wrapper wrapper-2">
+          SIZE X
+          <input type="number" min="1" max="100" value="2" id="js-css-restore-size" class="form-control"
+            placeholder="Press size x">
+        </h4>
+        <button type="button" class="btn" onclick="getStyleOriginal();">Restore</button>
+
+        <div style="flex: 1;text-align: right;">
+          <button type="copy" class="btn" onclick="copyClipBoard(this);" style="display: none;">Copy css</button>
+        </div>
+      </div>
+
+      <div id="js-css-restore-show" style="display: none;">
+        <textarea name="" id="js-css-restore-output" cols="30" rows="10" placeholder="Import css"></textarea>
+      </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
+    <script src="../libs/jquery/jquery-1.7.1.min.js"></script>
+    <script src="../libs/modernizr/modernizr-2.0.6.min.js"></script>
+    <script src="../libs/bootstrap/js/bootstrap.min.js"></script>
+    <script data-main="js/stitches.js" src="../libs/stitches/js/stitches-1.3.5.min.js"></script>
+
+    <script>
+      // GET STYLE ORIGINAL
+      function getStyleOriginal() {
+        const holder = "#js-icon-map-genarator";
+        const icons = holder + " #example i";
+        if ($(icons).length === 0) {
+          alert("Vui lòng tạo ICON MAP trước!");
+          return;
+        }
+
+        const size = $("#js-css-restore-size").val();
+        if (!size) {
+          alert("Vui lòng nhập kích thước đã phóng icon!");
+          return;
+        }
+
+        const output = $(icons).toArray().map((icon) => {
+          const classs = $(icon).attr("data-original-title").trim();
+          const width = Math.ceil(parseInt($(icon).css("width").slice("px")) / size);
+          const height = Math.ceil(parseInt($(icon).css("height").slice("px")) / size);
+
+          const bgPosition = $(icon).css("background-position");
+          const bgPositionNumber = bgPosition.slice("background-position:").split(" ");
+          const bgPositionNumber1 = Math.ceil(parseInt(bgPositionNumber[0]) / size);
+          const bgPositionNumber2 = Math.ceil(parseInt(bgPositionNumber[1]) / size);
+          const bgPositionFinal = `${bgPositionNumber1}px ${bgPositionNumber2}px`;
+
+          return `${classs}{width:${width}px;height:${height}px;background-position:${bgPositionFinal}}\n`;
+        }).join("");
+
+        $("#js-css-restore-output").val(output);
+        $("#js-css-restore-show").show();
+        $(".btn[type='copy']").show();
+      }
+
+      // COPY CLIPBOARD
+      function copyClipBoard(_this) {
+        const copyText = document.getElementById("js-css-restore-output");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+
+        $(_this).html('Copied');
+        setTimeout(() => {
+          $(_this).html('Copy css');
+        }, 3000);
+      }
+
+      // GET ICON ELEMENT FROM CSS (TEST)
+      function getIconElements() {
+        const regex = "{([^}]+)}";
+        const sprite = $("#js-css-restore-classname").val();
+        const value = $("#js-css-restore-input").val();
+        const text = value.replace(new RegExp(regex, 'gm'), "||").replace(/(\r\n|\n|\r)/gm, "");
+        const icons = text.split("||").filter((i) => i.trim() !== "").map((i) => `<i class="${sprite ? sprite + " " : ""}${i.trim().replaceAll('.', '')}"></i>`);
+        $("#js-css-restore-show").html(icons);
+      }
+    </script>
+  </div>
+</body>
+
+</html>

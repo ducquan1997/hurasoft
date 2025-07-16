@@ -1,0 +1,41 @@
+<script>
+  Hura.Ajax.get('category', { action_type: "filter", id: 9 }).then(function (data) {
+    console.log(data);
+  })
+
+  Hura.Ajax.get("product", { action_type: "attribute-summary", ids: "5803,5772,5773,5774" }).then(function (data) {
+    console.log(data);
+  })
+
+  Hura.Ajax.get("brand", { action_type: "featured-list", order: "ordering", show: 10 }).then(function (data) {
+    console.log(data);
+  })
+
+  Hura.Ajax.get('media', { action_type: 'list', category: 1, show: 10 }).then(function (data) {
+    console.log(data);
+  })
+</script>
+
+<script>
+  function globalToggleClick() {
+    const targets = [
+      {
+        holder: "#js-header-cart",
+        target: "#js-cart-ttip"
+      }
+    ];
+
+    targets.forEach((item) => {
+      const $holder = $(item.holder);
+      const $target = $(item.target);
+
+      $holder.on("click", function () {
+        $target.fadeToggle();
+      })
+
+      $(document).on("click", function (e) {
+        if (!$holder.is(e.target) && $holder.has(e.target).length === 0) $target.fadeOut();
+      });
+    })
+  }
+</script>
