@@ -13,7 +13,7 @@ function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arg
 /**
  * COMMON SCRIPT
  */
-var lazy_load_group=[];function lazyLoadInstance(){new LazyLoad({elements_selector:".lazy"})}function GetURLParameter2(b,c){var d=new URL(b),f=d.search.substring(1),g=d.searchParams.get(c);if(f&&g)return f=f.split("&").filter(a=>a!==c+"="+g).join("&"),b=d.origin+d.pathname,{key:c,value:g,other:f,rest:f?b+"?"+f:b}}function formatCurrency(a){var b=parseFloat(a).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g,"$1.").toString(),a=b.length;return b.substring(0,a-3)}function strToNumber(a){for(a+="";0<a.indexOf(".");)a=a.replace(".","");var b=parseFloat(a);return isNaN(b)?0:b}function formatDate(a){var b=(a=new Date(1e3*parseInt(a))).getFullYear(),c=a.getMonth()+1,d=a.getDate();return a.getHours(),a.getMinutes(),a.getSeconds(),d+"/"+c+"/"+b}function convertToSlug(a){return a.toLowerCase().replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e").replace(/ì|í|ị|ỉ|ĩ/g,"i").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o").replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u").replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y").replace(/đ/g,"d").replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g,"").replace(/\u02C6|\u0306|\u031B/g,"").replace(/[^\w ]+/g,"").replace(/ +/g,"-")}function debounce(b,c,a){var d;return function(){var f=this,e=arguments,g=a&&!d;clearTimeout(d),d=setTimeout(function(){d=null,a||b.apply(f,e)},c),g&&b.apply(f,e)}}function validateEmail(a){return /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(a)}function validateTel(a,b){return b?(glf_regex_tel=/^\+?(([0-9]{2})+([0-9]{8,9})\b)/g,glf_regex_tel.test(a)):(vnf_regex_tel=/((09|03|07|08|05|02)+([0-9]{8,9})\b)/g,vnf_regex_tel.test(a))}function scrollElement(a){$(a).get(0).scrollIntoView({behavior:"smooth"})}function modalSuccess(){const a=$(".success-form");a.show(),setTimeout(function(){a.hide()},1200)}function isOnScreen(b){if(0!=$(b).length){var c=jQuery(window),d=c.scrollTop(),f=c.height(),g=d+f,a=(c=(a=jQuery(b)).offset().top)+(b=a.height());return d<=c&&c<g||d<a&&a<=g||f<b&&c<=d&&g<=a}}function isOnScreenHandle(...a){a.forEach(function(a){isOnScreen(a.id)&&!$(a.id).hasClass("loaded")?(a.loadFn(),$(a.id).addClass("loaded")):lazy_load_group.push({id:a.id.substring(1),target:a.id,loadFn:function(){a.loadFn()}})})}
+var lazy_load_group=[];function lazyLoadInstance(){new LazyLoad({elements_selector:".lazy"})}function GetURLParameter2(b,c){var d=new URL(b),f=d.search.substring(1),g=d.searchParams.get(c);if(f&&g)return f=f.split("&").filter(a=>a!==c+"="+g).join("&"),b=d.origin+d.pathname,{key:c,value:g,other:f,rest:f?b+"?"+f:b}}function formatCurrency(a){var b=parseFloat(a).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g,"$1.").toString(),a=b.length;return b.substring(0,a-3)}function strToNumber(a){for(a+="";0<a.indexOf(".");)a=a.replace(".","");var b=parseFloat(a);return isNaN(b)?0:b}function formatDate(a){var b=(a=new Date(1e3*parseInt(a))).getFullYear(),c=a.getMonth()+1,d=a.getDate();return a.getHours(),a.getMinutes(),a.getSeconds(),d+"/"+c+"/"+b}function convertToSlug(a){return a.toLowerCase().replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e").replace(/ì|í|ị|ỉ|ĩ/g,"i").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o").replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u").replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y").replace(/đ/g,"d").replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g,"").replace(/\u02C6|\u0306|\u031B/g,"").replace(/[^\w ]+/g,"").replace(/ +/g,"-")}function debounce(b,c,a){var d;return function(){var f=this,e=arguments,g=a&&!d;clearTimeout(d),d=setTimeout(function(){d=null,a||b.apply(f,e)},c),g&&b.apply(f,e)}}function validateEmail(a){return /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(a)}function validateTel(a,b){return b?(glf_regex_tel=/^\+?(([0-9]{2})+([0-9]{8,9})\b)/g,glf_regex_tel.test(a)):(vnf_regex_tel=/((09|03|07|08|05|02)+([0-9]{8,9})\b)/g,vnf_regex_tel.test(a))}function scrollElement(a){$(a).get(0).scrollIntoView({behavior:"smooth"})}function successCart(){$("body").append('<div class="success-cart" id="js-success-cart"><div class="success-cart-container"><div class="success-cart-content"><svg class="success-cart-svg" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path class="success-cart-circle" d="M13 1C6.372583 1 1 6.372583 1 13s5.372583 12 12 12 12-5.372583 12-12S19.627417 1 13 1z" /><path class="success-cart-tick" d="M6.5 13.5L10 17 l8.808621-8.308621" /></g></svg><p class="success-cart-text">Thêm sản phẩm vào giỏ hàng <br />thành công!</p></div></div></div>'),setTimeout(function(){var s="#js-success-cart";0!==$(s).length&&$(s).remove()},1300)}function isOnScreen(b){if(0!=$(b).length){var c=jQuery(window),d=c.scrollTop(),f=c.height(),g=d+f,a=(c=(a=jQuery(b)).offset().top)+(b=a.height());return d<=c&&c<g||d<a&&a<=g||f<b&&c<=d&&g<=a}}function isOnScreenHandle(...a){a.forEach(function(a){isOnScreen(a.id)&&!$(a.id).hasClass("loaded")?(a.loadFn(),$(a.id).addClass("loaded")):lazy_load_group.push({id:a.id.substring(1),target:a.id,loadFn:function(){a.loadFn()}})})}
 
 // YOUTUBE IFRAME RESIZE AUTO
 function reSizeVideoIframe(target) {
@@ -249,7 +249,7 @@ function addProductToCart(product_id, type) {
       return;
     }
 
-    modalSuccess();
+    successCart();
     headerCartRender(response);
     if (type === "buyNow") setTimeout(function () { window.location.href = "/cart" }, 1500);
   });
@@ -408,9 +408,7 @@ function postComment(id, reply, type) {
 }
 
 /*
-  QIU FORM 4.0
-
-  CHECK FORM WITH INPUT HAS ATTRIBUTE V4.0 ( QiuForm("#form-id") )
+  QIU FORM 4.0 - CHECK FORM WITH INPUT/TEXTAREA HAS ATTRIBUTE [CHECK-TYPE]
     [require] check-type="email/tel/text/select/checkbox/radio/password/password-repeat" - type
     
     [option] check-id="string" - unique (recommend if have 2 same check-type)
@@ -418,8 +416,27 @@ function postComment(id, reply, type) {
     [option] check-minlength="number" - min length text require
     [option] check-required="true/false" - required value (default = true)
 
-    [moddify] check-holder="1" - place this into [element] wrap [form], is closest and has style [position: relative], to prevent [alert display error] while [popup] scroll
-    [moddify] check-container="1" - place this into [element] is [popup container], is closest and has style [overflow: auto], to prevent [alert display error] while [check target] is no spacing bottom.
+    [moddify-popup] check-container="1" - place this into [element] is [popup container], is closest and has style [overflow: auto], to prevent [alert display error] while [check target] is no spacing bottom.
+    [moddify-popup] check-holder="1" - place this into [element] wrap [form], is closest and has style [position: relative], to prevent [alert display error] while [popup] scroll
+  
+  EXAMPLE: 
+    <!--FORM-->
+    <form id="form-id" onsubmit="return false;">
+      <input type="text" name="user-name" check-type="text" check-minlength="2" />
+      <input type="email" name="user-email" check-type="email" />
+      <input type="text" name="user-address" check-type="text" check-minlength="8" />
+      <input type="text" name="user-tel" check-type="tel" />
+      <button type="submit" onclick="QiuForm('#form-id');">SUBMIT</button>
+    </form>
+
+    <!--POPUP-->
+    <div class="popup" check-container="1"> <!--POPUP CONTAINER-->
+      <div class="popup-content" check-holder="1" style="position: relative;"> <!--POPUP WRAPPER CLOSEST-->
+
+        [FORM]
+
+      </div>
+    </div>
 */
 function QiuForm(form) {
   const targets = form + " [check-type]";
@@ -589,14 +606,14 @@ function QiuFormValue(obj, key) {
     submitButtonHTML: "<div>Xác nhận</div>", // default = "" - override [submitButtonText] and replace default button, need style - [option]
     cancelButtonHTML: "<div>Hủy bỏ</div>", // default = "" - override [cancelButtonText] and replace default button, need style - [option]
     closeButtonHTML: "<div>Đóng</div>", // default = "" - override [closeButtonText] and replace default button, need style - [option]
-    submitButtonUrl: "/url-chuyen-den-sau-khi-an-xac-nhan", // default = null - [option]
-    cancelButtonUrl: "/url-chuyen-den-sau-khi-an-huy-bo", // default = null - [option]
-    closeButtonUrl: "/url-chuyen-den-sau-khi-an-dong", // default = null - [option]
+    submitButtonUrl: "/url-chuyen-den-sau-khi-an-xac-nhan", // default = undefined - [option]
+    cancelButtonUrl: "/url-chuyen-den-sau-khi-an-huy-bo", // default = undefined - [option]
+    closeButtonUrl: "/url-chuyen-den-sau-khi-an-dong", // default = undefined - [option]
     countdown: {
       time: 5000, // <number>(ms) - [require]
-      title: "Tự động đóng sau", // default = "" - [option]
-      redirect: "<string>" - [url], // default = null - [option]
-    } // AUTO CLOSE MODAL - [option]
+      title: "Tự động đóng sau", // default = "Tự động đóng sau" - [option]
+      redirect: "/url-chuyen-den-sau-khi-modal-tu-dong", // default = undefined - [option]
+    } // Auto close modal after countdown - [addon]
   }
   
   QiuModal(params).then(function (result) { 
@@ -719,7 +736,7 @@ async function QiuModal(params) {
     // COUNTDOWN MODAL
     function _countDown() {
       const title = countdown.title ? countdown.title : "Tự động đóng sau";
-      let times = countdown.time ? countdown.time / 1000 : 0;
+      let times = countdown.time && countdown.time > 0 ? Math.ceil(countdown.time / 1000) : 0;
       if (!times) return;
 
       $(".global-popup-modal__noffy").after(`
