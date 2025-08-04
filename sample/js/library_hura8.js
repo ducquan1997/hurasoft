@@ -447,11 +447,12 @@ function QiuForm(form) {
     QiuFormClear(this);
   })
 
-  // CHECK HANDLER
+  // CHECK HANDLE
   let errors = false, values = {};
   $(targets).each(function () {
     if (errors) return;
 
+    // ATTRIBUTES
     const required = $(this).attr("check-required") ? $(this).attr("check-required") === "false" ? false : true : true;
     const min = $(this).attr("check-minlength") ? parseInt($(this).attr("check-minlength")) : 6;
     const type = $(this).attr("check-type") ? $(this).attr("check-type") : "undefined";
@@ -459,47 +460,57 @@ function QiuForm(form) {
     const note = $(this).attr("check-note") ? $(this).attr("check-note") : "";
     const value = $(this).val().trim();
 
+    // KEY - VALUE
     const exist = Object.keys(values).filter(k => k.indexOf(id) !== -1).length;
     const key = exist === 0 ? id : id + "_" + (exist + 1);
     values = { ...values, [key]: value };
 
+    // ERROR EMPTY
     if (required && type !== "radio" && value === "") {
-      const error = note ? note : type === "select" ? "Vui lòng chọn 1 mục trong danh sách này." : "Vui lòng điền vào trường này.";
-      _error(this, error);
+      _error(this, note ? note : type === "select" ? "Vui lòng chọn 1 mục trong danh sách này." : "Vui lòng điền vào trường này.");
       return;
     }
 
+    // SKIP CHECK WHILE [REQUIRED = FALSE] - OR - FORWARD WHILE [TYPE = CHECKBOX]
     if (!required && (!value || type === "checkbox")) return;
 
+    // CHECK HANLDE
     switch (type) {
       case 'email':
-        if (!validateEmail(value)) _error(this, note ? note : 'Email không hợp lệ.');
+        if (!validateEmail(value))
+          _error(this, note ? note : 'Email không hợp lệ.');
         break;
       case 'tel':
-        if (!validateTel(value)) _error(this, note ? note : 'Số điện thoại không hợp lệ.');
+        if (!validateTel(value))
+          _error(this, note ? note : 'Số điện thoại không hợp lệ.');
         break;
       case 'password':
-        if (value.length < min) _error(this, note ? note : `Mật khẩu quá yếu (tối thiểu ${min} ký tự).`);
+        if (value.length < min || !value.match(/[a-z]+/) || !value.match(/[A-Z]+/) || !value.match(/[0-9]+/) || !value.match(/[$@#&!]+/))
+          _error(this, note ? note : `Mật khẩu quá yếu (tối thiểu ${min} ký tự, bao gổm ít nhất 1 chữ cái in hoa, 1 chữ số và 1 ký tự đặc biệt [$,@,#,&,!]).`);
         break;
       case 'password-repeat':
-        if (value !== $(form + ' [check-type="password"]').val()) _error(this, note ? note : 'Mật khẩu nhập lại chưa trùng khớp.');
+        if (value !== $(form + ' [check-type="password"]').val())
+          _error(this, note ? note : 'Mật khẩu nhập lại chưa trùng khớp.');
         break;
       case 'checkbox':
-        if (!$(this).is(':checked')) _error(this, note ? note : 'Vui lòng chọn hộp kiểm tra này để tiếp tục.');
+        if (!$(this).is(':checked'))
+          _error(this, note ? note : 'Vui lòng chọn hộp kiểm tra này để tiếp tục.');
         break;
       case 'radio':
         const radio = `[name='${$(this).attr("check-radio")}']:checked`;
-        if ($(radio).length === 0) _error(this, note ? note : 'Vui lòng chọn 1 trong các lựa chọn dưới đây để tiếp tục.');
         values = { ...values, [key]: $(radio).val() };
+        if ($(radio).length === 0)
+          _error(this, note ? note : 'Vui lòng chọn 1 trong các lựa chọn dưới đây để tiếp tục.');
         break;
       case 'text':
-        if (value.length < min) _error(this, note ? note : `Nhập nội dung tối thiểu ${min} ký tự.`);
+        if (value.length < min)
+          _error(this, note ? note : `Nhập nội dung tối thiểu ${min} ký tự.`);
         break;
       default:
         break;
     }
 
-    // ERROR HANDLER
+    // ERROR HANDLE
     function _error(target, error) {
       errors = true;
 

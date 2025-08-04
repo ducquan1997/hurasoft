@@ -14,6 +14,10 @@
   Hura.Ajax.get('media', { action_type: 'list', category: 1, show: 10 }).then(function (data) {
     console.log(data);
   })
+
+  $.get("/ajax/render_html.php?tpl=html/html_1", function (content) {
+    console.log(content);
+  })
 </script>
 
 <script>
