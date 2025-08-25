@@ -443,9 +443,6 @@ function QiuForm(form) {
 
   // RESET DEFAULT
   if ($(targets).length === 0) return;
-  $(targets).each(function () {
-    QiuFormClear(this);
-  })
 
   // CHECK HANDLE
   let errors = false, values = {};
