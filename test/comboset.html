@@ -1051,7 +1051,7 @@
     }
 
     function _modalFilterSelectAll(_this, type) {
-      const state = $(_this).data("state");
+      const state = $(_this).attr("data-state");
       const $values = $(_this).closest('.js-pd-combo-popup-filter-container').find('.js-pd-combo-popup-filter-value');
 
       if (state === "1") { // remove all [selected filter item value]
@@ -1385,6 +1385,7 @@
       modalFilterReset: _modalFilterReset,
       modalFilterSelect: _modalFilterSelect,
       modalFilterSelectedRemove: _modalFilterSelectedRemove,
+  	  modalFilterSelectAll: _modalFilterSelectAll,
       modalFilterSelectClear: _modalFilterSelectClear,
       modalFilterSelectSubmit: _modalFilterSelectSubmit,
     }
