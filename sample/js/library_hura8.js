@@ -413,7 +413,7 @@ function postComment(id, reply, type) {
     
     [option] check-id="string" - unique (recommend if have 2 same check-type)
     [option] check-note="string" - replace default alert
-    [option] check-minlength="number" - min length text require
+    [option] check-minlength="number" - min length text characters require (default = 6 characters)
     [option] check-required="true/false" - required value (default = true)
 
     [moddify-popup] check-container="1" - place this into [element] is [popup container], is closest and has style [overflow: auto], to prevent [alert display error] while [check target] is no spacing bottom.
@@ -473,36 +473,48 @@ function QiuForm(form) {
 
     // CHECK HANLDE
     switch (type) {
+      // Email
       case 'email':
         if (!validateEmail(value))
           _error(this, note ? note : 'Email không hợp lệ.');
         break;
+      // Tel
       case 'tel':
         if (!validateTel(value))
           _error(this, note ? note : 'Số điện thoại không hợp lệ.');
         break;
+      // Password
       case 'password':
-        if (value.length < min || !value.match(/[a-z]+/) || !value.match(/[A-Z]+/) || !value.match(/[0-9]+/) || !value.match(/[$@#&!]+/))
+        // Login
+        if (value.length < min)
+          _error(this, note ? note : `Mật khẩu không hợp lệ (tối thiểu ${min} ký tự).`);
+        // Register
+        if ($(this).hasClass("check-register") && (!value.match(/[a-z]+/) || !value.match(/[A-Z]+/) || !value.match(/[0-9]+/) || !value.match(/[$@#&!]+/)))
           _error(this, note ? note : `Mật khẩu quá yếu (tối thiểu ${min} ký tự, bao gổm ít nhất 1 chữ cái in hoa, 1 chữ số và 1 ký tự đặc biệt [$,@,#,&,!]).`);
         break;
+      // Password repeat
       case 'password-repeat':
         if (value !== $(form + ' [check-type="password"]').val())
           _error(this, note ? note : 'Mật khẩu nhập lại chưa trùng khớp.');
         break;
+      // Checkbox (only 1 value)
       case 'checkbox':
         if (!$(this).is(':checked'))
           _error(this, note ? note : 'Vui lòng chọn hộp kiểm tra này để tiếp tục.');
         break;
+      // Radio (multi values)
       case 'radio':
         const radio = `[name='${$(this).attr("check-radio")}']:checked`;
         values = { ...values, [key]: $(radio).val() };
         if ($(radio).length === 0)
           _error(this, note ? note : 'Vui lòng chọn 1 trong các lựa chọn dưới đây để tiếp tục.');
         break;
+      // Text
       case 'text':
         if (value.length < min)
           _error(this, note ? note : `Nhập nội dung tối thiểu ${min} ký tự.`);
         break;
+      // Default
       default:
         break;
     }

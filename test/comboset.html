@@ -637,6 +637,8 @@
     const $modalViewMore = $('#js-pd-combo-popup-viewmore-btn');
     const $modalFilter = $('#js-pd-combo-popup-filter');
     const $modalFilterSeleted = $('#js-pd-combo-popup-selected');
+  	const modalFilterSeletedAll = ".js-pd-combo-popup-filter-all";
+    const modalFilterSeletedContainer = ".js-pd-combo-popup-filter-container";
     const modalFilterButton = ".js-pd-combo-popup-filter-value";
     const modalPriceSlider = ".js-slider-range";
     const modalPriceSelected = ".js-slider-selected";
@@ -1033,7 +1035,7 @@
 
       // price filter item value click
       if (key === "price") {
-        $targets.closest(".js-pd-combo-popup-filter-container").find(modalFilterButton).removeClass("selected");
+        $targets.closest(modalFilterSeletedContainer).find(modalFilterButton).removeClass("selected");
         $targets.toggleClass('selected');
 
         const priceRange = $targets.data("id").split("-");
@@ -1052,7 +1054,7 @@
 
     function _modalFilterSelectAll(_this, type) {
       const state = $(_this).attr("data-state");
-      const $values = $(_this).closest('.js-pd-combo-popup-filter-container').find('.js-pd-combo-popup-filter-value');
+      const $values = $(_this).closest(modalFilterSeletedContainer).find(modalFilterButton);
 
       if (state === "1") { // remove all [selected filter item value]
         _selectLoop('remove');
@@ -1071,7 +1073,7 @@
     }
 
     function _modalFilterSelectClear(_this) {
-      const allButtons = $(_this).closest('.js-pd-combo-popup-filter-container').find('.js-pd-combo-popup-filter-all');
+      const allButtons = $(_this).closest(modalFilterSeletedContainer).find(modalFilterSeletedAll);
 
       allButtons.each(function () {
         $(this).attr("data-state", "1");
@@ -1081,7 +1083,7 @@
 
     function _modalFilterSelectSubmit(_this) {
       // create new ajax params by [selected filter item value] element has class '.js-pd-combo-popup-filter-value.active'
-      const selected = '.js-pd-combo-popup-filter-value.active';
+      const selected = modalFilterButton + '.active';
       const selectedData = $(selected).toArray().map((item) => {
         return {
           id: $(item).attr("data-id"),
@@ -1166,7 +1168,7 @@
     function _modalFilterSelectedReactive() {
       $(modalPriceSelected).hide(); // hide [price selected slider] note
       $(modalFilterButton).removeClass("active").removeClass("selected"); // remove class 'active' all [filter item value]
-
+  
       // check filter ajax params exit
       const currentFilter = ajaxParams["filter"] ? ajaxParams["filter"].split("-") : [];
       const currentBrand = ajaxParams["brand"] ? ajaxParams["brand"].split("-") : [];
@@ -1191,6 +1193,19 @@
         const defaultPriceMin = currentPriceMin ? currentPriceMin : 0;
         _modalPriceSliderMove(currentPriceMin, currentPriceMax);
       }
+  
+  	  // reset [button select all] ("Chọn tất cả")
+  	  $(modalFilterSeletedAll).each(function() {
+  		const totalValue = $(this).closest(modalFilterSeletedContainer).find(modalFilterButton).length;
+  		const totalSelected = $(this).closest(modalFilterSeletedContainer).find(modalFilterButton + ".active").length;
+  		
+  		if (totalValue === totalSelected) {
+  		  $(this).html('Bỏ chọn tất cả').attr("data-state", "1");
+  		  return;
+  		}
+  
+  		$(this).html('Chọn tất cả').attr("data-state", "0");
+  	  }); 
     }
 
     function _modalFilterSelectedRemove(_this) {
