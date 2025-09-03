@@ -384,7 +384,6 @@
 <link rel="stylesheet" href="../libs/jqueryui/jqueryui.css" />
 <script src="../libs/jqueryui/jqueryui.js"></script>
 
-
 <script>
   // COMBOSET 14.08.2025
   const ComboSet = (function () {
@@ -757,8 +756,8 @@
       // reset default when open new category
       $modalFilterSeleted.html(""); // clear filter selected
       $modalSortButton.removeClass("active"); // clear sort
-      $modalSearchInput.removeClass("active").val(""); // clear search input
-      $modalProducts.html('<div class="loader"></div>'); // loading wait
+      $modalSearchInput.removeClass("active").val(""); // clear search input 
+  	  $modalProducts.html('<div class="pd-combo-loader"></div>'); // loading wait
 
       // [start price range] category open
       const priceMax = categories_database[comboset_id][category_id].max.replaceAll(".", "");
@@ -784,6 +783,7 @@
     function _modalOpen() {
       $modal.fadeIn();
       $('body').css('overflow', 'hidden');
+  	  document.getElementById("js-pd-combo-popup-main-content").scrollIntoView({ behavior: 'instant' }); // scroll top modal
     }
 
     function _modalClose() {
@@ -1306,7 +1306,10 @@
     }
 
     function _modalProductLoad() {
-      if (ajaxParams['page'] === '1') $modalProducts.html('<div class="pd-combo-loader"></div>'); // loading wait
+      if (ajaxParams['page'] === 1) {
+        $modalProducts.html('<div class="pd-combo-loader"></div>'); // loading wait
+        document.getElementById("js-pd-combo-popup-main-content").scrollIntoView({ behavior: 'instant' }); // scroll top modal
+  	  }
 
       Hura.Ajax.get("pcmarket", ajaxParams).then(function (response) {
         // console.log('ajaxParams', ajaxParams, 'response', response);
