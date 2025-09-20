@@ -1101,7 +1101,7 @@
         return accumulator;
       }, {}); // create group [selected filter ajax params] object
 
-      ajaxParams = { ...defaultParams, ...selectedGroupIds, page: 1 };
+      ajaxParams = { ...defaultParams, ...selectedGroupIds };
       _modalProductLoad(); // render new filtered product list
       _modalFilterSelected(selectedUnique); // render new [selected filter item value]
       _modalFilterClose(_this); // close modal
@@ -1313,7 +1313,6 @@
 
       Hura.Ajax.get("pcmarket", ajaxParams).then(function (response) {
         // console.log('ajaxParams', ajaxParams, 'response', response);
-
         const loadMore = response.total > parseInt(response.number_per_page) * parseInt(response.page); // next page exit? 
         _modalProductRender(response.item_list, loadMore); // render product list
       });

@@ -617,7 +617,7 @@ function QiuFormValue(obj, key) {
 
   const params = {
     type: "success", // [success|error|warning|confirm] - [require]
-    title: "Tiêu đề", // default = "" - [option]
+    title: "Tiêu đề", // default = "Thành công/Có lỗi xảy ra/Cảnh báo/Xác nhận" - [option]
     content: "Nội dung thông báo", // default = "" - [option]
     icon: "<i class='modal-icon-new'></i>", // replace default icon, need style - [option]
     submitButtonText: "Xác nhận", // default = "Xác nhận" - [option]

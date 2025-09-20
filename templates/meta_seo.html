@@ -37,7 +37,7 @@
     {% elsif global.module.name == 'product' and global.module.view == 'category' and page.current_category.img_big != '' and page.current_category.img_big != 0 -%}
     {% assign _og_image = "/media/category/"|append: page.current_category.img_big -%}
     {% elsif global.module.name == 'article' and global.module.view == 'category' and page.category_info.imgUrl != '' and page.category_info.imgUrl != 0 -%}
-    {% assign _og_image = "/media/category/"|append: page.category_info.imgUrl -%}
+    {% assign _og_image = page.category_info.imgUrl -%}
     {% elsif global.module.name == 'article' and global.module.view == 'detail' and page.image != '' -%}
     {% assign _og_image = page.image -%}
     {% endif -%}
