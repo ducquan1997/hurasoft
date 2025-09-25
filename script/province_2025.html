@@ -174,7 +174,7 @@
 ]
 </script>
 
-<!-- TABLE STATIC  -->
+<!-- TABLE PAGE STATIC  -->
 <table border="1" cellpadding="10">
 <thead>
 <tr><th style="text-align: center;" width="50">ID</th><th style="text-align: center;" width="100">Tỉnh/Thành phố</th><th style="text-align: center;">Quận/Huyện</th></tr>
@@ -355,7 +355,7 @@
 
 <!-- HTML -->
 <div id="js-provice-2025-database" data-account-province="{{ global.customer_info.province }}" data-account-address="{{ global.customer_info.address }}" style="display: none;"></div>
-<select name="user_info[province]" id="js-provice-2025-holder" onchange="districtNew2025(this.value);">
+<select name="user_info[province]" id="js-provice-2025-holder" onchange="provinceVN2025.district(this.value);">
   <option value="">Chọn Tỉnh/Thành phố</option>
 </select>
 <select name="user_info[ward]" id="js-ward-2025-holder">
@@ -364,6 +364,13 @@
 
 <!-- SCRIPT -->
 <script>
+  // ONLY (1) or (2);
+
+  $(document).ready(function() {
+    provinceVN2025.province("/url-page-tinh-chua-danh-sach-tinh-thanh-pho-2025?type=ajax"); // GET DATABASE FROM STATIC PAGE (1)
+    // provinceVN2025.province(); // IF HAVE DATABASE VARIANT (2), database_danh_sach_tinh_thanh_2025 = [ { "id": "1", "name": "Hà Nội", "list": "Phường Hoàn Kiếm,Phường Cửa Nam,..." }, ... ]
+  })
+
   const provinceVN2025 = (() => {
     let province_data;
     const province_key = "province_database_2025";
@@ -372,6 +379,7 @@
 
     // PROVINCE
     function _province(url) {
+      // GET DATABASE FROM STATIC PAGE (1)
       const province_session = sessionStorage.getItem(province_key);
       if (province_session) {
         province_data = JSON.parse(province_session);
@@ -380,7 +388,7 @@
       }
 
       const database = "#js-provice-2025-database";
-      if ($(database).length === 0) return;
+      if ($(database).length === 0 || !url) return;
 
       $(database).load(url, function (response) {
         province_data = $(database).find("table tbody tr").toArray().map((tr) => {
@@ -393,6 +401,9 @@
 
         _build();
       })
+
+      // IF HAVE DATABASE VARIANT (2)
+      // province_data = database_danh_sach_tinh_thanh_2025;
 
       function _build() {
         if (province_data.length === 0) return;
