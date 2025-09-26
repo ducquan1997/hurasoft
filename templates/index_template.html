@@ -135,56 +135,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="resource-type" content="document" />
-    <meta name="robots" content="index, follow" />
 
-    <title>{$header.title}</title>
-    <meta name="description" content="{$header.description}" />
-    <meta name="keywords"    content="{$header.keywords}" />
+    {if="$module.name == 'error' && $module.view == 'home'"}<meta name="robots" content="noindex, nofollow" />
+    {else}<meta name="robots" content="index, follow" />
+    {/if}
 
-    <meta property="fb:app_id"      content="" prefix="fb: https://ogp.me/ns/fb#">
-    <meta property="og:type"        content="website">
-    <meta property="og:title"       content="{$header.title}" />
-    <meta property="og:description" content="{$header.description}" />
-    <meta property="og:url"         content="{#CURRENT_URL#}" />
-    <meta property="og:image:alt"   content="{$header.title}" />
+    {$meta_title = $header.title}
+    {$meta_keywords = $header.keywords}
+    {$meta_description = $header.description}
 
-    {$logo = $settings.logo_file}
+    <title>{$meta_title}</title>
+    <meta name="description"         content="{$meta_description}" />
+    <meta name="keywords"            content="{$meta_keywords}" />
+    <meta name="twitter:card" 		   content="summary_large_image" />
+    <meta name="twitter:site" 		   content="@website" />
+    <meta property="fb:app_id"       content="" prefix="fb: https://ogp.me/ns/fb#">
+    <meta property="og:locale"       content="vi_VN">
+    <meta property="og:url"          content="{#CURRENT_URL#}" />
+    <meta property="og:title"        content="{$meta_title}" name="twitter:title" />
+    <meta property="og:description"  content="{$meta_description}" name="twitter:description" />
+    <meta property="og:image:alt"    content="{$meta_title}" name="twitter:image:alt" />
+    <meta property="og:image:width"  content="640" />
+    <meta property="og:image:height" content="360" />
+
+    {$og_type = 'website'}{if="$module.view == 'product-detail'"}{$og_type = 'product'}{elseif="$module.name == 'article'"}{$og_type = 'article'}{/if}
+    <meta property="og:type"         content="{$og_type}">
+
+    {$og_image = $settings.logo_file}
     {if="$module.view == 'product-detail'"}
-    <meta property="og:image" content="{#CURRENT_DOMAIN#}{$product_info.productImage.original}" />
-    {elseif="$module.name == 'product' && $module.view == 'category'"}
-    <meta property="og:image" content=`{#CURRENT_DOMAIN#}{if="$current_category.img_big != '' && $current_category.img_big != 0"}/media/category/{$current_category.img_big}{else}{$logo}{/if}` />
-    {elseif="$module.name == 'article' && $module.view == 'category'"}
-    <meta property="og:image" content=`{#CURRENT_DOMAIN#}{if="$category_info.imgUrl != '' && $category_info.imgUrl != 0"}{$category_info.imgUrl}{else}{$logo}{/if}` />
-    {elseif="$module.name == 'article' && $module.view == 'detail'"}
-    <meta property="og:image" content="{#CURRENT_DOMAIN#}{$article_detail.image.original}" />
-    {else}
-    <meta property="og:image" content="{#CURRENT_DOMAIN#}{$logo}" />
+    {$og_image = $product_info.productImage.original}
+    {elseif="$module.name == 'product' && $module.view == 'category' && $current_category.img_big != '' && $current_category.img_big != '0'"}
+    {$og_image = '/media/category/'.$current_category.img_big}
+    {elseif="$module.name == 'article' && $module.view == 'category' && $category_info.imgUrl != '' && $category_info.imgUrl != '0'"}
+    {$og_image = $category_info.imgUrl}
+    {elseif="$module.name == 'article' && $module.view == 'detail' && $article_detail.image.original != '' && $article_detail.image.original != '0'"}
+    {$og_image = $article_detail.image.original}
+    {/if}
+    <meta property="og:image"        content="{#CURRENT_DOMAIN#}{$og_image}" itemprop="image" />
+
+    {$canonical = CURRENT_URL}
+    {if="strlen($header.canonical) > 4"}{$canonical = $header.canonical} 
+    {elseif="$module.name == 'product'"}
+    {if="$module.view == 'category'"}{$canonical = $current_category.request_path}
+    {elseif="$module.view == 'search'"}{$canonical = '/tim?q='.$search_query}
+    {elseif="$module.view == 'product-hot'"}
+    {if="$header.title == 'Sản phẩm được hỏi nhiều'"}{$canonical = '/san-pham-hot'}
+    {elseif="$header.title == 'Sản phẩm mới'"}{$canonical = '/san-pham-moi'}
+    {elseif="$header.title == 'Sản phẩm xả hảng'"}{$canonical = '/san-pham-xa-hang'}
+    {elseif="$header.title == 'Sản phẩm bán chạy'"}{$canonical = '/san-pham-ban-chay'}
+    {/if}
+    {elseif="$module.view == 'view-history'"}{$canonical = '/san-pham-da-xem'}
+    {elseif="$module.view == 'product-tag'"}{$canonical = '/tag/'.$tag_info.tag_url}
+    {elseif="$module.view == 'colletion'"}{$canonical = $collection_info.url}
+    {/if}
+    {elseif="$module.name == 'brand' && $module.view == 'detail'"}{$canonical = '/brand/'.$brand_info.brand_index}
+    {elseif="$module.name == 'article'"}
+    {if="$module.view == 'category'"}{$canonical = $category_info.request_path}
+    {elseif="$module.name == 'detail'"}{$canonical = $article_detail.url}
+    {/if}
     {/if}
 
-    {if="$module.name == 'product'"}
-    {if="$module.view == 'category'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$current_category.request_path}">
-    {elseif="$module.view == 'search'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/tim?q={$search_query}">
-    {elseif="$module.view == 'product-hot'"}
-    {if="$header.title == 'Sản phẩm được hỏi nhiều'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-hot">
-    {elseif="$header.title == 'Sản phẩm mới'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-moi">
-    {elseif="$header.title == 'Sản phẩm xả hảng'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-xa-hang">
-    {elseif="$header.title == 'Sản phẩm bán chạy'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-ban-chay">
-    {/if}
-    {elseif="$module.view == 'view-history'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/san-pham-da-xem">
-    {elseif="$module.view == 'product-tag'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/tag/{$tag_info.tag_url}">
-    {elseif="$module.view == 'colletion'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$collection_info.url}">
-    {else}<link rel="canonical" href="{#CURRENT_URL#}">
-    {/if}
-    {elseif="$module.name == 'brand'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}/brand/{$brand_info.brand_index}">
-    {elseif="$module.name == 'article'"}
-    {if="$module.view == 'category'"}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$category_info.request_path}">
-    {else}<link rel="canonical" href="{#CURRENT_URL#}">
-    {/if}
-    {elseif="strlen($header.canonical) > 4"}
-    {if="strpos($header.canonical, 'hurasoft.vn') > 0"}<link rel="canonical" href="{$header.canonical}" important="CHANGE DOMAIN WEBSITE replace 'hurasoft.vn'">
-    {else}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$header.canonical}">
-    {/if}
-    {else}<link rel="canonical" href="{#CURRENT_URL#}">
+    {if="strpos($canonical, 'trungchinhaudio.vn') > 0"}<link rel="canonical" href="{$canonical}">
+    {else}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$canonical}">
     {/if}
 
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for {#CURRENT_DOMAIN#}" href="/product.rss" />
@@ -198,15 +210,15 @@
   </head>
 
   <body>
-    {include 'other/header'}
+    {include='other/header'}
 
-    {include 'other/breadcrumb'}
+    {include='other/breadcrumb'}
 
     {$section_content}
 
-    {include 'other/footer'}
+    {include='other/footer'}
 
-    {include 'javascript/index'}
+    {include='javascript/index'}
   </body>
 </html>
 

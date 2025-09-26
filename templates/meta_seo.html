@@ -15,15 +15,18 @@
 	{% if page.current_category.meta_description.size > 4 %}{% assign _page_description = page.current_category.meta_description %}{% endif -%}
     {% if page.current_category.meta_keyword.size > 4 %}{% assign _page_keywords = page.current_category.meta_keyword %}{% endif -%}
     {% endif -%}
-    <meta name="description" content="{{ _page_description|default: _page_title|replace: '"', "'" }}" />
-    <meta name="keywords"    content="{{ _page_keywords|default: _page_title|replace: '"', "'" }}" />
-	<meta name="twitter:card" 		content="summary_large_image" />
-    <meta name="twitter:site" 		content="@website" />
-    <meta property="fb:app_id"      content="" prefix="fb: https://ogp.me/ns/fb#">
-	<meta property="og:url"         content="{{ global.url }}" />
-    <meta property="og:title"       name="twitter:title" content="{{ _page_title|replace: '"', "'" }}" />
-    <meta property="og:description" name="twitter:description" content="{{ _page_description|default: _page_title|replace: '"', "'" }}" />
-    <meta property="og:image:alt"   name="twitter:image:alt" content="{{ _page_title|replace: '"', "'" }}" />
+    <meta name="description"         content="{{ _page_description|default: _page_title|replace: '"', "'" }}" />
+    <meta name="keywords"            content="{{ _page_keywords|default: _page_title|replace: '"', "'" }}" />
+	<meta name="twitter:card" 		 content="summary_large_image" />
+    <meta name="twitter:site" 		 content="@website" />
+    <meta property="fb:app_id"       content="" prefix="fb: https://ogp.me/ns/fb#">
+    <meta property="og:locale"       content="vi_VN">
+	<meta property="og:url"          content="{{ global.url }}" />
+    <meta property="og:title"        content="{{ _page_title|replace: '"', "'" }}" name="twitter:title" />
+    <meta property="og:description"  content="{{ _page_description|default: _page_title|replace: '"', "'" }}" name="twitter:description" />
+    <meta property="og:image:alt"    content="{{ _page_title|replace: '"', "'" }}" name="twitter:image:alt" />
+    <meta property="og:image:width"  content="640" />
+    <meta property="og:image:height" content="360" />
 
     {% assign _og_type = 'website' -%}
     {% if global.module.view == 'product-detail' %}{% assign _og_type = 'product' -%}
