@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- <style type="text/tailwindcss">
+    @theme {
+      --color-primary: #e11f26;
+      --color-secondary: #ff020b;
+      --color-tertiary: #fcb400;
+    }
+  </style> -->
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <div class="container my-10">
+    <h1 class="text-3xl font-bold underline text-center text-(--color-primary) mb-8">MERGE IMAGE</h1>
+    <div class="grid grid-cols-3 gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-center mb-6">Frame, Icons</h2>
+        <div class="flex flex-wrap gap-4">
+          <img src="/frame.png" alt="Frame" width="500" height="500">
+          <img src="/icon-sale-hot-2025.png" alt="Frame" width="80" height="80">
+          <img src="/icon-sale-online-2025.png" alt="Frame" width="80" height="80">
+          <img src="/icon-freeship-2025.png" alt="Frame" width="80" height="80">
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-center mb-6">Products</h2>
+        <img src="/product.png" alt="Product" width="500" height="500">
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-center mb-6">Merge Image</h2>
+        <a href="https://placehold.co/500x500" data-fancybox="gallery" id="merge-link">
+          <img src="https://placehold.co/500x500" alt="Merge image" width="500" height="500" id="merge-image">
+        </a>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10">
+      <button class="bg-red-600 text-white py-2 px-5 cursor-pointer" type="button" onclick="downloadBase64AsPng('merge-image-final-'+ Date.now() +'.png');">
+        DOWNLOAD MERGE IMAGE
+      </button>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+  <script>
+    // forked from merge image - https://github.com/lukechilds/merge-images
+    (function (global, factory) {
+      typeof exports === "object" && typeof module !== "undefined"
+        ? (module.exports = factory())
+        : typeof define === "function" && define.amd
+          ? define(factory)
+          : (global.mergeImages = factory());
+    })(this, function () {
+      "use strict";
+
+      // Defaults
+      const defaultOptions = {
+        format: "image/png",
+        quality: 0.92,
+        width: undefined,
+        height: undefined,
+        Canvas: undefined,
+        crossOrigin: undefined,
+      };
+
+      const getX = (image, width) => {
+        if (image.right != undefined) return width - (image.right + (image.width || image.img.width));
+        return image.left || image.x || 0;
+      };
+
+      const getY = (image, height) => {
+        if (image.bottom != undefined) return height - (image.bottom + (image.height || image.img.height));
+        return image.top || image.y || 0;
+      };
+
+      // Return Promise
+      const mergeImages = (sources = [], options = {}) =>
+        new Promise((resolve) => {
+          options = Object.assign({}, defaultOptions, options);
+
+          // Setup browser/Node.js specific variables
+          const canvas = options.Canvas ? new options.Canvas() : window.document.createElement("canvas");
+          const Image = options.Image || window.Image;
+
+          // Load sources
+          const images = sources.map(
+            (source) =>
+              new Promise((resolve, reject) => {
+                // Convert sources to objects
+                if (source.constructor.name !== "Object") {
+                  source = { src: source };
+                }
+
+                // Resolve source and img when loaded
+                var img = new Image();
+                img.crossOrigin = options.crossOrigin;
+                img.onerror = () => reject(new Error("Couldn't load image"));
+                img.onload = () => resolve(Object.assign({}, source, { img }));
+                img.src = source.src;
+              })
+          );
+
+          // Get canvas context
+          const ctx = canvas.getContext("2d");
+
+          // When sources have loaded
+          resolve(
+            Promise.all(images).then((images) => {
+              // Set canvas dimensions
+              const getSize = (dim) => options[dim] || Math.max(...images.map((image) => (image[dim] ? image[dim] : image.img[dim])));
+              canvas.width = getSize("width");
+              canvas.height = getSize("height");
+
+              // Draw images to canvas
+              images.forEach((image) => {
+                ctx.globalAlpha = image.opacity ? image.opacity : 1;
+                return ctx.drawImage(image.img, getX(image, canvas.width), getY(image, canvas.height), image.width || image.img.width, image.height || image.img.height);
+              });
+
+              if (options.Canvas && options.format === "image/jpeg") {
+                // Resolve data URI for node-canvas jpeg async
+                return new Promise((resolve, reject) => {
+                  canvas.toDataURL(
+                    options.format,
+                    {
+                      quality: options.quality,
+                      progressive: false,
+                    },
+                    (err, jpeg) => {
+                      if (err) {
+                        reject(err);
+                        return;
+                      }
+                      resolve(jpeg);
+                    }
+                  );
+                });
+              }
+
+              // Resolve all other data URIs sync
+              return canvas.toDataURL(options.format, options.quality);
+            })
+          );
+        });
+
+      return mergeImages;
+    });
+    //# sourceMappingURL=index.umd.js.map
+
+  </script>
+  <script>
+    // variant default
+    var base64Data = "";
+    var iconsData = [
+      "/icon-sale-hot-2025.png",
+      "/icon-sale-online-2025.png",
+      "/icon-freeship-2025.png"
+    ];
+
+    // onload function
+    $(document).ready(function () {
+      mergeImagesHandle();
+    });
+
+    // merge image
+    function mergeImagesHandle() {
+      const frameWidth = 600;
+      const iconWidth = 110;
+      const iconsList = iconsData.map((icon, index) => {
+        const positionBottom = 10;
+        const positionLeft = ((index + 1) * 10) + (index * iconWidth);
+
+        return {
+          src: icon,
+          width: iconWidth,
+          height: iconWidth,
+          bottom: positionBottom,
+          left: positionLeft
+        }
+      });
+
+      const mergeList = [
+        { src: "/product.png", width: frameWidth, height: frameWidth },
+        { src: "/frame.png", width: frameWidth, height: frameWidth },
+        ...iconsList
+      ];
+
+      mergeImages(mergeList).then((b64) => {
+        base64Data = b64;
+        document.querySelector("#merge-image").src = b64;
+        document.querySelector("#merge-link").href = b64;
+      });
+    }
+
+    // download merge image
+    function downloadBase64AsPng(filename = 'image.png') {
+      // 1. Convert Base64 to a Blob
+      // Assuming base64Data includes the "data:image/png;base64," prefix.
+      // If not, you might need to add it or adjust the splitting.
+      const parts = base64Data.split(',');
+      const mimeType = parts[0].match(/:(.*?);/)[1]; // Extract mime type (e.g., image/png)
+      const base64 = parts[1]; // The actual Base64 string
+
+      const byteCharacters = atob(base64); // Decode Base64 string
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: mimeType });
+
+      // 2. Create a temporary download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+
+      // 3. Programmatically click the link to trigger download
+      document.body.appendChild(link);
+      link.click();
+
+      // 4. Clean up the temporary URL and link
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+
+</html>
