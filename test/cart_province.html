@@ -18,11 +18,11 @@
       --blue: #0083fd;
       --gray: #a2a2a2;
       --gray-2: #d9d9d9;
-      --box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2)
+      --box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.2);
     }
 
     html {
-      font-size: 14px
+      font-size: 14px;
     }
 
     body {
@@ -34,29 +34,43 @@
       line-height: 1.3;
       font-weight: 400;
       background-color: #fff;
-      letter-spacing: .15px
+      letter-spacing: 0.15px;
+    }
+
+    *,
+    ::after,
+    ::before {
+      padding: 0;
+      margin: 0;
+      -webkit-box-sizing: inherit;
+      box-sizing: inherit;
     }
 
     .container {
       max-width: 1220px;
       width: 100%;
       padding: 0 10px;
-      margin: 0 auto
+      margin: 0 auto;
     }
   </style>
 
   <style>
     .cart-page .form {
-      padding: 15px 15px 7px;
-      -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
-      box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+      padding: 15px;
+      -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
       max-width: 600px;
-      margin: 150px auto 0
+      margin: 150px auto 0;
+    }
+
+    .cart-page .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
     }
 
     .cart-page .form-select {
       position: relative;
-      color: #288ad6
     }
 
     .cart-page .form-select-input {
@@ -69,40 +83,14 @@
       border-radius: 5px;
       outline-color: #288ad6;
       padding: 0 10px;
-      margin-bottom: 8px;
     }
 
     .cart-page .form-select-input.focus-show:focus-within+.form-select-list {
-      display: block
+      display: block;
     }
 
     .cart-page .form-select-input.invalid {
-      pointer-events: none
-    }
-
-    .cart-page .form-select-input::-webkit-input-placeholder {
-      color: #288ad6;
-      font-size: inherit
-    }
-
-    .cart-page .form-select-input::-moz-placeholder {
-      color: #288ad6;
-      font-size: inherit
-    }
-
-    .cart-page .form-select-input:-ms-input-placeholder {
-      color: #288ad6;
-      font-size: inherit
-    }
-
-    .cart-page .form-select-input::-ms-input-placeholder {
-      color: #288ad6;
-      font-size: inherit
-    }
-
-    .cart-page .form-select-input::placeholder {
-      color: #288ad6;
-      font-size: inherit
+      pointer-events: none;
     }
 
     .cart-page .form-select-list {
@@ -116,29 +104,34 @@
       box-shadow: 0 0 3px 0 #ccc;
       background: #fff;
       border-radius: 5px;
-      display: none
+      display: none;
     }
 
     .cart-page .form-select-search {
       position: relative;
-      margin: 10px
+      margin: 10px;
     }
 
     .cart-page .form-select-search-result {
       max-height: 200px;
       overflow: auto;
-      gap: 1px
     }
 
     .cart-page .form-select-search-result .item {
-      padding: 6px 10px
+      padding: 6px 10px;
+      color: #288ad6;
+      border-top: 1px solid #fff;
+      cursor: pointer;
     }
 
-    .cart-page .form-select-search-result .item.active,
+    .cart-page .form-select-search-result .item.selected,
     .cart-page .form-select-search-result .item:hover {
       background: #288ad6;
       color: #fff;
-      cursor: pointer
+    }
+
+    .cart-page .form-select-search-result .item.selected {
+      pointer-events: none;
     }
 
     .cart-page .form-select-icon {
@@ -148,20 +141,20 @@
       -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
       transform: translateY(-50%);
-      font-size: 14px
+      font-size: 14px;
     }
 
     .style-scroll-3::-webkit-scrollbar-track {
-      background-color: #fff
+      background-color: #fff;
     }
 
     .style-scroll-3::-webkit-scrollbar {
       width: 4px;
-      background-color: #fff
+      background-color: #fff;
     }
 
     .style-scroll-3::-webkit-scrollbar-thumb {
-      background-color: #cecece
+      background-color: #cecece;
     }
   </style>
 </head>
@@ -170,79 +163,82 @@
   <div class="cart-page">
     <div class="container">
       <form action="" class="form">
-        <div class="row">
-          <div class="col-6">
+        <div class="form-row">
+          <div class="form-col">
             <div class="form-select">
-              <i class="fa fa-caret-down form-select-icon"></i>
-              <input type="text" id="js-customer-province" name="user_info[province]" placeholder="Chọn Tỉnh/Thành phố"
-                autocomplete="off" class="form-select-input js-input-primary" onclick="showProvinceContent(this);" />
+              <svg class="form-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="9" height="15">
+                <path
+                  d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z" />
+              </svg>
+              <input class="form-select-input js-input-primary" id="js-customer-province" type="text" name="user_info[province]" placeholder="Chọn Tỉnh/Thành phố"
+                autocomplete="off" readonly />
 
               <div class="form-select-list" id="js-customer-province-list">
                 <div class="form-select-search">
-                  <input type="text" onkeyup="searchProvinceHandler(this)" placeholder="Tìm nhanh" autocomplete="off"
-                    class="form-select-input" />
-                  <i class="fa fa-search form-select-icon"></i>
+                  <input class="form-select-input js-input-search" type="text" placeholder="Tìm nhanh" autocomplete="off" />
+                  <svg class="form-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14">
+                    <path
+                      d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                  </svg>
                 </div>
 
-                <ul class="form-select-search-result list grid grid--2-cols gap-0 style-scroll-3"
-                  id="js-search-province-result">
-                  <li class="item" onclick="getProvinceList(this, 'province', '#js-search-district-result');"
-                    data-key="1">Hà Nội</li>
-                  <li class="item" onclick="getProvinceList(this, 'province', '#js-search-district-result');"
-                    data-key="2">TP HCM</li>
-                  <li class="item" onclick="getProvinceList(this, 'province', '#js-search-district-result');"
-                    data-key="3">Hải Phòng</li>
+                <ul class="form-select-search-result" id="js-search-province-result">
+                  <li class="item" onclick="cartProvinceAjax(this, 'province', '#js-search-district-result');" data-key="1">Hà Nội</li>
+                  <li class="item" onclick="cartProvinceAjax(this, 'province', '#js-search-district-result');" data-key="2">TP HCM</li>
+                  <li class="item" onclick="cartProvinceAjax(this, 'province', '#js-search-district-result');" data-key="3">Hải Phòng</li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <div class="col-6">
+          <div class="form-col">
             <div class="form-select">
-              <input type="text" id="js-customer-district" name="user_info[district]" placeholder="Chọn Quận/Huyện"
-                autocomplete="off" class="form-select-input js-input-primary" onclick="showProvinceContent(this);" />
-              <i class="fa fa-caret-down form-select-icon"></i>
+              <input class="form-select-input js-input-primary" id="js-customer-district" type="text" name="user_info[district]" placeholder="Chọn Quận/Huyện" autocomplete="off"
+                readonly />
+              <svg class="form-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="9" height="15">
+                <path
+                  d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z" />
+              </svg>
 
               <div class="form-select-list" id="js-customer-district-list">
                 <div class="form-select-search">
-                  <input type="text" onkeyup="searchProvinceHandler(this)" placeholder="Tìm nhanh" autocomplete="off"
-                    class="form-select-input invalid" />
-                  <i class="fa fa-search form-select-icon"></i>
+                  <input class="form-select-input invalid js-input-search" type="text" placeholder="Tìm nhanh" autocomplete="off" />
+                  <svg class="form-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14">
+                    <path
+                      d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                  </svg>
                 </div>
 
-                <ul class="form-select-search-result list grid grid--2-cols gap-0 style-scroll-3"
-                  id="js-search-district-result">
-                  <li class="item text-center mb-2" style="grid-column:span 2;pointer-events:none">
-                    Bạn chưa chọn Tỉnh/Thành phố
-                  </li>
+                <ul class="form-select-search-result" id="js-search-district-result">
+                  <li class="item text-center" style="grid-column: span 2;margin-bottom: 8px;pointer-events: none;">Bạn chưa chọn Tỉnh/Thành phố</li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <div class="col-6">
+          <div class="form-col">
             <div class="form-select">
-              <input type="text" id="js-customer-ward" name="user_info[ward]" placeholder="Chọn Phường/Xã"
-                autocomplete="off" class="form-select-input js-input-primary" onclick="showProvinceContent(this);" />
-              <i class="fa fa-caret-down form-select-icon"></i>
+              <input class="form-select-input js-input-primary" id="js-customer-ward" type="text" name="user_info[ward]" placeholder="Chọn Phường/Xã" autocomplete="off" readonly />
+              <svg class="form-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="9" height="15">
+                <path
+                  d="M140.3 376.8c12.6 10.2 31.1 9.5 42.8-2.2l128-128c9.2-9.2 11.9-22.9 6.9-34.9S301.4 192 288.5 192l-256 0c-12.9 0-24.6 7.8-29.6 19.8S.7 237.5 9.9 246.6l128 128 2.4 2.2z" />
+              </svg>
 
               <div class="form-select-list" id="js-customer-ward-list">
                 <div class="form-select-search">
-                  <input type="text" onkeyup="searchProvinceHandler(this)" placeholder="Tìm nhanh" autocomplete="off"
-                    class="form-select-input invalid" />
-                  <i class="fa fa-search form-select-icon"></i>
+                  <input class="form-select-input invalid js-input-search" type="text" placeholder="Tìm nhanh" autocomplete="off" />
+                  <svg class="form-select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14">
+                    <path
+                      d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376C296.3 401.1 253.9 416 208 416 93.1 416 0 322.9 0 208S93.1 0 208 0 416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                  </svg>
                 </div>
 
-                <ul class="form-select-search-result list grid grid--2-cols gap-0 style-scroll-3"
-                  id="js-search-ward-result">
-                  <li class="item text-center mb-2" style="grid-column:span 2;pointer-events:none">
-                    Bạn chưa chọn Quận/Huyện
-                  </li>
+                <ul class="form-select-search-result list" id="js-search-ward-result">
+                  <li class="item text-center" style="grid-column: span 2;margin-bottom: 8px;pointer-events: none;">Bạn chưa chọn Quận/Huyện</li>
                 </ul>
               </div>
             </div>
           </div>
-
         </div>
       </form>
     </div>
@@ -252,84 +248,105 @@
 
   <script>
     $(document).ready(function () {
-      clickOutSideCloseProvinceContent();
-    })
+      cartProvinceHandle();
+    });
 
-    function showProvinceContent(_this) {
-      const $target = $(_this).closest(".form-select").find(".form-select-list");
+    // HANDLE
+    function cartProvinceHandle() {
+      _popupDisplay();
+      _popupSearch();
+      _popupClose();
 
-      if (!$target.hasClass('onSelect')) {
-        $(".form-select-list").hide().removeClass("onSelect");
-        $target.fadeIn().addClass("onSelect");
-      }
-    }
+      function _popupDisplay(_this) {
+        $(".js-input-primary").on("click", function () {
+          const $target = $(this).closest(".form-select").find(".form-select-list");
 
-    function clickOutSideCloseProvinceContent() {
-      $(document).on("click", function (e) {
-        const $container = $(".form-select");
-        const $target = $(".form-select-list");
-
-        if (!$container.is(e.target) && $container.has(e.target).length === 0) $target.hide().removeClass("onSelect");
-      })
-    }
-
-    function searchProvinceHandler(_this) {
-      const $search_list = $(_this).closest('.form-select-list').find('.form-select-search-result .item');
-      const search_value = convertToSlug($(_this).val().toLowerCase().trim());
-
-      if (search_value) {
-        $search_list.each(function () {
-          const $search_text = convertToSlug($(this).text().toLowerCase().trim());
-
-          if ($search_text.indexOf(search_value) > -1) $(this).show();
-          else $(this).hide();
+          if (!$target.hasClass("onSelect")) {
+            $(".form-select-list").hide().removeClass("onSelect");
+            $target.fadeIn().addClass("onSelect");
+          }
         })
-      } else $search_list.show()
+      }
+
+      function _popupClose() {
+        $(document).on("click", function (e) {
+          const $container = $(".form-select");
+          const $target = $(".form-select-list");
+
+          if (!$container.is(e.target) && $container.has(e.target).length === 0) $target.hide().removeClass("onSelect");
+        });
+      }
+
+      function _popupSearch() {
+        $(".js-input-search").on("keyup", debounce(function () {
+          const $search_list = $(this).closest(".form-select-list").find(".form-select-search-result .item");
+          const search_value = convertToSlug($(this).val().toLowerCase().trim());
+
+          if (search_value) {
+            $search_list.each(function () {
+              const $search_text = convertToSlug($(this).text().toLowerCase().trim());
+
+              if ($search_text.indexOf(search_value) > -1) {
+                $(this).show();
+                return;
+              }
+
+              $(this).hide();
+            });
+
+            return;
+          }
+
+          $search_list.show();
+        }, 500))
+      }
     }
 
-    // HURA 8
-    function getProvinceList(_this, type, target) {
-      let params;
-      let next_type = '';
-      let next_target = '';
-      const id = parseInt($(_this).attr('data-key'));
+    // AJAX
+    function cartProvinceAjax(_this, type, target) {
       const text = $(_this).text().trim();
-      const $input = $(_this).closest('.form-select').find('.js-input-primary');
-      const $input_invalid = $(target).closest('.form-select').find('.form-select-input.invalid');
-      const $input_target = $(target).closest('.form-select').find('.js-input-primary');
-
+      const $input = $(_this).closest(".form-select").find(".js-input-primary");
       $input.val(text);
-      $input_target.val('');
-      $input_invalid.removeClass('invalid');
-      $('body').click();
 
-      if (type === 'province') {
-        params = { action_type: 'district-list', province: id };
-        next_type = 'district';
-        next_target = '#js-search-ward-result';
+      const $target_form = $(target).closest(".form-select");
+      const $target_input = $target_form.find(".js-input-primary");
+      const $target_search = $target_form.find(".js-input-search");
+      $target_input.val("");
+      $target_search.val("").removeClass("invalid");
 
-        $(next_target).html(`<li class="item text-center mb-2" style="grid-column:span 2;pointer-events:none">Bạn chưa chọn Quận/Huyện</li>`);
-        $(next_target).closest('.form-select').find('.js-input-primary').val('');
-        $(next_target).closest('.form-select').find('.form-select-search .form-select-input').addClass('invalid');
+      const $options = $(_this).closest(".form-select-search-result").find(".item");
+      $options.removeClass("selected");
+      $(_this).addClass("selected");
+      $("body").click();
+
+      let params = null, next_type = "", next_target = "";
+      const id = $(_this).attr("data-key");
+
+      if (type === "province") {
+        params = { action_type: "district-list", province: id };
+        next_type = "district";
+        next_target = "#js-search-ward-result";
+
+        $(next_target).html(`<li class="item text-center mb-2" style="grid-column:span 2;margin-bottom: 8px;pointer-events: none;">Bạn chưa chọn Quận/Huyện</li>`);
+        $(next_target).closest(".form-select").find(".js-input-primary").val("");
+        $(next_target).closest(".form-select").find(".form-select-search .form-select-input").addClass("invalid");
       }
-      else if (type === 'district') params = { action_type: 'ward-list', district: id };
-      else return;
+
+      if (type === "district") {
+        params = { action_type: "ward-list", district: id };
+      }
+
+      if (!params) {
+        return
+      }
 
       Hura.Ajax.get("province", params).then(function (data) {
-        //console.log(data);
-        let html_tpl = '';
-        data.forEach(function (item) {
-          html_tpl += `<li class="item" onclick="getProvinceList(this, '${next_type}', '${next_target}');" data-key="${item.id}">${item.name}</li>`;
-        })
-        $(target).html(html_tpl);
-      })
+        const html = data.map((item) => `<li class="item" onclick="cartProvinceAjax(this, '${next_type}', '${next_target}');" data-key="${item.id}">${item.name}</li>`).join("");
+        $(target).html(html);
+      });
     }
 
-    function restoreSeachProvinceContent() {
-      $('.form-select-search-result .item').show();
-      $('.form-select-search input').val('');
-    }
-
+    // ULTIES
     function convertToSlug(e) {
       let r = e;
       return r
@@ -345,6 +362,20 @@
         .replace(/\u02C6|\u0306|\u031B/g, "")
         .replace(/[^\w ]+/g, "")
         .replace(/ +/g, "-");
+    }
+
+    function debounce(a, b, c) {
+      var d;
+      return function () {
+        var e = this,
+          f = arguments,
+          g = c && !d;
+        clearTimeout(d),
+          (d = setTimeout(function () {
+            (d = null), c || a.apply(e, f);
+          }, b)),
+          g && a.apply(e, f);
+      };
     }
   </script>
 </body>
