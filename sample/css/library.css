@@ -357,10 +357,11 @@ input[type=email]:focus,input[type=password]:focus,input[type=text]:focus,select
 .si-content{position:absolute;bottom:0;right:0;top:0;left:0;margin:auto auto;-o-object-fit:contain;object-fit:contain;z-index:1}
 .si-content.object-cover{width:100%;height:100%;-o-object-fit:cover;object-fit:cover;overflow-clip-margin:unset}
 .static-html{position:relative;font-size:16px}
-.static-html a,.static-html b,.static-html h1,.static-html h2,.static-html h3,.static-html h4,.static-html h5,.static-html h6,.static-html ol,.static-html p,.static-html span,.static-html strong,.static-html ul{all:revert;line-height:normal}
+.static-html a,.static-html b,.static-html h1,.static-html h2,.static-html h3,.static-html h4,.static-html h5,.static-html h6,.static-html ol,.static-html p,.static-html span,.static-html strong,.static-html ul{all:revert}
 .static-html img{display:block;max-width:100%;max-height:100%;height:auto;margin:16px auto}
 .static-html table{max-width:100%;max-height:100%;-webkit-text-size-adjust:100%;margin:16px auto}
 .static-html iframe{max-width:100%;max-height:100%;margin:16px auto}
+.static-html li{margin-bottom:8px}
 .static-html.blur:after{content:"";position:absolute;left:0;right:0;bottom:0;height:100px;background:-o-linear-gradient(transparent,#fff);background:-webkit-gradient(linear,left top,left bottom,from(transparent),to(#fff));background:linear-gradient(transparent,#fff)}
 .static-html.condensed{max-height:500px;overflow:hidden;-webkit-transition:.8s;-o-transition:.8s;transition:.8s;}
 .static-html.expanded{max-height:none}
