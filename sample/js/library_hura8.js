@@ -207,7 +207,7 @@ function searchHandle(target, type, tpl, limit, option) {
 }
 
 // ADD PRODUCT TO CART
-function addProductToCart(product_id, type) {
+function addProductToCart(product_id, redirect) {
   const quantity = $(".js-buy-quantity").length ? $(".js-buy-quantity").val() : 1;
   const variant_id = $("#js-product-variant-id").length ? $("#js-product-variant-id").val() : 0;
   const variant_stock = $("#js-product-quantity").length ? parseInt($("#js-product-quantity").val()) : 1;
@@ -251,7 +251,10 @@ function addProductToCart(product_id, type) {
 
     successCart();
     headerCartRender(response);
-    if (type === "buyNow") setTimeout(function () { window.location.href = "/cart" }, 1500);
+
+    if (redirect) setTimeout(function () { 
+      window.location.href = redirect;
+    }, 1500);
   });
 }
 

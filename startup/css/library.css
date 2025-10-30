@@ -20,7 +20,7 @@ select{outline-color:var(--color-primary);-webkit-appearance:menulist-button}
 input[type=email]:focus,input[type=password]:focus,input[type=text]:focus,select:focus,textarea:focus{font-size:16px!important}
 }
 .success-cart{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.5);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
-.success-cart-content{width:500px;height:300px;background:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;position:fixed;border-radius:5px}
+.success-cart-content{width:500px;height:300px;background:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;border-radius:5px}
 .success-cart-svg{display:block;height:80px;width:80px;color:var(--color-primary)}
 .success-cart-text{font-size:24px;font-weight:600;line-height:1.6;padding-top:30px;text-align:center}
 .success-cart-circle{stroke-dasharray:76;stroke-dashoffset:76;-webkit-animation:.5s forwards draw;animation:.5s forwards draw}
@@ -34,7 +34,7 @@ input[type=email]:focus,input[type=password]:focus,input[type=text]:focus,select
 .si-content{position:absolute;bottom:0;right:0;top:0;left:0;margin:auto auto;-o-object-fit:contain;object-fit:contain;z-index:1}
 .si-content.object-cover{width:100%;height:100%;-o-object-fit:cover;object-fit:cover;overflow-clip-margin:unset}
 .static-html{position:relative;font-size:16px}
-.static-html a,.static-html b,.static-html h1,.static-html h2,.static-html h3,.static-html h4,.static-html h5,.static-html h6,.static-html ol,.static-html p,.static-html span,.static-html strong,.static-html ul{all:revert}
+.static-html a,.static-html b,.static-html h1,.static-html h2,.static-html h3,.static-html h4,.static-html h5,.static-html h6,.static-html ol,.static-html p,.static-html span,.static-html strong,.static-html ul,.static-html li{all:revert}
 .static-html img{display:block;max-width:100%;max-height:100%;height:auto;margin:16px auto}
 .static-html table{max-width:100%;max-height:100%;-webkit-text-size-adjust:100%;margin:16px auto}
 .static-html iframe{max-width:100%;max-height:100%;margin:16px auto}
