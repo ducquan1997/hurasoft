@@ -28,8 +28,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
 
-    <link rel="stylesheet" href="{{ global.domain }}{{ 'library.css' | asset_url }}?v=1.0" />
-    <link rel="stylesheet" href="{{ global.domain }}{{ 'style_pc.css' | asset_url }}?v=1.0" />
+    <link rel="stylesheet" href="{{ global.domain }}{{ 'library.css' | asset_url }}?v={{ 'now' | date: '%d.%m.%Y.%H.%M.%S' }}" />
+    <link rel="stylesheet" href="{{ global.domain }}{{ 'style_pc.css' | asset_url }}?v={{ 'now' | date: '%d.%m.%Y.%H.%M.%S' }}" />
   </head>
 
   <body>
