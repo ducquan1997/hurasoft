@@ -1,0 +1,64 @@
+<!--
+  {% assign _static_alt = page.article_detail.title|prepend: 'alt="'|append: '"' -%}
+  {% assign _static_content = page.article_detail.content|replace: 'alt=""', _static_alt|replace: '<h1', '<h2'|replace: '</h1>', '</h2>' -%}
+-->
+
+<!-- 
+  {% for _item in component.product.all_category -%}
+
+  {% endfor -%}
+-->
+
+<!-- 
+  {% for item in component.article.all_category.article -%}
+
+  {% endfor -%}
+-->
+
+<script>
+  var web_layout = "{{ global.layout }}";
+  var is_admin_login = "{{ global.is_admin_login }}";
+  var no_image = "{{ 'no_image.png' | asset_url }}";
+  var asset_index = "{{ 'no_image.png'|asset_url|replace: 'no_image.png'|'' }}";
+
+  function globalHandle() {
+    Hura.UI.loadGroup(lazy_load_group);
+    runLazyImageLoad();
+
+    headerCartHandle();
+    viewMoreHandle(".js-vm-block");
+    reSizeVideoIframe(".static-html iframe");
+    searchHandle('#js-search-bar', 'search', search_results_tpl, 30);
+
+    globalBannerPopup();
+  }
+</script>
+
+<script>
+  // GLOBAL BANNER POPUP
+  function globalBannerPopup() {
+    const target = "#js-banner-popup-container";
+    if ($(target).length === 0) return;
+
+    const module = $(target).attr("data-module");
+    const display = $(target).attr("data-display");
+
+    if (display === "homepage") {
+      if (module === "home") displayPopup();
+      return;
+    }
+
+    const key = "global_banner_popup";
+    const session = sessionStorage.getItem(key);
+    if (session) return;
+
+    displayPopup();
+    sessionStorage.setItem(key, "1");
+
+    function displayPopup() {
+      setTimeout(function () {
+        $(target).show().find(".banner-popup-content").fadeIn(500);
+      }, 3000);
+    }
+  }
+</script>
