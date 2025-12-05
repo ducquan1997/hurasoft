@@ -1,185 +1,293 @@
-<!-- HURA 7 -->
-<div class="cat-filter-item item-filter">
-  <h2 class="cat-filter-title" onclick="filterPopupOpen();">
-    <i class="fa fa-filter" aria-hidden="true" style="margin-right: 4px;"></i>
+<!-- STYLE -->
+<style>
+  /* .popup-filter-group{background:rgba(0,0,0,.3);z-index:100000;position:fixed;top:0;left:0;right:0;bottom:0;display:none}
+  .popup-filter-group .main-content{height:100%;width:85%;position:absolute;top:0;right:0;bottom:0;background:#fff}
+  .popup-filter-group .popup-head{position:relative}
+  .popup-filter-group .popup-heading{font-size:16px;line-height:25px;text-align:center;margin:0;padding:10px;background:var(--color-primary);color:#fff;text-transform:uppercase}
+  .popup-filter-group .popup-count{position:absolute;top:-100%;left:0;width:100%;height:40px;font-size:14px;font-weight:500;line-height:40px;text-align:center;color:red;background:#fff;transition:all .5s}
+  .popup-filter-group .popup-count.showed{top:0}
+  .popup-filter-group .popup-body{height:calc(100% - 99px);overflow:auto;padding:12px 10px}
+  .popup-filter-group .popup-title{font-weight:700;margin-bottom:10px;text-transform:uppercase;font-size:15px;color:#000}
+  .popup-filter-group .popup-list{display:-ms-grid;display:grid;-ms-grid-columns:1fr 6px 1fr;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px;overflow:hidden}
+  .popup-filter-group .popup-select{border:1px solid #e0e0e0;border-radius:4px;color:#333;font-size:14px;line-height:38px;height:38px;text-align:center}
+  .popup-filter-group .popup-select:nth-child(n+7){display:none}
+  .popup-filter-group .popup-select.current{background:var(--color-primary);color:#fff}
+  .popup-filter-group .popup-select.icon{max-height:30px}
+  .popup-filter-group .popup-view-more{font-size:14px;color:#329ad1;padding:4px 0;display:block;margin:0 auto;border:0;background:#fff}
+  .popup-filter-group .popup-footer{padding:8px 10px;display:-webkit-box;display:-ms-flexbox;display:flex;text-align:center;-webkit-box-shadow:0 -1px 6px 1px #ebebeb;box-shadow:0 -1px 6px 1px #ebebeb;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:end}
+  .popup-filter-group .popup-btn{font-size:14px;padding:0 12px;color:#329ad1;line-height:36px;border-radius:5px;margin-left:8px;border:1px solid #329ad1;font-weight:600}
+  .popup-filter-group .popup-btn.btn-close{display:inline-block;text-align:center;border:1px solid red!important;border-radius:5px;width:84px;line-height:34px;color:#fff!important;background:red!important}
+  .popup-filter-group .popup-btn.btn-submit{background:var(--color-primary);color:#fff;border-color:var(--color-primary)} */
+</style>
+
+<!-- HTML -->
+<div class="cat-filter">
+  <button class="cat-filter-open" type="button" onclick="filterPopup.open();">
+    <i class="fa fa-filter" aria-hidden="true" style="margin-right: 4px"></i>
     Lọc
-  </h2>
+  </button>
 </div>
 
 <div class="popup-filter-group js-popup-filter-group">
   <div class="main-content">
-    <div class="popup-body">
-      {if="isset($brand_filter_list) && sizeof($brand_filter_list) > 0"}
-      <div class="js-filter-item popup-item">
+    <div class="popup-head">
+      <h2 class="popup-heading">Lọc sản phẩm</h2>
+
+      <div class="popup-count" id="js-popup-filter-count"></div>
+    </div>
+
+    <div class="popup-body" id="js-popup-filter-holder">
+      {% if page.brand_filter_list.size > 0 -%}
+      <div class="popup-item js-filter-item js-filter-brand">
         <p class="popup-title">Thương hiệu</p>
-        <div class="popup-list js-brand-list">
-          {loop="$brand_filter_list"}
-          <a href="javascript:;" class='popup-select js-filter-select {if="$value.isCurrent == 1"}current{/if}'
-            data-brand="{$value.id}">
-            <span class="text-center">{$value.name} ({$value.count})</span>
+        <div class="popup-list">
+
+          {% for _item in page.brand_filter_list -%}
+          <a href="javascript:;" class="popup-select js-filter-select {% if _item.is_selected == 1 or _item.isCurrent == 1 %}current current-default{% endif %}" data-key="brand"
+            data-id="{{ _item.id }}">
+            {{ _item.name }} ({{ _item.count }})
           </a>
-          {/loop}
+          {% endfor -%}
+
         </div>
 
-        {if="sizeof($brand_filter_list) > 6"}
-        <button type="button" class="popup-view-more" data-show="0" onclick="filterPopupViewMore(this)">
+        {% if page.brand_filter_list.size > 6 -%}
+        <button type="button" class="popup-view-more js-popup-view-more" data-show="0">
           Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>
         </button>
-        {/if}
+        {% endif -%}
       </div>
-      {/if}
+      {% endif -%}
 
-      {if="isset($price_filter_list) && sizeof($price_filter_list) > 0"}
-      <div class="js-filter-item popup-item">
+      {% if page.price_filter_list.size > 0 -%}
+      <div class="popup-item js-filter-item js-filter-price">
         <p class="popup-title">Giá bán</p>
-        <div class="popup-list js-price-list">
-          {loop="$price_filter_list"}
-          <a href="javascript:;" class='popup-select js-filter-select {if="$value.isCurrent == 1"}current{/if}'
-            data-max="{$value.max}" data-min="{$value.min}">
-            <span class="text-center">{$value.name} ({$value.count})</span>
+        <div class="popup-list">
+
+          {% for _item in page.price_filter_list -%}
+          <a href="javascript:;" class="popup-select js-filter-select {% if _item.is_selected == 1 or _item.isCurrent == 1 %}current current-default{% endif %}" data-key="price"
+            data-id="{{ _item.min }}-{{ _item.max }}" data-min="{{ _item.min }}" data-max="{{ _item.max }}">
+            {{ _item.name }} ({{ _item.count }})
           </a>
-          {/loop}
+          {% endfor -%}
+
         </div>
 
-        {if="sizeof($price_filter_list) > 6"}
-        <button type="button" class="popup-view-more" data-show="0" onclick="filterPopupViewMore(this)">
+        {% if page.price_filter_list.size > 6 -%}
+        <button type="button" class="popup-view-more js-popup-view-more" data-show="0">
           Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>
         </button>
-        {/if}
+        {% endif -%}
       </div>
-      {/if}
+      {% endif -%}
 
-      {if="isset($attribute_filter_list) && sizeof($attribute_filter_list) > 0"}
-      {loop="$attribute_filter_list"}
-      <div class="js-filter-item popup-item">
-        <p class="popup-title">{$value.attributeName}</p>
-        <div class="popup-list js-attr-list">
-          {loop="$value.filterList"}
-          <a href="javascript:;" class='popup-select js-filter-select {if="$value.isCurrent == 1"}current{/if}'
-            data-attr="{$value.id}">
-            <span class="text-center">{$value.name} ({$value.count})</span>
+      {% if page.attribute_filter_list.size > 0 -%}
+      {% for _item in page.attribute_filter_list -%}
+      <div class="popup-item js-filter-item js-filter-attr">
+        <p class="popup-title">{{ _item.name }}</p>
+        <div class="popup-list">
+
+          {% for _item in _item.value_list -%}
+          <a href="javascript:;" class="popup-select js-filter-select {% if _item.is_selected == 1 or _item.isCurrent == 1 %}current current-default{% endif %}" data-key="attr"
+            data-id="{{ _item.id }}">
+            {{ _item.name }} ({{ _item.count }})
           </a>
-          {/loop}
+          {% endfor -%}
+
         </div>
 
-        {if="sizeof($value.filterList) > 6"}
-        <button type="button" class="popup-view-more" data-show="0" onclick="filterPopupViewMore(this)">
+        {% if _item.value_list.size > 6 -%}
+        <button type="button" class="popup-view-more js-popup-view-more" data-show="0">
           Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>
         </button>
-        {/if}
+        {% endif -%}
       </div>
-      {/loop}
-      {/if}
+      {% endfor -%}
+      {% endif -%}
     </div>
 
     <div class="popup-footer">
-      <a href="javascript:;" class="popup-btn btn-reset" onclick="filterPopupReset();">Xóa bộ lọc</a>
-      <a href="javascript:;" class="popup-btn btn-close" onclick="filterPopupClose();">Hủy bỏ</a>
-      <a href="javascript:;" class="popup-btn btn-submit" onclick="filterPopupSubmit();">Áp dụng</a>
+      <a href="javascript:;" class="popup-btn btn-reset" onclick="filterPopup.reset();">Xóa bộ lọc</a>
+      <a href="javascript:;" class="popup-btn btn-close" onclick="filterPopup.close();">Hủy bỏ</a>
+      <a href="javascript:;" class="popup-btn btn-submit" onclick="filterPopup.submit();">Áp dụng</a>
     </div>
   </div>
 </div>
 
-<style>
-  /* .product-page .popup-filter-group{background:rgba(0,0,0,.3);z-index:100000;position:fixed;top:0;left:0;right:0;bottom:0;display:none}
-  .product-page .popup-filter-group .main-content{height:100%;width:85%;position:absolute;top:0;right:0;bottom:0;background:#fff}
-  .product-page .popup-filter-group .popup-body{height:calc(100% - 54px);overflow:auto;padding:12px 10px}
-  .product-page .popup-filter-group .popup-title{font-weight:700;margin-bottom:10px;text-transform:uppercase;font-size:15px;color:#000}
-  .product-page .popup-filter-group .popup-list{display:-ms-grid;display:grid;-ms-grid-columns:1fr 6px 1fr;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px;overflow:hidden}
-  .product-page .popup-filter-group .popup-select{border:1px solid #e0e0e0;border-radius:4px;color:#333;font-size:14px;line-height:38px;height:38px;text-align:center}
-  .product-page .popup-filter-group .popup-select:nth-child(n+7){display:none}
-  .product-page .popup-filter-group .popup-select.current{background:#f38239;color:#fff}
-  .product-page .popup-filter-group .popup-select.icon{max-height:30px}
-  .product-page .popup-filter-group .popup-view-more{font-size:14px;color:#329ad1;padding:4px 0;display:block;margin:0 auto;border:0;background:#fff}
-  .product-page .popup-filter-group .popup-footer{padding:8px 10px;display:-webkit-box;display:-ms-flexbox;display:flex;text-align:center;-webkit-box-shadow:0 -1px 6px 1px #ebebeb;box-shadow:0 -1px 6px 1px #ebebeb;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:end}
-  .product-page .popup-filter-group .popup-btn{font-size:14px;padding:0 12px;color:#329ad1;line-height:36px;border-radius:5px;margin-left:8px;border:1px solid #329ad1;font-weight:600}
-  .product-page .popup-filter-group .popup-btn.btn-close{display:inline-block;text-align:center;border:1px solid red!important;border-radius:5px;width:84px;line-height:34px;color:#fff!important;background:red!important}
-  .product-page .popup-filter-group .popup-btn.btn-submit{background:#f38239;color:#fff;border-color:#f38239} */
-</style>
-
+<!-- SCRIPT -->
 <script>
   $(document).ready(function () {
-    filterPopupHandler();
-  })
+    filterPopup.setup();
+  });
 
-  // FILTER POPUP
-  function filterPopupHandler() {
-    $('.js-filter-select').click(function () {
-      if ($(this).hasClass('current')) $(this).removeClass('current');
-      else {
-        $(this).parents('.js-filter-item').find('.js-filter-select').removeClass('current');
-        $(this).addClass('current');
+  // popup filter
+  const filterPopup = (() => {
+    // variant
+    const $popup = $(".js-popup-filter-group");
+    const $product_count = $("#js-popup-filter-count");
+    const item = ".js-filter-item";
+    const select = ".js-filter-select";
+    const select_current = select + ".current";
+    const category_id = "{{ page.current_category.id|default: '0' }}";
+
+    const search_query = GetURLParameter("q") ? "/tim?q=" + GetURLParameter("q") : "";
+    const url_default = location.pathname + search_query;
+
+    // popup setup
+    function _popupSetup() {
+      if ($popup.length === 0) {
+        return;
       }
-    });
 
-    $(".popup-filter-group").on("click", function (e) {
-      if (e.target === document.querySelector(".popup-filter-group")) {
-        filterPopupClose();
-      }
-    })
-  }
+      const selected_list = $(select_current).toArray().map((item) => {
+        return {
+          key: $(item).attr("data-key"),
+          id: $(item).attr("data-id"),
+        };
+      });
 
-  function filterPopupViewMore(_this) {
-    const isShow = parseInt($(_this).attr("data-show"));
-    const targets = $(_this).closest(".js-filter-item").find(".js-filter-select:nth-child(n + 7)");
-    const viewMore = 'Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>';
-    const viewLess = 'Thu gọn <i class="fa fa-angle-double-up" aria-hidden="true"></i>';
+      const url_ajax = url_default + (search_query ? '&type=ajax' : '?type=ajax');
+      $.get(url_ajax, function (response, status, xhr) {
+        $("#js-popup-filter-holder").html(response);
 
-    if (isShow) {
-      $(_this).html(viewMore).attr("data-show", "0");
-      $(targets).fadeOut(150);
-      return;
+        selected_list.forEach((item) => {
+          const target = select + `[data-key="${item.key}"][data-id="${item.id}"]`;
+          $(target).addClass("current current-default");
+        });
+
+        _popupHandle();
+      });
     }
 
-    $(_this).html(viewLess).attr("data-show", "1");
-    $(targets).fadeIn(150);
-  }
+    // popup click handle
+    function _popupHandle() {
+      $popup.on("click", function (e) {
+        const target = e.target;
 
-  function filterPopupSubmit() {
-    const keywords = "{$search_query}";
-    const href = location.href;
-    const destination = href.indexOf("tim?q=") !== -1 && keywords !== "" ? "/tim?q=" + keywords : location.pathname + "?";
+        // filter select click
+        if ($(target).hasClass("js-filter-select")) {
+          if ($(target).hasClass("current")) {
+            $(target).removeClass("current current-temp");
+            _filterProductCount();
 
-    const $brand = $('.js-brand-list a.current');
-    const $price = $('.js-price-list a.current');
-    const $attr = $('.js-attr-list a.current');
+            return;
+          }
 
-    const brand = $brand.length ? '&brand=' + $brand.attr('data-brand') : '';
-    const max = $price.length ? '&max=' + $price.attr('data-max') : '';
-    const min = $price.length ? '&min=' + $price.attr('data-min') : '';
+          const $holder = $(target).closest(item);
+          if ($holder.hasClass("js-filter-price")) {
+            $holder.find(select).removeClass("current current-temp");
+          }
+          $(target).addClass("current current-temp");
+          _filterProductCount();
 
-    let attr = '';
-    $attr.each(function (index) {
-      attr += index !== 0 ? '-' + $(this).attr('data-attr') : '&filter=' + $(this).attr('data-attr');
-    });
+          return false;
+        }
 
-    const sort = GetURLParameter('sort') ? '&sort=' + GetURLParameter('sort') : '';
-    const link = destination + brand + max + min + attr + sort;
-    location.href = link;
-  }
+        // filter list view more
+        if ($(target).hasClass("js-popup-view-more")) {
+          const isShow = parseInt($(target).attr("data-show"));
+          const targets = $(target)
+            .closest(item)
+            .find(select + ":nth-child(n + 7)");
+          const viewMore = 'Xem thêm <i class="fa fa-angle-double-down" aria-hidden="true"></i>';
+          const viewLess = 'Thu gọn <i class="fa fa-angle-double-up" aria-hidden="true"></i>';
 
-  function filterPopupOpen() {
-    $('.popup-filter-group').fadeIn(150);
-    $('body').addClass('overflow-hidden');
-    $('#js-p-filter-group .item.active').removeClass('active');
-  }
+          if (isShow) {
+            $(target).html(viewMore).attr("data-show", "0");
+            $(targets).fadeOut(150);
+            return;
+          }
 
-  function filterPopupClose() {
-    $('.popup-filter-group').hide();
-    $('body').removeClass('overflow-hidden');
-  }
+          $(target).html(viewLess).attr("data-show", "1");
+          $(targets).fadeIn(150);
 
-  function filterPopupReset() {
-    const keywords = "{$search_query}";
-    const href = location.href;
-    const origin = href.indexOf("tim?q=") !== -1 && keywords !== "" ? "/tim?q=" + keywords : location.pathname;
-    location.href = origin;
-  }
+          return false;
+        }
 
-  function GetURLParameter(r) {
-    for (var t = window.location.search.substring(1).split("&"), i = 0; i < t.length; i++) { //>
-      var n = t[i].split("=");
-      if (n[0] == r) return n[1];
+        // popup close click background
+        if ($(target).hasClass("js-popup-filter-group")) {
+          _popupClose();
+          return false;
+        }
+      });
     }
-  }
+
+    // popup open
+    function _popupOpen() {
+      $popup.fadeIn(150);
+      $("body").css("overflow", "hidden");
+    }
+
+    // popup close
+    function _popupClose() {
+      $popup.hide();
+      $("body").css("overflow", "auto");
+
+      // reset current selected default
+      $(select).removeClass("current current-temp");
+      $(select + ".current-default").addClass("current");
+      $product_count.removeClass("showed");
+    }
+
+    // popup reset
+    function _popupReset() {
+      location.href = url_default;
+    }
+
+    // popup submit
+    function _poupSubmit() {
+      if ($(select_current).length === 0) {
+        _popupReset();
+        return;
+      }
+
+      const url_params = _filterSelected();
+      const url_submit = url_default + (search_query ? '&' : '?') + url_params;
+      location.href = url_submit;
+    }
+
+    // filter check
+    function _filterProductCount() {
+      const url_params = _filterSelected();
+      const url_ajax = "/get_json.php?action=product&action_type=product-list-counter&category=" + category_id + "&" + url_params;
+
+      Hura.Ajax.getUrl(url_ajax).then(function (total) {
+        const html = total > 0 ? 'Tìm được <b style="color: blue;">' + total + '</b> sản phẩm phù hợp' : 'Không tìm thấy sản phẩm nào phù hợp';
+        $product_count.addClass("showed").html(html)
+      });
+    }
+
+    // filter selected
+    function _filterSelected() {
+      const $brand = $(".js-filter-brand " + select_current);
+      const $price = $(".js-filter-price " + select_current);
+      const $attr = $(".js-filter-attr " + select_current);
+
+      const brand = $brand.length ? "brand=" + $brand.toArray().map((item) => $(item).attr("data-id")).join("_") : "";
+      const attr = $attr.length ? "filter=" + $attr.toArray().map((item) => $(item).attr("data-id")).join("_") : "";
+      const max = $price.length && $price.attr("data-max") !== "0" ? "max=" + $price.attr("data-max") : "";
+      const min = $price.length && $price.attr("data-min") !== "0" ? "min=" + $price.attr("data-min") : "";
+      const sort = GetURLParameter("sort") ? "sort=" + GetURLParameter("sort") : "";
+
+      const params = [brand, attr, min, max, sort].filter((item) => item !== "").join("&");
+      return params;
+    }
+
+    // url params
+    function GetURLParameter(r) {
+      for (var t = window.location.search.substring(1).split("&"), i = 0; i < t.length; i++) {//>
+        var n = t[i].split("=");
+        if (n[0] == r) return n[1];
+      }
+    }
+
+    // return
+    return {
+      setup: _popupSetup,
+      open: _popupOpen,
+      close: _popupClose,
+      reset: _popupReset,
+      submit: _poupSubmit,
+    };
+  })();
 </script>
