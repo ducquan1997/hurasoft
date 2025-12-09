@@ -22,7 +22,7 @@
 
 <!-- HTML -->
 <div class="cat-filter">
-  <button class="cat-filter-open" type="button" onclick="filterPopup.open();">
+  <button class="cat-filter-open" type="button" onclick="FilterPopup.open();">
     <i class="fa fa-filter" aria-hidden="true" style="margin-right: 4px"></i>
     Lọc
   </button>
@@ -107,9 +107,9 @@
     </div>
 
     <div class="popup-footer">
-      <a href="javascript:;" class="popup-btn btn-reset" onclick="filterPopup.reset();">Xóa bộ lọc</a>
-      <a href="javascript:;" class="popup-btn btn-close" onclick="filterPopup.close();">Hủy bỏ</a>
-      <a href="javascript:;" class="popup-btn btn-submit" onclick="filterPopup.submit();">Áp dụng</a>
+      <a href="javascript:;" class="popup-btn btn-reset" onclick="FilterPopup.reset();">Xóa bộ lọc</a>
+      <a href="javascript:;" class="popup-btn btn-close" onclick="FilterPopup.close();">Hủy bỏ</a>
+      <a href="javascript:;" class="popup-btn btn-submit" onclick="FilterPopup.submit();">Áp dụng</a>
     </div>
   </div>
 </div>
@@ -117,11 +117,11 @@
 <!-- SCRIPT -->
 <script>
   $(document).ready(function () {
-    filterPopup.setup();
+    FilterPopup.setup();
   });
 
   // popup filter
-  const filterPopup = (() => {
+  const FilterPopup = (() => {
     // variant
     const $popup = $(".js-popup-filter-group");
     const $product_count = $("#js-popup-filter-count");
