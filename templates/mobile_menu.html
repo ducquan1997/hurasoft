@@ -1,102 +1,119 @@
 <!-- STYLE -->
 <style>
-  .global-menu{position:fixed;top:0;left:-100%;bottom:0;right:100%;background:#fff;z-index:9999;-webkit-transition:.5s all;-o-transition:.5s all;transition:.5s all;height:calc(100% - 55px);overflow:auto;line-height:20px;font-size:16px;-webkit-box-shadow:0 1px 5px rgb(0 0 0 / 20%);box-shadow:0 1px 5px rgb(0 0 0 / 20%)}
+  /* .global-menu{position:fixed;top:0;left:-100%;bottom:0;right:100%;background:#fff;z-index:9999;-webkit-transition:.5s all;-o-transition:.5s all;transition:.5s all;height:calc(100% - 55px);overflow:auto;line-height:20px;font-size:16px;-webkit-box-shadow:0 1px 5px rgb(0 0 0 / 20%);box-shadow:0 1px 5px rgb(0 0 0 / 20%)}
   .global-menu.active{left:0;right:0}
-  .global-menu .menu-content{border-top:1px solid #e5eaf1;border-bottom:1px solid #e5eaf1}
-  .global-menu .menu-title{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:16px;color:#404d5f;line-height:44px}
-  .global-menu .menu-title.active{color:var(--color-primary)}
-  .global-menu .menu-title .heading{font-size:18px}
-  .global-menu .menu-support .item{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:8px 16px;min-height:40px}
-  .global-menu .sub-menu{display:none}
-  .global-menu .sub-item{border-top:1px solid #e5eaf1}
-  .global-menu .cat-child{display:none;background:#f5f8fd;border-top:1px solid #e5eaf1}
-  .global-menu .cat-child .menu-title{margin-left:16px}
-  .global-menu .cat-child-2{background:#dfebff}
-  .global-menu .cat-child-2 .sub-item{border-top:1px solid #d2dbe7}
-  .global-menu .cat-child-2 .cat-icon{border-color:#d2dbe7}
-  .global-menu .cat-child-3{background:#b8d3ff}
-  .global-menu .cat-title{-webkit-box-flex:1;-ms-flex:1;flex:1}
-  .global-menu .cat-thumb{width:24px;height:24px;margin-right:12px;background-repeat:no-repeat;background-position:center;background-size:contain;-webkit-filter:grayscale(1);filter:grayscale(1)}
-  .global-menu .cat-icon{width:44px;line-height:44px;text-align:center;border-left:1px solid #e5eaf1}
-  .global-menu .cat-icon i{-webkit-transition:all .3s;-o-transition:all .3s;transition:all .3s}
-  .global-menu .cat-icon.active i{-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}
-  .global-menu .fa-icon{width:24px;font-size:22px;margin-right:12px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
+  .global-menu__header{display:flex;align-items:center;justify-content:space-between;padding:8px 8px 8px 16px}
+  .global-menu__header-left{display:flex;align-items:center;gap:8px;font-weight:600}
+  .global-menu__content{border-top:1px solid #e5eaf1;border-bottom:1px solid #e5eaf1}
+  .global-menu__title{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-left:16px;color:#404d5f;line-height:44px}
+  .global-menu__title.active{color:var(--color-primary)}
+  .global-menu__heading{font-size:18px}
+  .global-menu__support{margin:4px 0 8px}
+  .global-menu__support-item{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:8px 16px;min-height:40px}
+  .global-menu__icon{width:24px;font-size:22px;margin-right:12px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}
+  .global-menu__sub{display:none}
+  .global-menu__sub-item{border-top:1px solid #e5eaf1}
+  .global-menu__sub-child{display:none;background:#f5f8fd;border-top:1px solid #e5eaf1}
+  .global-menu__sub-child .global-menu__title{margin-left:16px}
+  .global-menu__sub-child-2{background:#dfebff}
+  .global-menu__sub-child-2 .global-menu__sub-item{border-top:1px solid #d2dbe7}
+  .global-menu__sub-child-2 .global-menu__sub-icon{border-color:#d2dbe7}
+  .global-menu__sub-child-3{background:#b8d3ff}
+  .global-menu__sub-title{-webkit-box-flex:1;-ms-flex:1;flex:1}
+  .global-menu__sub-thumb{width:24px;height:24px;margin-right:12px;background-repeat:no-repeat;background-position:center;background-size:contain;-webkit-filter:grayscale(1);filter:grayscale(1)}
+  .global-menu__sub-thumb.hide{display:none}
+  .global-menu__sub-icon{width:44px;line-height:44px;text-align:center;border-left:1px solid #e5eaf1}
+  .global-menu__sub-icon i{-webkit-transition:all .3s;-o-transition:all .3s;transition:all .3s}
+  .global-menu__sub-icon.active i{-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)} */
 </style>
 
 <!-- HTML -->
 <nav class="global-menu" id="js-global-menu">
-  <div class="menu-header d-flex align-items-center justify-content-between py-2 pl-3 pr-2">
-    <div class="header-left d-flex align-items-center gap-8 font-weight-600">
-      <i class="fa fa-user-circle text-32" aria-hidden="true"></i>
-      {% if global.customer_info.size > 0 -%}<a href="/taikhoan">Xin chào, {{ global.customer_info.name }}</a>
-      {% else -%}<a href="/dang-ky">Đăng ký</a>/ <a href="/dang-nhap">Đăng nhập</a>
+  <div class="global-menu__header">
+    <div class="global-menu__header-left">
+      <i class="fa fa-user-circle" aria-hidden="true" style="font-size: 32px;"></i>
+      {% if global.customer_info.size > 0 -%}
+      <a href="/taikhoan">Xin chào, {{ global.customer_info.name }}</a>
+      {% else -%}
+      <a href="/dang-ky">Đăng ký</a>/ <a href="/dang-nhap">Đăng nhập</a>
       {% endif -%}
     </div>
-    <i class="fa fa-times text-24 color-red px-2 py-1" aria-hidden="true" onclick="menuToggle();"></i>
+    <i class="fa fa-times js-global-menu-toggle" aria-hidden="true" style="font-size: 24px;padding: 4px 8px;color: red;"></i>
   </div>
 
-  <div class="menu-content">
-    <div class="menu-item">
-      <div class="menu-title active" onclick="menuSlide(this, 'sub-menu');">
-        <i class="fa fa-th-large fa-icon" aria-hidden="true"></i>
-        <h2 class="heading">Danh mục sản phẩm</h2>
+  <div class="global-menu__content">
+    <div class="global-menu__item">
+      <div class="global-menu__title js-global-menu-sub active">
+        <i class="global-menu__icon fa fa-th-large" aria-hidden="true"></i>
+        <h2 class="global-menu__heading">Danh mục sản phẩm</h2>
       </div>
 
-      <div class="sub-menu js-sub-category" style="display: block;">
+      <div class="global-menu__sub" style="display: block;">
+
         {% for _item in component.product.all_category -%}
-        <div class="sub-item">
-          <div class="menu-title">
-            <i class="cat-thumb js-cat-thumb d-none lazy" data-bg="url({{ _item.big_image|default: global.settings.logo_file }}?v={{ global.settings.global_clear_image_cache }})"></i>
-            <a href="{{ _item.url }}" class="cat-title">{{ _item.title }}</a>
+        <div class="global-menu__sub-item">
+          <div class="global-menu__title">
+            <i class="global-menu__sub-thumb hide lazy js-global-menu-thumb" data-bg="url({{ _item.big_image|default: global.settings.logo_file }})"></i>
+            <a class="global-menu__sub-title" href="{{ _item.url }}">{{ _item.title }}</a>
             {% if _item.children -%}
-            <span class="cat-icon" onclick="menuSlide(this, 'sub-item');"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+            <span class="global-menu__sub-icon js-global-menu-sub-click">
+              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </span>
             {% endif -%}
           </div>
 
           {% if _item.children -%}
-          <div class="cat-child">
+          <div class="global-menu__sub-child">
+
             {% for _item in _item.children -%}
-            <div class="sub-item">
-              <div class="menu-title">
-                <i class="cat-thumb js-cat-thumb d-none lazy" data-bg="url({{ _item.big_image|default: global.settings.logo_file }}?v={{ global.settings.global_clear_image_cache }})"></i>
-                <a href="{{ _item.url }}" class="cat-title">{{ _item.title }}</a>
+            <div class="global-menu__sub-item">
+              <div class="global-menu__title">
+                <i class="global-menu__sub-thumb hide lazy js-global-menu-thumb" data-bg="url({{ _item.big_image|default: global.settings.logo_file }})"></i>
+                <a class="global-menu__sub-title" href="{{ _item.url }}">{{ _item.title }}</a>
                 {% if _item.children -%}
-                <span class="cat-icon" onclick="menuSlide(this, 'sub-item');"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                <span class="global-menu__sub-icon js-global-menu-child-click">
+                  <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </span>
                 {% endif -%}
               </div>
 
               {% if _item.children -%}
-              <div class="cat-child cat-child-2">
+              <div class="global-menu__sub-child global-menu__sub-child-2">
+
                 {% for _item in _item.children -%}
-                <div class="sub-item">
-                  <div class="menu-title">
-                    <a href="{{ _item.url }}" class="cat-title">{{ _item.title }}</a>
+                <div class="global-menu__sub-item">
+                  <div class="global-menu__title">
+                    <a class="global-menu__sub-title" href="{{ _item.url }}">{{ _item.title }}</a>
                     {% if _item.children -%}
-                    <span class="cat-icon" onclick="menuSlide(this, 'sub-item');">
+                    <span class="global-menu__sub-icon js-global-menu-child-click">
                       <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </span>
                     {% endif -%}
                   </div>
 
                   {% if _item.children -%}
-                  <div class="cat-child cat-child-3">
+                  <div class="global-menu__sub-child global-menu__sub-child-3">
+
                     {% for _item in _item.children -%}
-                    <div class="sub-item">
-                      <div class="menu-title">
-                        <a href="{{ _item.url }}" class="cat-title">{{ _item.title }}</a>
+                    <div class="global-menu__sub-item">
+                      <div class="global-menu__title">
+                        <a class="global-menu__sub-title" href="{{ _item.url }}">{{ _item.title }}</a>
                       </div>
                     </div>
                     {% endfor -%}
+
                   </div>
                   {% endif -%}
 
                 </div>
                 {% endfor -%}
+
               </div>
               {% endif -%}
 
             </div>
             {% endfor -%}
+
           </div>
           {% endif -%}
 
@@ -107,29 +124,29 @@
     </div>
   </div>
 
-  <div class="menu-support mt-1 mb-2">
-    <!--<a href="tel:+842435666910" class="item">
-      <i class="fa fa-phone-square fa-icon" aria-hidden="true"></i>
+  <div class="global-menu__support">
+    <!--<a class="global-menu__support-item" href="tel:+842435666910">
+      <i class="global-menu__icon fa fa-phone-square" aria-hidden="true"></i>
       <span>Hotline: <b class="color-red">(+84) 2435666910</b></span>
     </a>-->
-    <a href="/tin-tuc" class="item">
-      <i class="fa fa-newspaper-o fa-icon mt-1" aria-hidden="true"></i>
+    <a class="global-menu__support-item" href="/tin-tuc">
+      <i class="global-menu__icon fa fa-newspaper-o mt-1" aria-hidden="true"></i>
       <span>Tin tức</span>
     </a>
-    <a href="/san-pham-da-xem" class="item">
-      <i class="fa fa-eye fa-icon" aria-hidden="true"></i>
+    <a class="global-menu__support-item" href="/san-pham-da-xem">
+      <i class="global-menu__icon fa fa-eye" aria-hidden="true"></i>
       <span>Sản phẩm đã xem</span>
     </a>
-    <a href="/lien-he" class="item">
-      <i class="fa fa-briefcase fa-icon" aria-hidden="true"></i>
+    <a class="global-menu__support-item" href="/lien-he">
+      <i class="global-menu__icon fa fa-briefcase" aria-hidden="true"></i>
       <span>Liên hệ</span>
     </a>
-    <a href="/sitemap" class="item">
-      <i class="fa fa-sitemap fa-icon" aria-hidden="true"></i>
+    <a class="global-menu__support-item" href="/sitemap">
+      <i class="global-menu__icon fa fa-sitemap" aria-hidden="true"></i>
       <span>Sitemap</span>
     </a>
-    <a href="/" class="item">
-      <i class="fa fa-home fa-icon" aria-hidden="true" style="font-size: 24px;"></i>
+    <a class="global-menu__support-item" href="/">
+      <i class="global-menu__icon fa fa-home" aria-hidden="true" style="font-size: 24px;"></i>
       <span>Trang chủ</span>
     </a>
   </div>
@@ -137,24 +154,28 @@
 
 <!-- SCRIPT -->
 <script>
-  function menuToggle() {
-    $("#js-global-menu").toggleClass("active");
-    $("body").toggleClass("overflow-hidden");
+  function globalMenuHandle() {
+    // menu toggle display
+    $(".js-global-menu-toggle").on("click", function () {
+      $("#js-global-menu").toggleClass("active");
+      $("body").toggleClass("overflow-hidden");
 
-    const holder = "#js-fontawesome-link";
-    if ($(holder).length === 1) return;
+      const holder = "#js-fontawesome-link";
+      if ($(holder).length === 1) return;
 
-    const thumbs = ".js-cat-thumb";
-    $(thumbs).removeClass('d-none');
+      $(".js-cat-thumb").removeClass('hide');
+      $("head").append('<link rel="stylesheet" type="text/css" id="js-fontawesome-link" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />');
+    })
 
-    $("head").append('<link rel="stylesheet" type="text/css" id="js-fontawesome-link" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />');
-  }
+    // menu toggle slide
+    $(".js-global-menu-sub-click").on("click", function () {
+      $(this)
+        .toggleClass("active")
+        .closest(".global-menu__item").find(".global-menu__sub").slideToggle();
+    })
 
-  function menuSlide(_this, type) {
-    $(_this).toggleClass("active");
-
-    type === "sub-menu"
-      ? $(_this).closest(".menu-item").find(".sub-menu").slideToggle()
-      : $(_this).closest(".sub-item").find(".cat-child").first().slideToggle();
+    $(".js-global-menu-child-click").on("click", function () {
+      $(this).closest(".global-menu__sub-item").find(".global-menu__sub-child").first().slideToggle();
+    })
   }
 </script>

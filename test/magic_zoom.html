@@ -1,246 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
 
-    <style>
-      .magicZoom-holder {
-        position: relative;
-        cursor: pointer;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
 
-      .magicZoom-preview {
-        width: 400px;
-        height: 400px;
-        overflow: hidden;
-        position: absolute;
-        top: 50%;
-        left: 105%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-        -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-        background: #fff;
-        z-index: 9;
-      }
+  <style>
+    /* .magicZoom-holder{position:relative;cursor:pointer}
+    .magicZoom-preview{width:400px;height:400px;overflow:hidden;position:absolute;top:50%;left:105%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);-webkit-box-shadow:0 1px 5px rgba(0,0,0,.3);box-shadow:0 1px 5px rgba(0,0,0,.3);background:#fff;z-index:9}
+    .magicZoom-preview-img{position:absolute;top:0;left:0;-webkit-transform:scale(2);-ms-transform:scale(2);transform:scale(2);-webkit-transform-origin:left top;-ms-transform-origin:left top;transform-origin:left top}
+    .magicZoom-magnifiying-glass{width:200px;height:200px;border:1px dashed #000;position:absolute;top:0;left:0;background:rgba(0,0,0,.2)} */
+  </style>
+</head>
 
-      .magicZoom-preview-img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        -webkit-transform: scale(2);
-        -ms-transform: scale(2);
-        transform: scale(2);
-        -webkit-transform-origin: left top;
-        -ms-transform-origin: left top;
-        transform-origin: left top;
-      }
+<body>
+  <div class="detail-page">
+    <div class="container">
+      <!-- SECTION PRODUCT -->
+      <div class="section-product row mt-2 mb-4">
+        <!-- IMAGE THUMB -->
+        <div class="col-6">
+          <div class="pro-thumbs p-relative">
+            <div class="swiper gallery-top">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <a data-fancybox="gallery" title="Click để phóng to" href="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg"
+                    class="style-img-block magicZoom-holder">
+                    <img src="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg" alt="Product" class="style-img-content magicZoom-holder-img" />
+                  </a>
+                </div>
 
-      .magicZoom-magnifiying-glass {
-        width: 200px;
-        height: 200px;
-        border: 1px dashed #000;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: rgba(0, 0, 0, 0.2);
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="detail-page">
-      <div class="container">
-        <!-- SECTION PRODUCT -->
-        <div class="section-product row mt-2 mb-4">
-          <!-- IMAGE THUMB -->
-          <div class="col-6">
-            <div class="pro-thumbs p-relative">
-              <div class="swiper gallery-top">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                    <a
-                      data-fancybox="gallery"
-                      title="Click để phóng to"
-                      href="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg"
-                      class="style-img-block magicZoom-holder"
-                    >
-                      <img src="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg" alt="Product" class="style-img-content magicZoom-holder-img" />
-                    </a>
-                  </div>
-
-                  <div class="swiper-slide">
-                    <a
-                      data-fancybox="gallery"
-                      title="Click để phóng to"
-                      href="/images/pexels-eberhard-grossgasteiger-1624496.jpg"
-                      class="style-img-block magicZoom-holder"
-                    >
-                      <img src="/images/pexels-eberhard-grossgasteiger-1624496.jpg" alt="Product" class="style-img-content magicZoom-holder-img" />
-                    </a>
-                  </div>
+                <div class="swiper-slide">
+                  <a data-fancybox="gallery" title="Click để phóng to" href="/images/pexels-eberhard-grossgasteiger-1624496.jpg" class="style-img-block magicZoom-holder">
+                    <img src="/images/pexels-eberhard-grossgasteiger-1624496.jpg" alt="Product" class="style-img-content magicZoom-holder-img" />
+                  </a>
                 </div>
               </div>
+            </div>
 
-              <div thumbsSlider="" class="swiper gallery-thumbs product-images-slider mt-3">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                    <img src="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg" alt="Product" class="d-flex w-100" />
-                  </div>
+            <div thumbsSlider="" class="swiper gallery-thumbs product-images-slider mt-3">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img src="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg" alt="Product" class="d-flex w-100" />
+                </div>
 
-                  <div class="swiper-slide">
-                    <img src="/images/pexels-eberhard-grossgasteiger-1624496.jpg" alt="Product" class="d-flex w-100" />
-                  </div>
+                <div class="swiper-slide">
+                  <img src="/images/pexels-eberhard-grossgasteiger-1624496.jpg" alt="Product" class="d-flex w-100" />
                 </div>
               </div>
+            </div>
 
-              <!-- <a data-fancybox="gallery" title="Click để phóng to"
+            <!-- <a data-fancybox="gallery" title="Click để phóng to"
               href="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg" class="style-img-block magicZoom-holder">
               <img src="/images/st_pauls_cathedral_millennium_bridge_london_4k_8k.jpg" alt="Product"
                 class="style-img-content magicZoom-holder-img" />
             </a> -->
 
-              <div class="magicZoom-preview d-none">
-                <img src="" class="magicZoom-preview-img" />
-              </div>
+            <div class="magicZoom-preview d-none">
+              <img src="" class="magicZoom-preview-img" />
             </div>
           </div>
-
-          <!--  -->
-          <div class="col-6"></div>
         </div>
+
+        <!--  -->
+        <div class="col-6"></div>
       </div>
     </div>
+  </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-    <script src="/startup/js/library_hura8.js"></script>
-    <script>
-      // PRODUCT THUMBNAIL
-      let galleryThumbs = new Swiper(".gallery-thumbs", {
-        spaceBetween: 12,
-        slidesPerView: 5,
-        slideToClickedSlide: true,
-        freeMode: true,
-        watchSlidesProgress: true,
-        centerInsufficientSlides: true,
-      });
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+  <script src="/startup/js/library_hura8.js"></script>
+  <script>
+    // PRODUCT THUMBNAIL
+    let galleryThumbs = new Swiper(".gallery-thumbs", {
+      spaceBetween: 12,
+      slidesPerView: 5,
+      slideToClickedSlide: true,
+      freeMode: true,
+      watchSlidesProgress: true,
+      centerInsufficientSlides: true,
+    });
 
-      let galleryTop = new Swiper(".gallery-top", {
-        spaceBetween: 12,
-        slidesPerView: 1,
-        speed: 1000,
-        thumbs: {
-          swiper: galleryThumbs,
-        },
-        // AUTO SILDED AT FISRT AND END
-        on: {
-          slideChange: function () {
-            let activeIndex = this.activeIndex + 1;
+    let galleryTop = new Swiper(".gallery-top", {
+      spaceBetween: 12,
+      slidesPerView: 1,
+      speed: 1000,
+      thumbs: {
+        swiper: galleryThumbs,
+      },
+      // AUTO SILDED AT FISRT AND END
+      on: {
+        slideChange: function () {
+          let activeIndex = this.activeIndex + 1;
 
-            let activeSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex})`);
-            let nextSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex + 1})`);
-            let prevSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex - 1})`);
+          let activeSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex})`);
+          let nextSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex + 1})`);
+          let prevSlide = document.querySelector(`.gallery-thumbs .swiper-slide:nth-child(${activeIndex - 1})`);
 
-            if (nextSlide && !nextSlide.classList.contains("swiper-slide-visible")) {
-              this.thumbs.swiper.slideNext();
-            } else if (prevSlide && !prevSlide.classList.contains("swiper-slide-visible")) {
-              this.thumbs.swiper.slidePrev();
-            }
-          },
-        },
-      });
-    </script>
-
-    <script>
-      $(document).ready(function () {
-        magicZoomHandler(".magicZoom-holder");
-      });
-
-      function magicZoomHandler(target) {
-        if (!document.querySelector(target)) return;
-
-        const previewHolder = document.querySelector(".magicZoom-preview");
-        const imagePreview = document.querySelector(".magicZoom-preview-img");
-        const thumbs = document.querySelector(".gallery-thumbs");
-
-        document.querySelectorAll(target).forEach(function (holder) {
-          const image = holder.querySelector(".magicZoom-holder-img");
-
-          if (thumbs) {
-            const thumbsStyle = window.getComputedStyle(thumbs);
-            const previewHolderTop = (parseFloat(thumbsStyle.height.replace("px", "")) + 16) / 2;
-            previewHolder.style.top = "calc(50% - " + previewHolderTop + "px)";
+          if (nextSlide && !nextSlide.classList.contains("swiper-slide-visible")) {
+            this.thumbs.swiper.slideNext();
+          } else if (prevSlide && !prevSlide.classList.contains("swiper-slide-visible")) {
+            this.thumbs.swiper.slidePrev();
           }
+        },
+      },
+    });
+  </script>
 
-          magicZoomMouseMove(holder, image, imagePreview);
-          magicZoomMouseEnter(holder, image, imagePreview, previewHolder);
-          magicZoomMouseLeave(holder, imagePreview, previewHolder);
-        });
-      }
+  <script>
+    $(document).ready(function () {
+      magicZoomHandler(".magicZoom-holder");
+    });
 
-      function magicZoomMouseMove(holder, image, imagePreview) {
-        holder.addEventListener("mousemove", () => {
-          const magGlass = document.querySelector(".magicZoom-magnifiying-glass");
-          const magGlassWidth = magGlass.clientWidth;
+    function magicZoomHandler(target) {
+      if (!document.querySelector(target)) return;
 
-          const viewportTop = Math.floor(holder.getBoundingClientRect().top);
-          const viewportLeft = Math.floor(holder.getBoundingClientRect().left);
+      const previewHolder = document.querySelector(".magicZoom-preview");
+      const imagePreview = document.querySelector(".magicZoom-preview-img");
+      const thumbs = document.querySelector(".gallery-thumbs");
 
-          const imageStyle = window.getComputedStyle(image);
-          const imageMarginTop = parseFloat(imageStyle.marginTop.replace("px", ""));
-          const imageMarginBottom = parseFloat(imageStyle.marginBottom.replace("px", ""));
-          const imageMarginLeft = parseFloat(imageStyle.marginLeft.replace("px", ""));
-          const imageMarginRight = parseFloat(imageStyle.marginRight.replace("px", ""));
-          const height = image.clientHeight + imageMarginTop + imageMarginBottom;
-          const width = image.clientWidth + imageMarginLeft + imageMarginRight;
+      document.querySelectorAll(target).forEach(function (holder) {
+        const image = holder.querySelector(".magicZoom-holder-img");
 
-          let left = event.clientX - viewportLeft;
-          let top = event.clientY - viewportTop;
-          let previewWidth = imagePreview.clientWidth;
-          let previewHeight = imagePreview.clientHeight;
+        if (thumbs) {
+          const thumbsStyle = window.getComputedStyle(thumbs);
+          const previewHolderTop = (parseFloat(thumbsStyle.height.replace("px", "")) + 16) / 2;
+          previewHolder.style.top = "calc(50% - " + previewHolderTop + "px)";
+        }
 
-          let previewScale = previewWidth > previewHeight ? width : height;
-          let previewPixel = previewWidth > previewHeight ? previewWidth : previewHeight;
-          let previewCeilPixel = previewPixel / magGlassWidth;
-          let scaleValue = (previewScale * previewCeilPixel) / previewPixel;
+        magicZoomMouseMove(holder, image, imagePreview);
+        magicZoomMouseEnter(holder, image, imagePreview, previewHolder);
+        magicZoomMouseLeave(holder, imagePreview, previewHolder);
+      });
+    }
 
-          imagePreview.style.transform = "scale(" + scaleValue + ")";
-          let magTop = top - magGlassWidth / 2;
-          let magLeft = left - magGlassWidth / 2;
-          if (magTop <= 0) magTop = 0;
-          if (magLeft <= 0) magLeft = 0;
-          if (magLeft >= width - magGlassWidth) magLeft = width - magGlassWidth;
-          if (magTop >= height - magGlassWidth) magTop = height - magGlassWidth;
-          magGlass.style.top = magTop + "px";
-          magGlass.style.left = magLeft + "px";
-          imagePreview.style.top = -(previewCeilPixel * (magTop - imageMarginTop)) + "px";
-          imagePreview.style.left = -(previewCeilPixel * (magLeft - imageMarginLeft)) + "px";
-        });
-      }
+    function magicZoomMouseMove(holder, image, imagePreview) {
+      holder.addEventListener("mousemove", () => {
+        const magGlass = document.querySelector(".magicZoom-magnifiying-glass");
+        const magGlassWidth = magGlass.clientWidth;
 
-      function magicZoomMouseEnter(holder, image, imagePreview, previewHolder) {
-        holder.addEventListener("mouseenter", () => {
-          imagePreview.src = image.src;
-          previewHolder.classList.remove("d-none");
-          let magGlass = document.createElement("DIV");
-          magGlass.className = "magicZoom-magnifiying-glass";
-          holder.appendChild(magGlass);
-        });
-      }
+        const viewportTop = Math.floor(holder.getBoundingClientRect().top);
+        const viewportLeft = Math.floor(holder.getBoundingClientRect().left);
 
-      function magicZoomMouseLeave(holder, imagePreview, previewHolder) {
-        holder.addEventListener("mouseleave", () => {
-          let magGlass = holder.querySelector(".magicZoom-magnifiying-glass");
-          previewHolder.classList.add("d-none");
-          magGlass.parentNode.removeChild(magGlass);
-          imagePreview.style.top = 0;
-          imagePreview.style.left = 0;
-        });
-      }
-    </script>
-  </body>
+        const imageStyle = window.getComputedStyle(image);
+        const imageMarginTop = parseFloat(imageStyle.marginTop.replace("px", ""));
+        const imageMarginBottom = parseFloat(imageStyle.marginBottom.replace("px", ""));
+        const imageMarginLeft = parseFloat(imageStyle.marginLeft.replace("px", ""));
+        const imageMarginRight = parseFloat(imageStyle.marginRight.replace("px", ""));
+        const height = image.clientHeight + imageMarginTop + imageMarginBottom;
+        const width = image.clientWidth + imageMarginLeft + imageMarginRight;
+
+        let left = event.clientX - viewportLeft;
+        let top = event.clientY - viewportTop;
+        let previewWidth = imagePreview.clientWidth;
+        let previewHeight = imagePreview.clientHeight;
+
+        let previewScale = previewWidth > previewHeight ? width : height;
+        let previewPixel = previewWidth > previewHeight ? previewWidth : previewHeight;
+        let previewCeilPixel = previewPixel / magGlassWidth;
+        let scaleValue = (previewScale * previewCeilPixel) / previewPixel;
+
+        imagePreview.style.transform = "scale(" + scaleValue + ")";
+        let magTop = top - magGlassWidth / 2;
+        let magLeft = left - magGlassWidth / 2;
+        if (magTop <= 0) magTop = 0;
+        if (magLeft <= 0) magLeft = 0;
+        if (magLeft >= width - magGlassWidth) magLeft = width - magGlassWidth;
+        if (magTop >= height - magGlassWidth) magTop = height - magGlassWidth;
+        magGlass.style.top = magTop + "px";
+        magGlass.style.left = magLeft + "px";
+        imagePreview.style.top = -(previewCeilPixel * (magTop - imageMarginTop)) + "px";
+        imagePreview.style.left = -(previewCeilPixel * (magLeft - imageMarginLeft)) + "px";
+      });
+    }
+
+    function magicZoomMouseEnter(holder, image, imagePreview, previewHolder) {
+      holder.addEventListener("mouseenter", () => {
+        imagePreview.src = image.src;
+        previewHolder.classList.remove("d-none");
+        let magGlass = document.createElement("DIV");
+        magGlass.className = "magicZoom-magnifiying-glass";
+        holder.appendChild(magGlass);
+      });
+    }
+
+    function magicZoomMouseLeave(holder, imagePreview, previewHolder) {
+      holder.addEventListener("mouseleave", () => {
+        let magGlass = holder.querySelector(".magicZoom-magnifiying-glass");
+        previewHolder.classList.add("d-none");
+        magGlass.parentNode.removeChild(magGlass);
+        imagePreview.style.top = 0;
+        imagePreview.style.left = 0;
+      });
+    }
+  </script>
+</body>
+
 </html>
