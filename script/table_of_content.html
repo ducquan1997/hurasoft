@@ -122,9 +122,9 @@
         const result = document.createElement("ol");
         let nodes = [];
 
-        for (var i = targets.length; i > -1; i--) {
-          if ($(targets[i]).text().trim() != '') nodes.unshift(targets[i]);
-        };
+        for (var i = $heading.length; i > -1; i--) {
+          if ($($heading[i]).text().trim() != "") nodes.unshift($heading[i]);
+        }
 
         _buildTOC(nodes, result, 2);
 
@@ -149,7 +149,7 @@
 
       do {
         node = nodes.shift();
-      } while (node && !(/^h[234]$/i.test(node.tagName)));
+      } while (node && !/^h[234]$/i.test(node.tagName));
 
       if (node) {
         let ul, li, cnt;
@@ -162,16 +162,15 @@
           do {
             elm = elm.parentNode.parentNode;
             cnt--;
-          } while (cnt > (curLv - lv));
+          } while (cnt > curLv - lv);
         } else if (curLv > lv) {
           cnt = 0;
           do {
             li = elm.lastChild;
-            if (li == null)
-              li = elm.appendChild(document.createElement("li"));
+            if (li == null) li = elm.appendChild(document.createElement("li"));
             elm = li.appendChild(document.createElement("ol"));
             cnt++;
-          } while (cnt < (curLv - lv) && 1 < 2);
+          } while (cnt < curLv - lv && 1 < 2);
         }
 
         const text = node.innerText.trim();
@@ -179,7 +178,7 @@
         const text_new = _getAnchor(text, "text");
 
         li = elm.appendChild(document.createElement("li"));
-        li.innerHTML = `<a class="js-anchor-click ${curLv === 2 ? 'anchor-text-h2' : ''}" href="#${text_id}">${text_new}</a>`;
+        li.innerHTML = `<a class="js-anchor-click ${curLv === 2 ? "anchor-text-h2" : ""}" href="#${text_id}">${text_new}</a>`;
         _buildTOC(nodes, elm, lv + cnt);
       }
     }
@@ -187,7 +186,7 @@
     // sticky TOC handle
     function _stickyTOC() {
       if ($toc_sticky.length === 0) return;
-      $toc_sticky.find('.js-toc_nav').hide();
+      $toc_sticky.find(".js-toc_nav").hide();
 
       _scrollClick();
       _scrollHandle();
@@ -196,18 +195,21 @@
       function _scrollHandle() {
         let current_title = "";
         const margin_scroll = 182; // margin-scroll-top
-        const toc_distance = $toc_main.offset().top + $(holder).outerHeight();
+        const toc_distance = $toc_main.offset().top + $toc_main.outerHeight();
 
         $(window).scroll(function () {
           const scroll_top = $(document).scrollTop();
-          const isOnContent = isOnScreen("#footer-bottom");
-          const isHeaderFixed = $("#nav").hasClass("fixed");
+          // const isOnContent = isOnScreen("#footer-bottom");
+          // const isHeaderFixed = $("#nav").hasClass("fixed");
           const isOverDistance = scroll_top > toc_distance;
 
-          if (isOverDistance && !isOnContent && isHeaderFixed) $toc_sticky.fadeIn();
+          // if (isOverDistance && !isOnContent && isHeaderFixed) $toc_sticky.fadeIn();
+          if (isOverDistance) $toc_sticky.fadeIn();
           else $toc_sticky.hide();
 
-          const anchor_display = $(".js-scroll-anchor").toArray().filter((item) => $(item).offset().top - margin_scroll < scroll_top);//>
+          const anchor_display = $(".js-scroll-anchor")
+            .toArray()
+            .filter((item) => $(item).offset().top - margin_scroll < scroll_top); //>
           if (anchor_display.length === 0) return;
 
           const anchor_title = $(anchor_display.slice(-1)[0]).text().trim();
@@ -221,9 +223,9 @@
       // scroll click
       function _scrollClick() {
         $toc_sticky.find(".js-anchor-click").on("click", function () {
-          $toc_sticky_2.find(".js-toc_nav").hide();
-          $toc_sticky_2.find(".adp-toc-sticky-btn").text("Xem thêm").attr("data-init", "0");
-        })
+          $toc_sticky.find(".js-toc_nav").hide();
+          $toc_sticky.find(".adp-toc-sticky-btn").text("Xem thêm").attr("data-init", "0");
+        });
       }
     }
 
@@ -241,12 +243,12 @@
           html = current === "1" ? "Xem thêm" : "Thu gọn";
         }
         $(this).html(html).attr("data-init", init);
-      })
+      });
     }
 
     // get anchor
     function _getAnchor(text, type) {
-      const text_regex = new RegExp("([A-z])", 'gm');
+      const text_regex = new RegExp("([A-z])", "gm");
       const text_split = text.split(" ");
       const text_check_1 = text_split[0].match(text_regex);
       const text_check_2 = text_split[0].indexOf(".") != -1;
@@ -261,7 +263,7 @@
     // return
     return {
       setup: _setupTOC,
-    }
+    };
   })();
 
   // OPTION

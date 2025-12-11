@@ -1,0 +1,24 @@
+<!-- HURA 7 -->
+{$summary = explode("\n", $value.productSummary)} <!-- split array -->
+{function="str_replace('src', 'data-src', $article_detail.content)"} <!-- Replace string -->
+
+<!-- INDEX -->
+/setup/update_search.php
+/setup/update_request_path_pro.php
+/setup/update_request_path_article.php
+/setup/update_request_path_article_cat.php
+
+<!-- GITLAB -->
+1. Upload lần đầu
+git init
+git clone "URL" // Url : url folder repo (VD: https://repo.hurasoft.com/ducdt/giao_dien_web_mau.git)
+git add 'file tương ứng'
+git commit -m 'nội dung mô tả'
+git push origin master
+
+2. Upload file những lần tiếp theo
+git pull Link-repo master // Url : url folder repo (VD: https://repo.hurasoft.com/ducdt/giao_dien_web_mau.git)
+git status // Kiểm tra file nào có sự thay đổi
+git add 'tên file có sự thay đổi' // Là file được báo đỏ ở git status
+git commit -m 'nội dung mô tả' // Comment nội dung
+git push origin master
