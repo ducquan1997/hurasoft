@@ -1,4 +1,5 @@
 <!--BREADCRUMB HURA 8-->
+{% assign _page_url = global.module.path|default: global.module.request_path|default: global.url|remove: global.domain -%}
 {% if global.module.view != 'homepage' -%}
 <section class="section-breadcrumb routing">
   <div class="global-breadcrumb container">
@@ -33,7 +34,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="/tim?q={{ page.search_query|replace: ' ','+' }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> Tìm kiếm "{{ page.search_query }}" </span>
         </a>
         <meta itemprop="position" content="2" />
@@ -50,7 +51,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> {{ page.page_title }} </span>
         </a>
         <meta itemprop="position" content="2" />
@@ -67,7 +68,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> {{ page.collection_info.name }} </span>
         </a>
         <meta itemprop="position" content="2" />
@@ -84,7 +85,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> Sản phẩm đã xem </span>
         </a>
         <meta itemprop="position" content="2" />
@@ -101,7 +102,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> Tag: {{ page.tag_info.tag_name }} </span>
         </a>
         <meta itemprop="position" content="2" />
@@ -192,7 +193,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="{{ page.category_info.request_path }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> {{ page.category_info.name }} </span>
         </a>
         <meta itemprop="position" content="3" />
@@ -215,12 +216,17 @@
         <meta itemprop="position" content="2" />
       </li>
 
+      {% for _item in page.article_detail.categoryInfo -%}
+      {% if _item.name and _item.request_path -%}
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ page.article_detail.categoryInfo.0.request_path }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ page.article_detail.categoryInfo.0.name }} </span>
+        <a href="{{ _item.request_path }}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {{ _item.name }} </span>
         </a>
         <meta itemprop="position" content="3" />
       </li>
+      {% break -%}
+      {% endif -%}
+      {% endfor -%}
     </ol>
 
     {% else -%}
@@ -233,7 +239,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ global.url|remove: global.domain }}" itemprop="item" class="nopad-l">
+        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> {{ page.title }} </span>
         </a>
         <meta itemprop="position" content="2" />

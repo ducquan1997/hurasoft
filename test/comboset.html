@@ -1300,7 +1300,7 @@
       $modalSortButton.removeClass("active");
       $(_this).addClass("active");
 
-      ajaxParams = { ...ajaxParams, sort: sort };
+      ajaxParams = { ...ajaxParams, page: 1, sort: sort };
       defaultParams = { ...defaultParams, sort: sort };
       _modalProductLoad(); // render product list width sort
     }
