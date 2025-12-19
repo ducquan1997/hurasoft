@@ -1,9 +1,109 @@
-<!--BREADCRUMB HURA 8-->
-{% assign _page_url = global.module.path|default: global.module.request_path|default: global.url|remove: global.domain -%}
-{% if global.module.view != 'homepage' -%}
-<section class="section-breadcrumb routing">
+<!-- HURA 7 -->
+<!-- {if="strpos($current_page_url,'?type=ajax') > 0 "}
+{$section_content}
+
+{else}
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="resource-type" content="document" />
+
+    {if="$module.name == 'error' && $module.view == 'home'"}<meta name="robots" content="noindex, nofollow" />
+    {else}<meta name="robots" content="index, follow" />
+    {/if}
+
+    {$meta_title = $header.title}
+    {$meta_keywords = $header.keywords}
+    {$meta_description = $header.description}
+
+    <title>{$meta_title}</title>
+    <meta name="description"         content="{$meta_description}" />
+    <meta name="keywords"            content="{$meta_keywords}" />
+    <meta name="twitter:card" 		   content="summary_large_image" />
+    <meta name="twitter:site" 		   content="@website" />
+    <meta property="fb:app_id"       content="" prefix="fb: https://ogp.me/ns/fb#">
+    <meta property="og:locale"       content="vi_VN">
+    <meta property="og:url"          content="{#CURRENT_URL#}" />
+    <meta property="og:title"        content="{$meta_title}" name="twitter:title" />
+    <meta property="og:description"  content="{$meta_description}" name="twitter:description" />
+    <meta property="og:image:alt"    content="{$meta_title}" name="twitter:image:alt" />
+    <meta property="og:image:width"  content="640" />
+    <meta property="og:image:height" content="360" />
+
+    {$og_type = 'website'}{if="$module.view == 'product-detail'"}{$og_type = 'product'}{elseif="$module.name == 'article'"}{$og_type = 'article'}{/if}
+    <meta property="og:type"         content="{$og_type}">
+
+    {$og_image = $settings.logo_file}
+    {if="$module.view == 'product-detail'"}
+    {$og_image = $product_info.productImage.original}
+    {elseif="$module.name == 'product' && $module.view == 'category' && $current_category.img_big != '' && $current_category.img_big != '0'"}
+    {$og_image = '/media/category/'.$current_category.img_big}
+    {elseif="$module.name == 'article' && $module.view == 'category' && $category_info.imgUrl != '' && $category_info.imgUrl != '0'"}
+    {$og_image = $category_info.imgUrl}
+    {elseif="$module.name == 'article' && $module.view == 'detail' && $article_detail.image.original != '' && $article_detail.image.original != '0'"}
+    {$og_image = $article_detail.image.original}
+    {/if}
+    <meta property="og:image"        content="{#CURRENT_DOMAIN#}{$og_image}" itemprop="image" />
+
+    {$canonical = CURRENT_URL}
+    {if="strlen($header.canonical) > 4"}{$canonical = $header.canonical} 
+    {elseif="$module.name == 'product'"}
+    {if="$module.view == 'category'"}{$canonical = $current_category.request_path}
+    {elseif="$module.view == 'search'"}{$canonical = '/tim?q='.$search_query}
+    {elseif="$module.view == 'product-hot'"}
+    {if="$header.title == 'Sản phẩm được hỏi nhiều'"}{$canonical = '/san-pham-hot'}
+    {elseif="$header.title == 'Sản phẩm mới'"}{$canonical = '/san-pham-moi'}
+    {elseif="$header.title == 'Sản phẩm xả hảng'"}{$canonical = '/san-pham-xa-hang'}
+    {elseif="$header.title == 'Sản phẩm bán chạy'"}{$canonical = '/san-pham-ban-chay'}
+    {/if}
+    {elseif="$module.view == 'view-history'"}{$canonical = '/san-pham-da-xem'}
+    {elseif="$module.view == 'product-tag'"}{$canonical = '/tag/'.$tag_info.tag_url}
+    {elseif="$module.view == 'colletion'"}{$canonical = $collection_info.url}
+    {/if}
+    {elseif="$module.name == 'brand' && $module.view == 'detail'"}{$canonical = '/brand/'.$brand_info.brand_index}
+    {elseif="$module.name == 'article'"}
+    {if="$module.view == 'category'"}{$canonical = $category_info.request_path}
+    {elseif="$module.name == 'detail'"}{$canonical = $article_detail.url}
+    {/if}
+    {/if}
+
+    {if="strpos($canonical, 'trungchinhaudio.vn') > 0"}<link rel="canonical" href="{$canonical}">
+    {else}<link rel="canonical" href="{#CURRENT_DOMAIN#}{$canonical}">
+    {/if}
+
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for {#CURRENT_DOMAIN#}" href="/product.rss" />
+    <link rel="shortcut icon" href="{#CURRENT_DOMAIN#}{#INCLUDE_PATH#}favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/sf-pro-display?styles=98774,98773,98770">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="{#CURRENT_DOMAIN#}{#INCLUDE_PATH#}library_css.css?v=1.0" />
+    <link rel="stylesheet" href="{#CURRENT_DOMAIN#}{#INCLUDE_PATH#}style.css?v=1.0" />
+  </head>
+
+  <body>
+    {include='other/header'}
+
+    {include='other/breadcrumb'}
+
+    {$section_content}
+
+    {include='other/footer'}
+
+    {include='javascript/index'}
+  </body>
+</html>
+
+{/if} -->
+
+<!-- HURA 7 -->
+{if="$module.name != 'home'"}
+<section class="section-breakcrumb routing">
   <div class="global-breadcrumb container">
-    {% if global.module.name == 'product' and global.module.view == 'category' -%}
+    {if="$module.name == 'product' && $module.view == 'category'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -11,20 +111,17 @@
         </a>
         <meta itemprop="position" content="1">
       </li>
-
-      {% assign counter = 1 -%}
-      {% for path in page.current_category.path.path -%}
-      {% increment counter -%}
+      {loop="$current_category.path.path"}
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ path.url }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ path.name }} </span>
+        <a href="{$value.url}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$value.name} </span>
         </a>
-        <meta itemprop="position" content="{{ counter }}" />
+        <meta itemprop="position" content="{$counter + 2}" />
       </li>
-      {% endfor -%}
+      {/loop}
     </ol>
 
-    {% elsif global.module.view == 'product-search' -%}
+    {elseif="$module.view == 'search'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -34,14 +131,14 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="/tim?q={{ page.search_query|replace: ' ','+' }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> Tìm kiếm "{{ page.search_query }}" </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tìm kiếm "{$search_query}" </span>
         </a>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
 
-    {% elsif global.module.view == 'product-hot' -%}
+    {elseif="$module.view == 'product-hot'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -51,14 +148,14 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ page.page_title }} </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$header.title} </span>
         </a>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
 
-    {% elsif global.module.view == 'product-collection' -%}
+    {elseif="$module.view == 'collection'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -68,14 +165,14 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ page.collection_info.name }} </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$colletion_info.name} </span>
         </a>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
 
-    {% elsif global.module.view == 'product-view-history' -%}
+    {elseif="$module.view == 'product-view-history'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -85,14 +182,14 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
           <span itemprop="name"> Sản phẩm đã xem </span>
         </a>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
 
-    {% elsif global.module.name == 'tag' -%}
+    {elseif="$module.view == 'product-tag'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -102,14 +199,14 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> Tag: {{ page.tag_info.tag_name }} </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> Tag: {$tag_info.tag_name} </span>
         </a>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
 
-    {% elsif global.module.view == 'product-detail' -%}
+    {elseif="$module.view == 'product-detail'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -118,24 +215,24 @@
         <meta itemprop="position" content="1">
       </li>
 
-      {% assign counter = 1 -%}
-      {% for path in page.product_info.productPath.0.path -%}
-      {% increment counter -%}
+      {$detail_counter = 2}
+      {loop="$product_info.productPath.0.path"}
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ path.url }}" itemprop="item"> <span itemprop="name"> {{ path.name }} </span> </a>
-        <meta itemprop="position" content="{{ counter }}" />
+        <a href="{$value.url}" itemprop="item"> <span itemprop="name"> {$value.name} </span> </a>
+        <meta itemprop="position" content="{$counter + 2}" />
       </li>
-      {% endfor -%}
+      {$detail_counter = $detail_counter + 1}
+      {/loop}
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ page.product_info.productUrl }}" itemprop="item">
-          <span itemprop="name"> {{ page.product_info.productName }} </span>
+        <a href="{$product_info.productUrl}" itemprop="item">
+          <span itemprop="name"> {$product_info.productName} </span>
         </a>
-        <meta itemprop="position" content="{{ counter|plus: 1 }}" />
+        <meta itemprop="position" content="{$detail_counter}" />
       </li>
     </ol>
 
-    {% elsif global.module.name == 'brand' and global.module.view == 'detail' -%}
+    {elseif="$module.name == 'brand' && $module.view == 'detail'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -144,22 +241,22 @@
         <meta itemprop="position" content="1">
       </li>
 
-      <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+      <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
         <a href="/brand" itemprop="item" class="nopad-l">
-          <span itemprop="name">Thương hiệu</span>
+          <span itemprop="name"> Thương hiệu </span>
         </a>
-        <meta itemprop="position" content="2">
+        <meta itemprop="position" content="2" />
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="/brand/{{ page.brand_info.brand_index }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ page.brand_info.name }} </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$brand_info.name} </span>
         </a>
         <meta itemprop="position" content="3" />
       </li>
     </ol>
 
-    {% elsif global.module.name == 'article' and global.module.view == 'home' -%}
+    {elseif="$module.name == 'article' && $module.view == 'article-home'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -176,7 +273,7 @@
       </li>
     </ol>
 
-    {% elsif global.module.name == 'article' and global.module.view == 'category' -%}
+    {elseif="$module.name == 'article' && $module.view == 'category'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -193,14 +290,14 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ page.category_info.request_path }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ page.category_info.name }} </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$category_info.name} </span>
         </a>
         <meta itemprop="position" content="3" />
       </li>
     </ol>
 
-    {% elsif global.module.name == 'article' and global.module.view == 'detail' -%}
+    {elseif="$module.name == 'article' && $module.view == 'detail'"}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -216,20 +313,15 @@
         <meta itemprop="position" content="2" />
       </li>
 
-      {% for _item in page.article_detail.categoryInfo -%}
-      {% if _item.name and _item.request_path -%}
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ _item.request_path }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ _item.name }} </span>
+        <a href="{$article_detail.url}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$article_detail.title} </span>
         </a>
         <meta itemprop="position" content="3" />
       </li>
-      {% break -%}
-      {% endif -%}
-      {% endfor -%}
     </ol>
 
-    {% else -%}
+    {else}
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
         <a href="/" itemprop="item" class="nopad-l">
@@ -239,18 +331,18 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="{{ _page_url }}" itemprop="item" class="nopad-l">
-          <span itemprop="name"> {{ page.title }} </span>
+        <a href="{#CURRENT_URL#}" itemprop="item" class="nopad-l">
+          <span itemprop="name"> {$header.title} </span>
         </a>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
-    {% endif -%}
+    {/if}
   </div>
 </section>
 
-{% else -%}
-<section class="section-breadcrumb routing" style="display: none;">
+{else}
+<section class="section-breakcrumb routing" style="display: none;">
   <div class="global-breadcrumb container">
     <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
       <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
@@ -262,5 +354,4 @@
     </ol>
   </div>
 </section>
-
-{% endif -%}
+{/if}

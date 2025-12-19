@@ -73,14 +73,14 @@ input[type=email]:focus,input[type=password]:focus,input[type=text]:focus,select
 .global-popup-modal__button{display:none;line-height:40px;font-size:14px;padding:0 20px;margin-top:16px;border-radius:5px;font-weight:600;cursor:pointer;-webkit-transition:background .3s ease-in-out;-o-transition:background .3s ease-in-out;transition:background .3s ease-in-out}
 .global-popup-modal__button.show{display:block}
 .global-popup-modal__button.close{display:block;color:var(--color-primary);border:1px solid var(--color-primary)}
-.global-popup-modal__button.close:hover{color:#fff;background:var(--color-primary)}
+.global-popup-modal__button.close:hover{color:#fff;background:var(--color-hover)}
 .global-popup-modal__button.close.default{color:#fff;background:var(--color-primary);border:0}
 .global-popup-modal__button.close.default:hover{background:var(--color-hover)}
 .global-popup-modal__button.submit{background:var(--color-primary);color:#fff}
 .global-popup-modal__button.submit:hover{background:var(--color-hover)}
 .global-popup-modal__button.cancel{text-decoration:underline;color:#999}
 .global-popup-modal__button.cancel:hover{color:#000}
-.global-popup-modal__button.revert{all:revert;cursor:pointer}
+.global-popup-modal__button.revert,.global-popup-modal__button.revert:hover{all:revert;cursor:pointer}
 .global-popup-modal__container.success{--color-primary:#24cb01;--color-hover:#35dd35}
 .global-popup-modal__container.warning{--color-primary:#ffcc00;--color-hover:#fcd94c}
 .global-popup-modal__container.confirm .global-popup-modal__button.cancel,.global-popup-modal__container.confirm .global-popup-modal__button.submit{display:block}

@@ -1,0 +1,189 @@
+<!-- FIXED RIGHT CONTACT -->
+<div class="floating-support">
+  <a class="floating-support__item" href="https://zalo.me/2715224896645157653" target="_blank">
+    <div class="floating-support__item__wrapper">
+      <img src="/static/assets/default/images/thanhliem-icon-cta-1.png" alt="zalo" width="40" height="40">
+    </div>
+    <div class="floating-support__item__content">
+      <p><b>Chat Zalo</b></p>
+      <span>(7h15 - 20h00)</span>
+    </div>
+  </a>
+
+  <a class="floating-support__item" href="tel:0917632211">
+    <div class="floating-support__item__icon">
+      <i class="fa fa-phone" aria-hidden="true" style="font-size: 24px;color: green"></i>
+    </div>
+    <div class="floating-support__item__content">
+      <p><b>0917.632.211</b></p>
+      <span>(7h15 - 20h00)</span>
+    </div>
+  </a>
+
+  <a class="floating-support__item" href="https://zalo.me/2715224896645157653" target="_blank">
+    <div class="floating-support__item__wrapper">
+      <img src="/static/assets/default/images/thanhliem-icon-cta-3.png" alt="messenger" width="40" height="40">
+    </div>
+    <div class="floating-support__item__content">
+      <p><b>Chat Facebook</b></p>
+      <span>(7h15 - 20h00)</span>
+    </div>
+  </a>
+</div>
+
+<style>
+  .floating-support {
+    position: fixed;
+    z-index: 5;
+    right: 20px;
+    bottom: 70px;
+    font-size: 0;
+    width: 60px
+  }
+
+  .floating-support__item {
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    border-radius: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    white-space: nowrap;
+    background: #fff;
+    padding: 10px 15px 10px 15px;
+    line-height: 1;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    width: 170px;
+    -webkit-transform: translateX(-108px);
+    -ms-transform: translateX(-108px);
+    transform: translateX(-108px);
+    overflow: hidden;
+    text-decoration: none !important
+  }
+
+  .floating-support__item__icon {
+    width: 40px;
+    height: 40px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0
+  }
+
+  .floating-support__item__content {
+    margin-left: 10px;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s
+  }
+
+  .floating-support__item__content p {
+    font-size: 14px;
+    color: #000;
+    margin: 0
+  }
+
+  .floating-support__item__content span {
+    margin-top: 5px;
+    display: block;
+    color: #8f8f8f;
+    font-size: 12px
+  }
+
+  .floating-support__item:hover {
+    background: #fffceb;
+    -webkit-box-shadow: 0 10px 15px rgba(0, 0, 0, .2);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, .2);
+    -webkit-transform: translateX(-108px);
+    -ms-transform: translateX(-108px);
+    transform: translateX(-108px);
+    width: 180px
+  }
+
+  .floating-support__item:hover .floating-support__item__content {
+    -webkit-transition-delay: 0.1s;
+    -o-transition-delay: 0.1s;
+    transition-delay: 0.1s;
+    opacity: 1
+  }
+
+  @media (max-width:1400px) {
+    .floating-support__item {
+      -webkit-transform: translateX(0);
+      -ms-transform: translateX(0);
+      transform: translateX(0);
+      width: 60px;
+      padding: 10px
+    }
+
+    .floating-support__item__content {
+      opacity: 0
+    }
+  }
+
+  @media (max-width:576px) {
+    .floating-support {
+      right: -10px
+    }
+
+    .floating-support__item {
+      padding: 10px 15px 10px 10px;
+      width: 150px;
+      border-radius: 50px 0 0 50px
+    }
+  }
+</style>
+
+<!-- ADMIN TEMPLATE -->
+<script>
+  $.post(
+    "admin/action.php",
+    {
+      action: "update-tpl",
+      tpl_file: "shop_data.js.script",
+      folder: "",
+      tpl_code: 'var hura = [\n  {\n    id: 2,\n    name: "Hurama 2",\n  },\n];', //$("#tpl_editor").val()
+      template_set: "mau_3",
+    },
+    function (data) {
+      console.log("log = " + data);
+    }
+  );
+</script>
+
+<!-- GROUP ARRAY -->
+<script>
+  const groupArray = (arr, size) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
+  };
+
+  const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const groupedArray = groupArray(originalArray, 3);
+</script>

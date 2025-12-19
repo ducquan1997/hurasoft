@@ -624,10 +624,10 @@ function QiuFormValue(obj, key) {
     content: "Nội dung thông báo", // default = "" - [option]
     icon: "<i class='modal-icon-new'></i>", // replace default icon, need style - [option]
     submitButtonText: "Xác nhận", // default = "Xác nhận" - [option]
-    cancelButtonText: "Hủy bỏ", // default = "Hủy bỏ" - [option]
-    closeButtonText: "Đóng", // default = "Đóng" - [option]
     submitButtonHTML: "<div>Xác nhận</div>", // default = "" - override [submitButtonText] and replace default button, need style - [option]
+    cancelButtonText: "Hủy bỏ", // default = "Hủy bỏ" - [option]
     cancelButtonHTML: "<div>Hủy bỏ</div>", // default = "" - override [cancelButtonText] and replace default button, need style - [option]
+    closeButtonText: "Đóng", // default = "Đóng" - [option]
     closeButtonHTML: "<div>Đóng</div>", // default = "" - override [closeButtonText] and replace default button, need style - [option]
     submitButtonUrl: "/url-chuyen-den-sau-khi-an-xac-nhan", // default = undefined - [option]
     cancelButtonUrl: "/url-chuyen-den-sau-khi-an-huy-bo", // default = undefined - [option]
@@ -645,62 +645,81 @@ function QiuFormValue(obj, key) {
 */
 
 async function QiuModal(params) {
-  // VARIANT
+  // MODAL VARIANT
   const p_frame = "#js-global-popup-frame";
   const p_modal = "#js-global-popup-modal";
 
-  // PROMISE
+  // MODAL PROMISE
   return await new Promise(function (resolve, reject) {
-    _render();
-    _addon();
+    // call handle
+    modalRender();
+    modalAddon();
 
-    // BLIND BUTTON CLICK MODAL
-    $(p_modal + " .global-popup-modal__button.submit").off().on("click", function () {
-      _hide(params.submitButtonUrl);
-      resolve({ status: "submit", result: true });
-    });
+    // blind click to [submit button]
+    $(p_modal + " .global-popup-modal__button.submit")
+      .off()
+      .on("click", function () {
+        modalClose(params.submitButtonUrl);
+        resolve({ status: "submit", result: true });
+      });
 
-    $(p_modal + " .global-popup-modal__button.cancel").off().on("click", function () {
-      _hide(params.cancelButtonUrl);
-      resolve({ status: "cancel", result: false });
-    });
+    // blind click to [cancel button]
+    $(p_modal + " .global-popup-modal__button.cancel")
+      .off()
+      .on("click", function () {
+        modalClose(params.cancelButtonUrl);
+        resolve({ status: "cancel", result: false });
+      });
 
-    $(p_modal + " .global-popup-modal__button.close").off().on("click", function () {
-      _hide(params.closeButtonUrl);
-      resolve({ status: "close", result: null });
-    });
+    // blind click to [close button]
+    $(p_modal + " .global-popup-modal__button.close")
+      .off()
+      .on("click", function () {
+        modalClose(params.closeButtonUrl);
+        resolve({ status: "close", result: null });
+      });
   });
 
-  // DISPLAY MODAL
-  function _render() {
-    let modalIcon, closeBTN;
+  // MODAL RENDER
+  function modalRender() {
+    // modal components
+    let modalIcon;
     let modalTitle = params.title ? params.title : "";
     const modalType = params.type ? params.type : "";
     const modalContent = params.content ? params.content : "";
 
-    const submitHTML = params.submitButtonHTML ? params.submitButtonHTML : params.submitButtonText;
-    const cancelHTML = params.cancelButtonHTML ? params.cancelButtonHTML : params.cancelButtonText;
-    const closeHTML = params.closeButtonHTML ? params.closeButtonHTML : params.closeButtonText;
-    const submitBTN = submitHTML
-      ? `<div class="global-popup-modal__button submit show ${params.submitButtonHTML ? 'revert' : ''}">${submitHTML}</div>`
+    // modal button html
+    const submitHTML = params.submitButtonHTML;
+    const cancelHTML = params.cancelButtonHTML;
+    const closeHTML = params.closeButtonHTML;
+
+    // modal button inner
+    const submitInner = submitHTML ? submitHTML : params.submitButtonText;
+    const cancelInner = cancelHTML ? cancelHTML : params.cancelButtonText;
+    const closeInner = closeHTML ? closeHTML : params.closeButtonText;
+
+    // modal button final
+    const submitBTN = submitInner
+      ? `<div class="global-popup-modal__button submit show ${submitHTML ? "revert" : ""}">${submitInner}</div>`
       : '<div class="global-popup-modal__button submit">Xác nhận</div>';
-    const cancelBTN = cancelHTML
-      ? `<div class="global-popup-modal__button cancel show ${params.cancelButtonHTML ? 'revert' : ''}">${cancelHTML}</div>`
+    const cancelBTN = cancelInner
+      ? `<div class="global-popup-modal__button cancel show ${cancelHTML ? "revert" : ""}"">${cancelInner}</div>`
       : '<div class="global-popup-modal__button cancel">Hủy bỏ</div>';
+    let closeBTN = closeInner
+      ? `<div class="global-popup-modal__button close show ${closeHTML ? "revert" : ""}"">${closeInner}</div>`
+      : '<div class="global-popup-modal__button close default">Đóng</div>';
 
-    _type();
-    _display();
+    // modal handle
+    _createModal();
+    _displayModal();
 
-    function _type() {
-      if (submitHTML || cancelHTML || modalType === "confirm")
-        closeBTN = closeHTML
-          ? `<div class="global-popup-modal__button close show ${params.closeButtonHTML ? 'revert' : ''}">${closeHTML}</div>`
-          : '<div class="global-popup-modal__button close">Đóng</div>';
-      else
-        closeBTN = closeHTML
-          ? `<div class="global-popup-modal__button close default show ${params.closeButtonHTML ? 'revert' : ''}">${closeHTML}</div>`
-          : '<div class="global-popup-modal__button close default">Đóng</div>';
+    // create Modal
+    function _createModal() {
+      // modal close button check
+      if (submitInner || cancelInner || modalType === "confirm")
+        closeBTN = closeInner ? `<div class="global-popup-modal__button close default show">${closeInner}</div>` : '<div class="global-popup-modal__button close">Đóng</div>';
 
+      // modal type handle
       let modalIconPath = "";
       switch (modalType) {
         case "success":
@@ -727,12 +746,14 @@ async function QiuModal(params) {
           break;
       }
 
+      // modal icon
       modalIcon = params.icon
         ? params.icon
         : `<svg class="global-popup-modal__icon" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><path d="${modalIconPath}"/></svg>`;
     }
 
-    function _display() {
+    // display Modal
+    function _displayModal() {
       const container = '<div class="global-popup-frame" id="js-global-popup-frame"><div class="global-popup-modal" id="js-global-popup-modal"></div></div>';
       if ($(p_frame).length === 0) $("body").append(container);
 
@@ -741,7 +762,7 @@ async function QiuModal(params) {
           <div class="global-popup-modal__wrapper">${modalIcon}</div>
           <span class="global-popup-modal__title">${modalTitle}</span>
           <div class="global-popup-modal__noffy">${modalContent}</div>
-          <div class="global-popup-modal__button-box">${closeBTN}${cancelBTN}${submitBTN}</div>
+          <div class="global-popup-modal__button-box">${submitBTN}${cancelBTN}${closeBTN}</div>
         </div>
       `;
 
@@ -751,12 +772,13 @@ async function QiuModal(params) {
     }
   }
 
-  // ADDON MODAL
-  function _addon() {
+  // MODAL ADDON
+  function modalAddon() {
+    // handle
     const countdown = params.countdown;
     if (countdown) _countDown();
 
-    // COUNTDOWN MODAL
+    // countdown
     function _countDown() {
       const title = countdown.title ? countdown.title : "Tự động đóng sau";
       let times = countdown.time && countdown.time > 0 ? Math.ceil(countdown.time / 1000) : 0;
@@ -777,21 +799,21 @@ async function QiuModal(params) {
       const href = countdown.redirect === "" || countdown.redirect ? countdown.redirect : undefined;
       const timer = setInterval(_timeDown, 1000);
 
+      // timedown
       function _timeDown() {
-        let check = $(p_modal).hasClass("hide-modal");
         times = --times;
-        $(".global-popup-modal__count-down-number").html((times));
+        $(".global-popup-modal__count-down-number").html(times);
 
-        if (times <= 0 || check) {
+        if (times <= 0 || $(p_modal).hasClass("hide-modal")) {
           clearInterval(timer);
-          _hide(href);
+          modalClose(href);
         }
       }
     }
   }
 
-  // CLOSE MODAL
-  function _hide(href) {
+  // MODAL CLOSE
+  function modalClose(href) {
     $(p_frame).addClass("hide-modal");
     $(p_modal).addClass("hide-modal");
     $("body").css("overflow", "auto");
