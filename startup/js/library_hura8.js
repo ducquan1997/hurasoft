@@ -703,10 +703,10 @@ async function QiuModal(params) {
       ? `<div class="global-popup-modal__button submit show ${submitHTML ? "revert" : ""}">${submitInner}</div>`
       : '<div class="global-popup-modal__button submit">Xác nhận</div>';
     const cancelBTN = cancelInner
-      ? `<div class="global-popup-modal__button cancel show ${cancelHTML ? "revert" : ""}"">${cancelInner}</div>`
+      ? `<div class="global-popup-modal__button cancel show ${cancelHTML ? "revert" : ""}">${cancelInner}</div>`
       : '<div class="global-popup-modal__button cancel">Hủy bỏ</div>';
     let closeBTN = closeInner
-      ? `<div class="global-popup-modal__button close show ${closeHTML ? "revert" : ""}"">${closeInner}</div>`
+      ? `<div class="global-popup-modal__button close show ${closeHTML ? "revert" : ""}">${closeInner}</div>`
       : '<div class="global-popup-modal__button close default">Đóng</div>';
 
     // modal handle
@@ -716,7 +716,7 @@ async function QiuModal(params) {
     // create Modal
     function _createModal() {
       // modal close button check
-      if (submitInner || cancelInner || modalType === "confirm")
+      if (submitInner || cancelInner)
         closeBTN = closeInner ? `<div class="global-popup-modal__button close default show">${closeInner}</div>` : '<div class="global-popup-modal__button close">Đóng</div>';
 
       // modal type handle

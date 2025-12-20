@@ -156,34 +156,3 @@
     }
   }
 </style>
-
-<!-- ADMIN TEMPLATE -->
-<script>
-  $.post(
-    "admin/action.php",
-    {
-      action: "update-tpl",
-      tpl_file: "shop_data.js.script",
-      folder: "",
-      tpl_code: 'var hura = [\n  {\n    id: 2,\n    name: "Hurama 2",\n  },\n];', //$("#tpl_editor").val()
-      template_set: "mau_3",
-    },
-    function (data) {
-      console.log("log = " + data);
-    }
-  );
-</script>
-
-<!-- GROUP ARRAY -->
-<script>
-  const groupArray = (arr, size) => {
-    const result = [];
-    for (let i = 0; i < arr.length; i += size) {
-      result.push(arr.slice(i, i + size));
-    }
-    return result;
-  };
-
-  const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const groupedArray = groupArray(originalArray, 3);
-</script>

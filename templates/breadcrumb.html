@@ -34,7 +34,7 @@
       </li>
 
       <li class="routing-link" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-        <a href="/tim?q={{ page.search_query|replace: ' ','+' }}" itemprop="item" class="nopad-l">
+        <a href="/tim?q={{ page.search_query|url_encode }}" itemprop="item" class="nopad-l">
           <span itemprop="name"> Tìm kiếm "{{ page.search_query }}" </span>
         </a>
         <meta itemprop="position" content="2" />
