@@ -76,3 +76,156 @@
   const originalArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const groupedArray = groupArray(originalArray, 3);
 </script>
+
+<!-- VIEW MORE 1.0 - 24/12/2025 -->
+<script>
+  $(document).ready(function () {
+    QiuViewMore(".js-vm-holder");
+  });
+
+  function QiuViewMore(holders) {
+    // if no holder, return
+    if ($(holders).length === 0) {
+      console.log("Không tìm thấy Element phù hợp!");
+      return;
+    }
+
+    // for loop holder
+    $(holders).each(function () {
+      const $holder = $(this);
+      const $content = $holder.find(".vm-content");
+
+      const type = $holder.attr("vm-type") ? $holder.attr("vm-type") : "static";
+      const limited = $holder.attr("vm-limited") ? parseInt($holder.attr("vm-limited")) : 500;
+      const total = type === "static" ? $content[0].scrollHeight : $holder.find(".vm-list-item").length;
+
+      const $button = $holder.find(".vm-btn");
+      const $itemOver = $holder.find(`.vm-list-item:nth-child(n + ${limited + 1})`);
+
+      // if not meet limited, return
+      if (total <= limited) {
+        if (type === "static") $content.removeClass("blur");
+        $holder.find(".vm-btn").remove();
+        return;
+      }
+
+      // if true, startup by type
+      switch (type) {
+        case "static":
+          $content.addClass("condensed");
+          break;
+
+        case "list":
+          $itemOver.hide();
+          break;
+
+        case "paging":
+          $itemOver.hide();
+          _pagingHandle();
+          return;
+
+        default:
+          return;
+      }
+
+      // call handle
+      _clickHandle();
+
+      // click handle (main)
+      function _clickHandle() {
+        $button.on("click", function (item, index) {
+          const view_step = $holder.attr("vm-step") ? parseInt($holder.attr("vm-step")) : 0;
+          const button_text = $holder.attr("vm-text") ? $holder.attr("vm-text") : "Xem thêm";
+          const button_reverse = $holder.attr("vm-text-reverse") ? $holder.attr("vm-text-reverse") : "Thu gọn";
+          const button_icon = $button.find(".vm-btn-icon").length ? $button.find(".vm-btn-icon")[0].outerHTML : "";
+          const button_status = typeof $button.data("status") === "undefined" ? 1 : $button.data("status");
+
+          // button display handle
+          button_status && !view_step
+            ? $button
+              .html(button_reverse + button_icon)
+              .data("status", 0)
+              .addClass("show-less")
+            : $button
+              .html(button_text + button_icon)
+              .data("status", 1)
+              .removeClass("show-less");
+
+          // type "list" handle
+          if (type === "list") {
+            // list has step, return
+            if (view_step) {
+              const item_start = parseInt($holder.attr("vm-limited"));
+              const item_end = item_start + view_step;
+              const item_remain = total - item_start;
+
+              // item_remain > 0, display more item per step, return
+              if (item_remain > 0) {
+                $holder.attr("vm-limited", item_end).find(`.vm-list-item:nth-child(n+${item_start}):nth-child(-n+${item_end})`).slideDown();
+
+                if (item_remain <= view_step) {
+                  $button.html(button_reverse + button_icon);
+                }
+
+                return;
+              }
+
+              // hide all item_over, reset display
+              $holder.attr("vm-limited", limited);
+              $button.html(button_text + button_icon);
+            }
+
+            // toggle item_over display, return
+            $itemOver.slideToggle();
+            if (!button_status) _scrollTop();
+            return;
+          }
+
+          // type "static" handle
+          $content.toggleClass("expanded").toggleClass("blur");
+          if (!$($content).hasClass("expanded")) _scrollTop();
+        });
+      }
+
+      // paging handle (option)
+      function _pagingHandle() {
+        const paging_total = Math.ceil(total / limited);
+        const paging_class = $holder.attr("vm-paging-class") ? $holder.attr("vm-paging-class") : "";
+        const paging_html = [...new Array(paging_total)]
+          .map((item, index) => {
+            return `
+            <a href="javascript:;" class="js-vm-paging-btn vm-paging-btn ${paging_class} ${index === 0 ? "current" : ""}" data-index="${index}">
+              ${index + 1}
+            </a>
+          `;
+          })
+          .join("");
+
+        // append paging list
+        const $paging_holder = $holder.find(".vm-paging");
+        $paging_holder.append(paging_html);
+
+        // paging item click handle
+        const $paging_item = $paging_holder.find(".js-vm-paging-btn");
+        $paging_item.on("click", function () {
+          const itemIndex = $(this).data("index");
+          const itemStart = itemIndex * limited + 1;
+          const itemEnd = itemIndex * limited + limited;
+
+          $holder.find(".vm-list-item").hide();
+          $holder.find(`.vm-list-item:nth-child(n+${itemStart}):nth-child(-n+${itemEnd})`).fadeIn();
+
+          $paging_item.removeClass("current");
+          $(this).addClass("current");
+
+          _scrollTop();
+        });
+      }
+
+      // scroll up holder top
+      function _scrollTop() {
+        $holder[0].scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+</script>
