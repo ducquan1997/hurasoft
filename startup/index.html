@@ -16,13 +16,20 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style type="text/tailwindcss">
     @theme {
-      --color-primary: #e11f26;
-      --color-secondary: #ff020b;
-      --color-tertiary: #fcb400;
+      --color-primary: #ff5636;
+      --color-secondary: #002023;
+      --color-tertiary: #004147;
+      --default-font-family: "Inter", sans-serif;
+    }
+    @layer components {
+      a:hover {
+        color: var(--color-primary);
+      }
     }
   </style>
 
   <link rel="stylesheet" href="./css/library.css" />
+  <link rel="stylesheet" href="./css/base.css">
   <link rel="stylesheet" href="./css/style.css" />
 </head>
 
@@ -40,7 +47,7 @@
   <!-- BREADCRUMB -->
   <section class="section-breadcrumb routing">
     <div class="global-breadcrumb container">
-      <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="list">
+      <ol itemscope="" itemtype="http://schema.org/BreadcrumbList" class="routing-list">
         <li class="routing-link" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
           <a href="/" itemprop="item" class="nopad-l">
             <span itemprop="name">Trang chủ</span>
@@ -58,22 +65,22 @@
   </section>
 
   <!-- CATEGORY PAGE -->
-  <div class="product-page d-none">
+  <div class="product-page hidden">
 
   </div>
 
   <!-- DETAIL PAGE -->
-  <div class="product-detail-page d-none">
+  <div class="product-detail-page hidden">
 
   </div>
 
   <!-- DEAL PAGE -->
-  <div class="deal-page d-none">
+  <div class="deal-page hidden">
 
   </div>
 
   <!-- CART PAGE -->
-  <div class="cart-page d-none">
+  <div class="cart-page hidden">
 
   </div>
 
@@ -84,7 +91,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-  <script src="./js/library_hura8.js"></script>
+  <script src="./js/library.js"></script>
   <script src="./js/main.js"></script>
 </body>
 
