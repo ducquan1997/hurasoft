@@ -486,7 +486,7 @@ function QiuForm(form) {
         const alertWidth = $(".check-alert-popup").outerWidth();
         const alertHeight = $(".check-alert-popup").outerHeight();
         const alertSpacing = 40, alertTriangleWidth = 12;
-        const alertReverse = targetOffset.top + alertHeight + targetHeight > holderHeight;
+        const alertReverse = targetPosition.top + alertHeight + targetHeight > holderHeight;
 
         const alertTop = alertReverse ? - (alertHeight + targetHeight + targetSpacing) + "px" : "0px";
         const alertY = targetPosition.top + targetHeight;

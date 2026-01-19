@@ -36,7 +36,7 @@ select{outline-color:var(--color-primary);-webkit-appearance:menulist-button}
 .static-html{position:relative;font-size:16px}
 .static-html a,.static-html b,.static-html h1,.static-html h2,.static-html h3,.static-html h4,.static-html h5,.static-html h6,.static-html ol,.static-html p,.static-html span,.static-html strong,.static-html ul,.static-html li{all:revert}
 .static-html img{display:block;max-width:100%;max-height:100%;height:auto;margin:16px auto}
-.static-html table{max-width:100%;max-height:100%;-webkit-text-size-adjust:100%;margin:16px auto}
+.static-html table{max-width:100%;max-height:100%;-webkit-text-size-adjust:100%;margin:16px auto;word-break:normal}
 .static-html iframe{max-width:100%;max-height:100%;margin:16px auto}
 .static-html li{margin-bottom:8px}
 .static-html.blur{filter:unset}
