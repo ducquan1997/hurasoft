@@ -409,7 +409,7 @@ function QiuForm(form) {
         if (value.length < min)
           _error(this, note ? note : `Mật khẩu không hợp lệ (tối thiểu ${min} ký tự).`);
         // Register
-        if ($(this).hasClass("check-register") && (!value.match(/[a-z]+/) || !value.match(/[A-Z]+/) || !value.match(/[0-9]+/) || !value.match(/[$@#&!]+/)))
+        if ($(this).attr("check-register") && (!value.match(/[a-z]+/) || !value.match(/[A-Z]+/) || !value.match(/[0-9]+/) || !value.match(/[$@#&!]+/)))
           _error(this, note ? note : `Mật khẩu quá yếu (tối thiểu ${min} ký tự, bao gổm ít nhất 1 chữ cái in hoa, 1 chữ số và 1 ký tự đặc biệt [$,@,#,&,!]).`);
         break;
       // Password repeat
@@ -856,7 +856,7 @@ function QiuViewMore(...params) {
 
       // if not meet limited, return
       if (_total <= _limited) {
-        if (_type === "static") $content.removeClass("blur");
+        $content.removeClass("blur");
         $holder.find(button_class).remove();
         return;
       }
@@ -874,6 +874,9 @@ function QiuViewMore(...params) {
         case "paging":
           $itemOver.hide();
           _pagingHandle();
+          return;
+
+        case "none":
           return;
 
         default:

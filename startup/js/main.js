@@ -1,51 +1,72 @@
+// READY FUNCTION
 $(document).ready(function () {
-  // GLOBAL CALL
   globalHandle();
 
-  // PAGE CALL
   homepageHandle();
   categoryHandle();
   productDetailHandle();
 });
 
-//
+// GLOBAL
 function globalHandle() {}
 
-//
+// HOMEPAGE
 function homepageHandle() {}
 
-//
+// CATEGORY
 function categoryHandle() {}
 
-//
+// PRODUCT DETAIL
 function productDetailHandle() {}
 
+function galleryThumbs() {
+  const $targets = $('.detail-gallery [data-fancybox]');
+
+  if (window.screen.availWidth > 768) {
+    $targets.fancybox({ thumbs: { autoStart: true } });
+    return;
+  }
+
+  const target_onclick = $targets.attr('onclick');
+  const target_onclick_new = target_onclick ? target_onclick + ';galleryThumbsNote();' : 'galleryThumbsNote();';
+  $targets.attr('onclick', target_onclick_new);
+}
+
+function galleryThumbsNote() {
+  setTimeout(function () {
+    $(".fancybox-stage").append(`<p style="position: absolute;bottom: 15px;font-size: 14px;text-align: center;color: #fff;width: 100%">Vuốt lên trên hoặc xuống dưới để đóng</p>`);
+  }, 100)
+}
+
 let galleryThumbs = new Swiper(".gallery-thumbs", {
-  spaceBetween: 4,
+  spaceBetween: 10,
   slidesPerView: 4,
   slideToClickedSlide: true,
   freeMode: true,
   watchSlidesProgress: true,
   centerInsufficientSlides: true,
+  observer: true,
   breakpoints: {
-    577: {
+    768: {
+      slidesPerView: 5,
+      spaceBetween: 12,
+    },
+    1620: {
       slidesPerView: 6,
+      spaceBetween: 12,
     },
   },
 });
 
 let galleryTop = new Swiper(".gallery-top", {
-  spaceBetween: 0,
+  spaceBetween: 12,
   slidesPerView: 1,
+  rewind: true,
   speed: 1000,
-  autoplay: {
-    delay: 2500,
-    disableOnInteraction: false,
-    pauseOnMouseEnter: "true",
-  },
+  observer: true,
   navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
+    nextEl: ".gallery-top .swiper-button-next",
+    prevEl: ".gallery-top .swiper-button-prev",
   },
   thumbs: {
     swiper: galleryThumbs,
@@ -65,11 +86,5 @@ let galleryTop = new Swiper(".gallery-top", {
         this.thumbs.swiper.slidePrev();
       }
     },
-  },
-});
-
-$('[data-fancybox="gallery"]').fancybox({
-  thumbs: {
-    autoStart: true,
   },
 });
