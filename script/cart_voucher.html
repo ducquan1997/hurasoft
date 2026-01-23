@@ -5,7 +5,7 @@
       <input class="cart-voucher-input" type="text" id="js-voucher-input" placeholder="Nhập mã ưu đãi">
       <a href="javascript:;" class="cart-btn cart-voucher-btn submit">Nhập</a>
     </div>
-    <a href="javascript:;" class="cart-btn cart-voucher-btn popup" onclick="voucherPopupOpen();">Voucher</a>
+    <a href="javascript:;" class="cart-btn cart-voucher-btn popup" onclick="VoucherHandle.popupOpen();">Voucher</a>
   </div>
   <div id="js-voucher-message" class="text-12 my-3"></div>
 </div>
@@ -15,7 +15,7 @@
   <div class="v-popup-container">
     <div class="d-flex align-items-center justify-content-between">
       <p class="text-20 font-weight-500 m-0" style="line-height: 65px;">Chọn Voucher</p>
-      <a href="javascript:;" onclick="voucherPopupClose();">
+      <a href="javascript:;" onclick="VoucherHandle.popupClose();">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" /></svg>
       </a>
     </div>
@@ -25,7 +25,7 @@
 
       <div class="v-popup-input d-flex">
         <input type="text" id="js-v-popup-input" />
-        <a href="javascript:;" class="v-popup-btn btn-submit" onclick="voucherPopupSubmit()">ÁP DỤNG</a>
+        <a href="javascript:;" class="v-popup-btn btn-submit" onclick="VoucherHandle.popupSubmit();">ÁP DỤNG</a>
       </div>
     </div>
 
@@ -38,13 +38,16 @@
     </div>
 
     <div class="v-popup-bottom text-right">
-      <a href="javascript:;" class="v-popup-btn btn-back" onclick="voucherPopupClose()">TRỞ LẠI</a>
-      <a href="javascript:;" class="v-popup-btn btn-submit" onclick="voucherPopupSubmit()" style="margin-left: 32px;">ÁP
-        DỤNG</a>
+      <a href="javascript:;" class="v-popup-btn btn-back" onclick="VoucherHandle.popupClose();">
+        TRỞ LẠI
+      </a>
+      <a href="javascript:;" class="v-popup-btn btn-submit" onclick="VoucherHandle.popupSubmit();" style="margin-left: 32px;">
+        ÁP DỤNG
+      </a>
     </div>
   </div>
 
-  <div class="v-popup-bg" onclick="voucherPopupClose();"></div>
+  <div class="v-popup-bg" onclick="VoucherHandle.popupClose();"></div>
 </div>
 
 <style>
@@ -100,50 +103,66 @@
 
 <!-- VOUCHER -->
 <script>
+  $(document).ready(function() {
+    VoucherHandle.setup();
+  })
+
   // VOUCHER SCRIPT
-  var no_voucher_image = "{{ 'edravn-static-image-no-voucher-1.png' | asset_url }}";
-  // var product_in_cart = [{% for _item in page.cart_items %}{% if forloop.index != 1 %}, {% endif %}{{ _item.item_info.id }}{% endfor %}];
-  var change_in_cart = 0;
-  var voucher_disable = [];
-  
-  function voucherSetup() {
-  	voucherListenHandle("#js-voucher-input");
-  	voucherPopupBuild("#js-voucher-popup-list");
-  }
+  const VoucherHandle = (() => {
+    // voucher variants
+    const $voucher_input = $("#js-voucher-input");
+    const $voucher_message = $("#js-voucher-message");
+    const $voucher_discount = $("#js-discount-voucher");
 
-  function voucherListenHandle(target) {
-    const $message = $("#js-voucher-message");
-    const total_cart = $("#js-total-before-fee-discount").val();
-    const check_deal = $(".js-item-row-deal").length;
+    let _voucher_disable = [];
+    let _cart_change = 0;
+    let _cart_products = "{{ page.cart_items|map: item_info.id|join: ',' }}";
 
-    $(target).change(debounce(function () {
-      if (check_deal) $message.show().html('<b style="color: red;">Mã voucher không được áp dụng. Vui lòng xóa sản phẩm [DEAL] trong giỏ hàng</b>');
-      else {
+    // setup
+    function _setup() {
+      _voucherListen();
+      _popupBuild();
+    }
+
+    // voucher listen
+    function _voucherListen() {
+      $voucher_input.change(debounce(function () {
         const voucher_code = this.value.trim();
-        const voucher_error = voucher_disable.filter(voucher => voucher.code === voucher_code);
+        const total_cart = $("#js-total-before-fee-discount").val();
 
-        if (voucher_error.length > 0) {
-  		  const error = voucher_error[0].message ? voucher_error[0].message : "Voucher đã hết hạn hoặc quá số lượng sử dụng!";
-          const message = '<b id="js-coupon-info" data-type="error" style="color: red;">Lỗi xảy ra. ' + error + '</b>';
-          voucherSetHandle("", 0, message);
-          return;
-        }
-
+        // check no input voucher code, return
         if (voucher_code.length === 0) {
-          voucherSetHandle("", 0, "");
+          _voucherHandle("", "", 0);
           return;
         }
 
+        // check product deal exit, return
+        const check_deal = $(".js-item-row-deal").length;
+        if (check_deal) {
+          $voucher_message.show().html('<b style="color: red;">Mã voucher không được áp dụng. Vui lòng xóa sản phẩm [DEAL] trong giỏ hàng</b>');
+          return;
+        }
+
+        // check invalid voucher exit, return
+        const voucher_error = _voucher_disable.filter(voucher => voucher.code === voucher_code);
+        if (voucher_error.length > 0) {
+          const error = voucher_error[0].message ? voucher_error[0].message : "Voucher đã hết hạn hoặc quá số lượng sử dụng!";
+          const message = '<b id="js-coupon-info" data-type="error" style="color: red;">Lỗi xảy ra. ' + error + '</b>';
+          _voucherHandle("", message, 0);
+          return;
+        }
+
+        // check ajax
         const params = {
           action_type: "check",
           code: voucher_code,
           order_value: total_cart,
-          product_ids: product_in_cart,
+          product_ids: _cart_products,
         };
 
         Hura.Ajax.post("coupon", params).then(function (voucher_info) {
-  		    //console.log(voucher_info);
-  
+          //console.log(voucher_info);
+
           let voucher_note = "";
           let voucher_message = voucher_info.message;
           const voucher_off = voucher_info.total_cash_discount;
@@ -153,143 +172,171 @@
           const voucher_content = voucher_info.coupon_info.content;
           const voucher_description = voucher_info.coupon_info.description;
 
+          // status == "error", return
           if (voucher_info.status == "error") {
             voucher_message = voucher_message.indexOf("Lỗi xảy ra") > -1 ? '<b style="color: #f00;">' + voucher_message + '</b>' : '<b id="js-coupon-info" data-type="error" style="color: #f00;">' + voucher_message + '</b>';
-            voucherSetHandle("", 0, voucher_message);
+            _voucherHandle("", voucher_message, 0);
             return;
           }
 
+          // status == "success", but no voucher apply, return
+          if (voucher_info.coupon_info.length === 0) {
+            voucher_message = "Lỗi xảy ra! Có thể mã khuyến mại không tồn tại, hết hạn hoặc không hợp lệ. Vui lòng kiểm tra và thử lại.";
+            _voucherHandle("", voucher_message, 0);
+            return;
+          }
+
+          // display voucher info
           switch (voucher_type) {
             case "cash":
               voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Trừ tiền mặt <span style='color: #29A07E;'>" + formatCurrency(voucher_off) + "₫</span>)</b>";
-              voucher_message = voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note);
               break;
 
             case "priceoff":
               voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Giảm giá <span style='color: #29A07E;'>" + voucher_content + "%</span>)</b>";
-              voucher_message = voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note);
               break;
 
             case "pro":
               voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Tặng sản phẩm: <a target='_blank' href='" + voucher_description + "' style='color: #29A07E;'>" + voucher_content + "</a>)</b>";
-              voucher_message = voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note);
               break;
 
             case "other":
               break;
           }
 
-          voucherSetHandle(voucher_code, voucher_off, voucher_message);
+          voucher_message = "Bạn đang sử dụng mã coupon/voucher: <b id='js-coupon-info' style='color: #f00;font-size: 16px;' data-type='" + voucher_type + "'>" + voucher_code + "</b>" + voucher_note;
+          _voucherHandle(voucher_code, voucher_message, voucher_off);
         });
+      }, 100));
+    }
+
+    // voucher handle
+    function _voucherHandle(code, message, discount) {
+      const $voucher_code = "#js-coupon-code";
+      const $voucher_container = "#js-discount-container";
+
+      $voucher_code.val(code);
+      $voucher_discount.val(discount);
+      message ? $voucher_message.show().html(message) : $voucher_message.hide();
+      discount ? $voucher_container.show() : $voucher_container.hide();
+
+      if (discount) calculateCartTotalPrice(discount);
+    }
+
+    // voucher reset
+    function _voucherReset(change) {
+      _cart_change = change;
+      _voucher_disable = [];
+    }
+
+    // voucher re-calculate
+    function _reCalculate(discount) {
+      if (discount) {
+        $voucher_discount.val(discount);
+        $("#js-discount-price").html("- " + formatCurrency(discount));
+        return;
       }
-    }, 100));
-  }
 
-  function voucherPopupBuild(holder) {
-  	voucherCheckReset(0);
-  
-    const params = {
-      action_type: "get-active-list",
-      limit: 50,
-    };
+      const target = "#js-coupon-info";
+      if ($(target).length === 0) return;
 
-    Hura.Ajax.post("coupon", params).then(function (response) {
-      //console.log("coupon", response);
-  
-  	  if (response.total === 0) {
-        $(holder).html(`
-          <div class="no-voucher text-center">
-            <i class="no-voucher-img lazy" style="background-image: url(${no_voucher_image});"></i>
-            <p class="text-20 font-weight-600">Chưa có mã voucher nào!</p>
-          </div>
-        `);
-  		  return;
-  	  }
+      const type = $(target).attr("data-type");
+      if (type !== "priceoff" && type !== "error") return;
 
-  	  const time_now = new Date().getTime() / 1000;
-  	  const html = response.data.map((voucher) => {
-        const check_time = voucher.to_time - time_now > 0;
-        const check_remain = voucher.total > voucher.total_use || voucher.total === 0;
-        const check_status = voucher.can_use_with_cart.status === "yes";
-        const check_all = check_time && check_remain && check_status;
-  
-        if (!check_all) voucher_disable.push({ code: voucher.code, message: voucher.can_use_with_cart.message });
-  
-  		  return `
-          <div class="v-popup-item ${check_all ? 'available js-v-popup-item' : ''}" onclick="voucherPopupSelected(this, '${voucher.code}');">
-            <div class="code">Nhập <b class="d-block text-18">${voucher.code}</b></div>
-            <div class="text"><p>${voucher.title}</p><i class="circle"></i></div>
-          </div>
-        `;
-  	  }).join("");
+      $voucher_input.trigger("change");
+    }
 
-      $(holder).html(html);
-    });
-  }
-  
-  function voucherCheckReset(change) {
-    change_in_cart = change;
-    voucher_disable = [];
-  }
-  
-  function voucherCheckExit(voucher_discount) {
-  	if (voucher_discount) {
-  	  $("#js-discount-voucher").val(voucher_discount);
-      $("#js-discount-price").html("- " + formatCurrency(voucher_discount));
-  	  return;
-  	}
-  
-    const target = "#js-coupon-info";
-  	if ($(target).length === 0) return;
-  
-  	const type = $(target).attr("data-type");
-    if (type !== "priceoff" && type !== "error") return;
-  
-	  $("#js-voucher-input").trigger("change");
-  }
+    // popup variants
+    const $popup_container = $("#js-cart-voucher-popup");
+    const $popup_input = $("#js-v-popup-input");
+    const $popup_message = $("#js-v-popup-message")
+    const _popup_item = ".js-v-popup-item";
 
-  function voucherSetHandle(code, discount, message) {
-    const voucher_message = "#js-voucher-message";
-    const voucher_code = "#js-coupon-code";
-    const voucher_discount = "#js-discount-voucher";
-    const voucher_container = "#js-discount-container";
+    // popup display voucher list
+    function _popupBuild(holder) {
+      _voucherReset(0);
 
-    $(voucher_code).val(code);
-    $(voucher_discount).val(discount);
-    message ? $(voucher_message).show().html(message) : $(voucher_message).hide();
-    discount ? $(voucher_container).show() : $(voucher_container).hide();
+      const params = {
+        action_type: "get-active-list",
+        limit: 50,
+      };
 
-    if (discount) calculateCartTotalPrice(discount);
-  }
+      Hura.Ajax.post("coupon", params).then(function (response) {
+        //console.log("coupon", response);
+        const $holder = $("#js-voucher-popup-list");
+        const voucher_noimage = "{{ 'edravn-static-image-no-voucher-1.png'|asset_url }}";
 
-  function voucherMessage(voucher_type, voucher_code, voucher_content, voucher_note) {
-    return "Bạn đang sử dụng mã coupon/voucher: <b id='js-coupon-info' style='color: #f00;font-size: 16px;' data-type='" + voucher_type + "'>" + voucher_code + "</b>" + voucher_note;
-  }
+        // no voucher, return
+        if (response.total === 0) {
+          $holder.html(`
+            <div class="no-voucher text-center">
+              <i class="no-voucher-img lazy" style="background-image: url(${voucher_noimage});"></i>
+              <p class="text-20 font-weight-600">Chưa có mã voucher nào!</p>
+            </div>
+          `);
+          return;
+        }
 
-  function voucherPopupSelected(_this, voucher) {
-    $(".js-v-popup-item").removeClass("active");
-    $("#js-v-popup-input").val(voucher);
-    $("#js-v-popup-message").html("");
-    $(_this).addClass("active");
-  }
+        // display voucher list
+        const time_now = new Date().getTime() / 1000;
+        const html = response.data.map((voucher) => {
+          const check_time = voucher.to_time - time_now > 0;
+          const check_remain = voucher.total > voucher.total_use || voucher.total === 0;
+          const check_status = voucher.can_use_with_cart.status === "yes";
+          const check_all = check_time && check_remain && check_status;
 
-  function voucherPopupSubmit() {
-    const voucher = $("#js-v-popup-input").val();
-    $("#js-voucher-input").val(voucher);
-    $("#js-voucher-input").change();
-    voucherPopupClose();
-  }
+          if (!check_all) _voucher_disable.push({ code: voucher.code, message: voucher.can_use_with_cart.message });
 
-  function voucherPopupOpen() {
-    $("body").addClass("overflow-hidden");
-    $("#js-cart-voucher-popup").show();
-  	if (change_in_cart) voucherPopupBuild("#js-voucher-popup-list");
-  }
+          return `
+            <div class="v-popup-item ${check_all ? 'available js-v-popup-item' : ''}" onclick="VoucherHandle.popupSelect(this, '${voucher.code}');">
+              <div class="code">Nhập <b class="d-block text-18">${voucher.code}</b></div>
+              <div class="text"><p>${voucher.title}</p><i class="circle"></i></div>
+            </div>
+          `;
+        }).join("");
 
-  function voucherPopupClose() {
-    $("body").removeClass("overflow-hidden");
-    $(".js-v-popup-item").removeClass("active");
-    $("#js-v-popup-input").val("");
-    $("#js-cart-voucher-popup").hide();
-  }
+        $holder.html(html);
+      });
+    }
+
+    // popup select
+    function _popupSelect(_this, voucher) {
+      $(_popup_item).removeClass("active");
+      $popup_input.val(voucher);
+      $popup_message.html("");
+      $(_this).addClass("active");
+    }
+
+    // popup submit
+    function _popupSubmit() {
+      const voucher = $popup_input.val();
+      $voucher_input.val(voucher).trigger("change");
+      _popupClose();
+    }
+
+    // popup open
+    function _popupOpen() {
+      $("body").addClass("overflow-hidden");
+      $popup_container.show();
+      if (_cart_change) _popupBuild();
+    }
+
+    // popup close
+    function _popupClose() {
+      $("body").removeClass("overflow-hidden");
+      $(_popup_item).removeClass("active");
+      $popup_input.val("");
+      $popup_container.hide();
+    }
+
+    // return
+    return {
+      setup: _setup,
+      reCalculate: _reCalculate,
+      popupOpen: _popupOpen,
+      popupClose: _popupClose,
+      popupSelect: _popupSelect,
+      popupSubmit: _popupSubmit
+    }
+  })();
 </script>
