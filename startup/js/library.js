@@ -13,7 +13,112 @@ function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arg
 /**
  * COMMON SCRIPT
  */
-var lazy_load_group=[];function lazyLoadInstance(){new LazyLoad({elements_selector:".lazy"})}function GetURLParameter2(b,c){var d=new URL(b),f=d.search.substring(1),g=d.searchParams.get(c);if(f&&g)return f=f.split("&").filter(a=>a!==c+"="+g).join("&"),b=d.origin+d.pathname,{key:c,value:g,other:f,rest:f?b+"?"+f:b}}function formatCurrency(a){var b=parseFloat(a).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g,"$1.").toString(),a=b.length;return b.substring(0,a-3)}function strToNumber(a){for(a+="";0<a.indexOf(".");)a=a.replace(".","");var b=parseFloat(a);return isNaN(b)?0:b}function formatDate(a){var b=(a=new Date(1e3*parseInt(a))).getFullYear(),c=a.getMonth()+1,d=a.getDate();return a.getHours(),a.getMinutes(),a.getSeconds(),d+"/"+c+"/"+b}function convertToSlug(a){return a.toLowerCase().replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e").replace(/ì|í|ị|ỉ|ĩ/g,"i").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o").replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u").replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y").replace(/đ/g,"d").replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g,"").replace(/\u02C6|\u0306|\u031B/g,"").replace(/[^\w ]+/g,"").replace(/ +/g,"-")}function debounce(b,c,a){var d;return function(){var f=this,e=arguments,g=a&&!d;clearTimeout(d),d=setTimeout(function(){d=null,a||b.apply(f,e)},c),g&&b.apply(f,e)}}function validateEmail(a){return /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(a)}function validateTel(a,b){return b?(glf_regex_tel=/^\+?(([0-9]{2})+([0-9]{8,9})\b)/g,glf_regex_tel.test(a)):(vnf_regex_tel=/((09|03|07|08|05|02)+([0-9]{8,9})\b)/g,vnf_regex_tel.test(a))}function scrollElement(a){$(a).get(0).scrollIntoView({behavior:"smooth"})}function successCart(){$("body").append('<div class="success-cart" id="js-success-cart"><div class="success-cart-container"><div class="success-cart-content"><svg class="success-cart-svg" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path class="success-cart-circle" d="M13 1C6.372583 1 1 6.372583 1 13s5.372583 12 12 12 12-5.372583 12-12S19.627417 1 13 1z" /><path class="success-cart-tick" d="M6.5 13.5L10 17 l8.808621-8.308621" /></g></svg><p class="success-cart-text">Thêm sản phẩm vào giỏ hàng <br />thành công!</p></div></div></div>'),setTimeout(function(){var s="#js-success-cart";0!==$(s).length&&$(s).remove()},1300)}function isOnScreen(b){if(0!=$(b).length){var c=jQuery(window),d=c.scrollTop(),f=c.height(),g=d+f,a=(c=(a=jQuery(b)).offset().top)+(b=a.height());return d<=c&&c<g||d<a&&a<=g||f<b&&c<=d&&g<=a}}function isOnScreenHandle(...a){a.forEach(function(a){isOnScreen(a.id)&&!$(a.id).hasClass("loaded")?(a.loadFn(),$(a.id).addClass("loaded")):lazy_load_group.push({id:a.id.substring(1),target:a.id,loadFn:function(){a.loadFn()}})})}
+// UTILITIES
+var lazy_load_group = [];
+function lazyLoadInstance() {
+  new LazyLoad({ elements_selector: ".lazy" });
+}
+function GetURLParameter2(b, c) {
+  var d = new URL(b),
+    f = d.search.substring(1),
+    g = d.searchParams.get(c);
+  if (f && g)
+    return (
+      (f = f
+        .split("&")
+        .filter((a) => a !== c + "=" + g)
+        .join("&")),
+      (b = d.origin + d.pathname),
+      { key: c, value: g, other: f, rest: f ? b + "?" + f : b }
+    );
+}
+function formatCurrency(a) {
+  var b = parseFloat(a)
+      .toFixed(2)
+      .replace(/(\d)(?=(\d{3})+\.)/g, "$1.")
+      .toString(),
+    a = b.length;
+  return b.substring(0, a - 3);
+}
+function strToNumber(a) {
+  for (a += ""; 0 < a.indexOf("."); ) a = a.replace(".", "");
+  var b = parseFloat(a);
+  return isNaN(b) ? 0 : b;
+}
+function formatDate(a) {
+  var b = (a = new Date(1e3 * parseInt(a))).getFullYear(),
+    c = a.getMonth() + 1,
+    d = a.getDate();
+  return (a.getHours(), a.getMinutes(), a.getSeconds(), d + "/" + c + "/" + b);
+}
+function convertToSlug(a) {
+  return a
+    .toLowerCase()
+    .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+    .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+    .replace(/đ/g, "d")
+    .replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "")
+    .replace(/\u02C6|\u0306|\u031B/g, "")
+    .replace(/[^\w ]+/g, "")
+    .replace(/ +/g, "-");
+}
+function debounce(b, c, a) {
+  var d;
+  return function () {
+    var f = this,
+      e = arguments,
+      g = a && !d;
+    (clearTimeout(d),
+      (d = setTimeout(function () {
+        ((d = null), a || b.apply(f, e));
+      }, c)),
+      g && b.apply(f, e));
+  };
+}
+function validateEmail(a) {
+  return /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(a);
+}
+function validateTel(a, b) {
+  return b ? ((glf_regex_tel = /^\+?(([0-9]{2})+([0-9]{8,9})\b)/g), glf_regex_tel.test(a)) : ((vnf_regex_tel = /((09|03|07|08|05|02)+([0-9]{8,9})\b)/g), vnf_regex_tel.test(a));
+}
+function scrollElement(a) {
+  $(a).get(0).scrollIntoView({ behavior: "smooth" });
+}
+function successCart() {
+  ($("body").append('<div class="success-cart" id="js-success-cart"><div class="success-cart-container"><div class="success-cart-content"><svg class="success-cart-svg" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path class="success-cart-circle" d="M13 1C6.372583 1 1 6.372583 1 13s5.372583 12 12 12 12-5.372583 12-12S19.627417 1 13 1z" /><path class="success-cart-tick" d="M6.5 13.5L10 17 l8.808621-8.308621" /></g></svg><p class="success-cart-text">Thêm sản phẩm vào giỏ hàng <br />thành công!</p></div></div></div>',),
+    setTimeout(function () {
+      var s = "#js-success-cart";
+      0 !== $(s).length && $(s).remove();
+    }, 1300)
+  );
+}
+function isOnScreen(b) {
+  if (0 != $(b).length) {
+    var c = jQuery(window),
+      d = c.scrollTop(),
+      f = c.height(),
+      g = d + f,
+      a = (c = (a = jQuery(b)).offset().top) + (b = a.height());
+    return (d <= c && c < g) || (d < a && a <= g) || (f < b && c <= d && g <= a);
+  }
+}
+function isOnScreenHandle(...a) {
+  a.forEach(function (a) {
+    isOnScreen(a.id) && !$(a.id).hasClass("loaded")
+      ? (a.loadFn(), $(a.id).addClass("loaded"))
+      : lazy_load_group.push({
+          id: a.id.substring(1),
+          target: a.id,
+          loadFn: function () {
+            a.loadFn();
+          },
+        });
+  });
+}
 
 // YOUTUBE IFRAME RESIZE AUTO
 function reSizeVideoIframe(target) {
@@ -286,7 +391,7 @@ function getReviewCommentList(type, action_type, sort, search_text, search_field
 
 // POST REVIEW COMMENT
 function postComment(id, reply, type) {
-  const checkForm = checkFormGlobal(`#js-${type}-form-${id}`);
+  const checkForm = QiuForm(`#js-${type}-form-${id}`);
   if (!checkForm.result) return false;
 
   const item_type = $("[name='user_post[item_type]']").val();
@@ -298,12 +403,12 @@ function postComment(id, reply, type) {
 
   const alert_title = type === "comment" ? "bình luận" : "đánh giá";
   const alert_text = reply ? "phản hồi " : "";
-  const alert_html = `Bạn đã gửi ${alert_text}${alert_title} thành công!`;
+  const alert_html = `Bạn đã gửi ${alert_text + alert_title} thành công!`;
 
-  const name = checkFormGlobalValue(checkForm, "name");
-  const email = checkFormGlobalValue(checkForm, "email");
-  const tel = checkFormGlobalValue(checkForm, "tel");
-  const content = checkFormGlobalValue(checkForm, "content");
+  const name = QiuFormValue(checkForm, "name");
+  const email = QiuFormValue(checkForm, "email");
+  const tel = QiuFormValue(checkForm, "tel");
+  const content = QiuFormValue(checkForm, "content");
 
   const info = {
     item_type: item_type,
@@ -532,7 +637,7 @@ function QiuFormValue(obj, key) {
   return obj.values[key] ? obj.values[key] : "";
 }
 
-/**
+/*
   QIU MODAL V3.0
 
   const params = {
@@ -560,7 +665,6 @@ function QiuFormValue(obj, key) {
     console.log(result);
   });
 */
-
 async function QiuModal(params) {
   // MODAL VARIANT
   const p_frame = "#js-global-popup-frame";
@@ -744,9 +848,10 @@ async function QiuModal(params) {
   }
 }
 
-/**
+/*
   QIU VIEW MORE 2.0 - 25/12/2025
 
+  // PARAMS
   QiuViewMore({
     type: "static", // [static/list/paging], default = "static" - [required]
     holder: ".js-html-vm-holder", // <element-class>, block container holder - [required]
@@ -760,80 +865,70 @@ async function QiuModal(params) {
     paging_class: "vm-paging-item", // <string-class>, class paging item to style, default = "vm-paging-item" - [option]
   });
 
-  // STATIC
-  ---HTML--
-  <div class="js-html-vm-holder">
-    <div class="js-vm-content">
-      --Static html--
-    </div>
-
-    <div class="text-center">
-      <button class="js-vm-btn" type="button" onclick="">
-        Xem thêm
-      </button>
-    </div>
-  </div>
-
-  --SCRIPT--
-  QiuViewMore({
-    type: "static",
-    holder: ".js-html-vm-holder",
-    limit: 500,
-  });
-
-  // LIST
-  ---HTML--
-  <div class="js-list-vm-holder">
-    <div class="js-vm-content">
-      <div class="js-vm-list-item">A</div>
-      <div class="js-vm-list-item">B</div>
-      ...
-    </div>
-
-    <div class="text-center">
-      <button class="js-vm-btn" type="button" onclick="">
-        Xem thêm
-      </button>
-    </div>
-  </div>
-
-  --SCRIPT--
-  QiuViewMore({
-    type: "list",
-    holder: ".js-list-vm-holder",
-    limit: 5,
-    // show: 3
-  });
-
-  // PAGING
-  ---HTML--
-  <div class="js-paging-vm-holder">
-    <div class="js-vm-list">
-      <div class="js-vm-list-item">A</div>
-      <div class="js-vm-list-item">B</div>
-      ...
-    </div>
-
-    <div class="text-center">
-      <div class="js-vm-paging">
-        --Paging--
+  // EXAMPLE:
+  + Static html:
+    --HTML--
+    <div class="js-html-vm-holder">
+      <div class="js-vm-content">
+        --Static html--
       </div>
+
+      <button class="js-vm-btn" type="button" onclick="">Xem thêm</button>
     </div>
-  </div>
 
-  --SCRIPT--
-  QiuViewMore({
-    type: "paging",
-    holder: ".js-paging-vm-holder",
-    limit: 5,
-  });
+    --SCRIPT--
+    QiuViewMore({
+      type: "static",
+      holder: ".js-html-vm-holder",
+      limit: 500,
+    });
+
+
+  + List item:
+    --HTML--
+    <div class="js-list-vm-holder">
+      <div class="js-vm-content">
+        <div class="js-vm-list-item">A</div>
+        <div class="js-vm-list-item">B</div>
+        ...
+      </div>
+
+      <button class="js-vm-btn" type="button" onclick="">Xem thêm</button>
+    </div>
+
+    --SCRIPT--
+    QiuViewMore({
+      type: "list",
+      holder: ".js-list-vm-holder",
+      limit: 5,
+      // show: 3
+    });
+
+    
+  + list paging:
+    --HTML--
+    <div class="js-paging-vm-holder">
+      <div class="js-vm-list">
+        <div class="js-vm-list-item">A</div>
+        <div class="js-vm-list-item">B</div>
+        ...
+      </div>
+
+      <div class="js-vm-paging"></div>
+    </div>
+
+    --SCRIPT--
+    QiuViewMore({
+      type: "paging",
+      holder: ".js-paging-vm-holder",
+      limit: 5,
+    });
 */
-
 function QiuViewMore(...params) {
   params.forEach((_item) => {
     // if no holder, return
     if ($(_item.holder).length === 0) {
-      console.log("Không tìm thấy Element phù hợp!");
+      // console.log("QiuViewMore", "Không tìm thấy Element phù hợp!");
       return;
     }
 
