@@ -8,34 +8,37 @@ $(document).ready(function () {
 });
 
 // GLOBAL
-function globalHandle() {}
-
-// HOMEPAGE
-function homepageHandle() {}
-
-// CATEGORY
-function categoryHandle() {}
-
-// PRODUCT DETAIL
-function productDetailHandle() {}
-
-function galleryThumbs() {
-  const $targets = $('.detail-gallery [data-fancybox]');
-
-  if (window.screen.availWidth > 768) {
-    $targets.fancybox({ thumbs: { autoStart: true } });
-    return;
-  }
-
-  const target_onclick = $targets.attr('onclick');
-  const target_onclick_new = target_onclick ? target_onclick + ';galleryThumbsNote();' : 'galleryThumbsNote();';
-  $targets.attr('onclick', target_onclick_new);
+function globalHandle() {
+  fancyboxHandle();
 }
 
-function galleryThumbsNote() {
-  setTimeout(function () {
-    $(".fancybox-stage").append(`<p style="position: absolute;bottom: 15px;font-size: 14px;text-align: center;color: #fff;width: 100%">Vuốt lên trên hoặc xuống dưới để đóng</p>`);
-  }, 100)
+function fancyboxHandle() {
+  Fancybox.bind("[data-fancybox]", {
+    Carousel: {
+      Toolbar: {
+        display: {
+          left: ["counter"],
+          middle: ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"],
+          right: ["autoplay", "thumbs", "close"],
+        },
+      },
+    }
+  });
+}
+
+// HOMEPAGE
+function homepageHandle() {
+  
+}
+
+// CATEGORY
+function categoryHandle() {
+  
+}
+
+// PRODUCT DETAIL
+function productDetailHandle() {
+  
 }
 
 let galleryThumbs = new Swiper(".gallery-thumbs", {
