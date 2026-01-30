@@ -1,0 +1,15 @@
+{% raw %}
+<script>
+  const search_results_tpl = `
+  	<a href="{%= item.productUrl %}" class="search-results__item">
+      <p class="search-results__image">
+        <img src="{% if (item.productImage.large != '') { %}{%= item.productImage.large %}{% } else { %}{%= no_image %}{% } %}" alt="{%= item.title %}" width="60" height="60" />
+      </p>
+      <div class="search-results__title">
+        <p class="search-results__name notranslate">{%= item.productName %}</p>
+        <p class="search-results__price">{% if (item.price > 0) { %}{%= formatCurrency(item.price) %} đ{% } else { %}Liên hệ{% } %}</p>
+      </div>
+    </a>
+  `;
+</script>
+{% endraw %}

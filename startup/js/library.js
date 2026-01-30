@@ -11,7 +11,7 @@ var Swiper=function(){"use strict";function e(e){return null!==e&&"object"==type
 //# sourceMappingURL=lazyload.min.js.map
 
 /**
- * Base script 24.01.2026
+ * Base script 30.01.2026
  */
 // Utilities
 var lazy_load_group = [];
@@ -122,8 +122,10 @@ function isOnScreenHandle(...a) {
 
 // Youtube iframe resize screen 16:9
 function reSizeVideoIframe(target) {
+  // if not exit, return
   if ($(target).length === 0) return;
 
+  // iframe replace new html
   $(target).each(function () {
     const url = $(this).attr("src") ? $(this).attr("src") : $(this).attr("data-src");
     if (!url || url.indexOf("youtube") === -1) return;
@@ -139,8 +141,13 @@ function reSizeVideoIframe(target) {
 
 // Arccodion
 function arccodionHandle(target, responsive) {
+  // if not exit, return
+  if($(target).length === 0) return;
+
+  // if not in responsive, return
   if (responsive && window.screen.availWidth > responsive) return;
 
+  // arccodion click handle
   $(target).on("click", function () {
     const $container = $(this).closest(".arc-container");
     const $item = $(this).closest(".arc-item");
@@ -159,17 +166,21 @@ function arccodionHandle(target, responsive) {
 
 // Search (type = "search/search-article" | option = "variant")
 function searchHandle(target, type, tpl, limit, option) {
+  // if not exit, return
   if ($(target).length === 0) return;
 
-  const $input = $(target).find(".search-bar-input");
-  const $result = $(target).find(".search-results");
-  const $result_list = $(target).find(".search-results-list");
-  const $result_total = $(target).find(".search-results-total");
+  // variants
+  const $input = $(target).find(".js-search-bar-input");
+  const $result = $(target).find(".js-search-results");
+  const $result_list = $(target).find(".js-search-results-list");
+  const $result_total = $(target).find(".js-search-results-total");
 
+  // input click handle, if results exit, show results
   $input.on("click", function () {
     if ($result_list.children().length > 0) $result.show();
   });
 
+  // input press key handle
   $input.on("keyup", debounce(function (e) {
     const value = e.target.value.trim();
     if (!value) {
@@ -181,12 +192,7 @@ function searchHandle(target, type, tpl, limit, option) {
     _searchPopup(value);
   }, 500));
 
-  $(document).on("click", function (e) {
-    const $block = $(".search-bar");
-    const $result = $(".search-results");
-    if (!$block.is(e.target) && $block.has(e.target).length === 0) $result.fadeOut();
-  });
-
+  // search ajax
   function _searchPopup(value) {
     const params = {
       action: "search",
@@ -200,40 +206,57 @@ function searchHandle(target, type, tpl, limit, option) {
     });
   }
 
+  // search ajax handle
   async function _searchAsync(list, total, value) {
-    const ids = list.map(i => i.id).join(",");
-    const data = type === "search" && option === "variant" && ids.length > 0 ? await Hura.Ajax.get("product", { action_type: "product-list", ids: ids, show: list.length }).then(function (result) {
-      return result.list.map(item => {
-        return {
-          "id": item.id,
-          "title": item.productName,
-          "image": item.productImage.small,
-          "price": item.price,
-          "market_price": item.marketPrice,
-          "url": item.productUrl,
-          "variant": item.variant_option
-        }
-      });
-    }) : list;
+    let data = list;
 
+    // if option = "variant", new ajax to get [variant_option] data, return new results data
+    if (type === "search" && option === "variant" && data.length > 0) {
+      const ids = list.map(i => i.id).join(",");
+      data = await Hura.Ajax.get("product", { action_type: "product-list", ids: ids, show: list.length }).then(function (result) {
+        return result.list.map(item => {
+          return {
+            "id": item.productId,
+            "productName": item.productName,
+            "productImage": item.productImage,
+            "productUrl": item.productUrl,
+            "price": item.price,
+            "market_price": item.marketPrice,
+            "quantity": item.quantity,
+            "variant": item.variant_option
+          }
+        });
+      });
+    }
+    
+    // display results
     const keyword = value.replaceAll(" ", "+");
     const url = type === "search" ? `/tim?q=${keyword}` : `/tim-bai?q=${keyword}`;
     const href = data.length === 0 ? "javascript:;" : url;
     const noffy = data.length === 0 ? "Không có kết quả" : `Xem tất cả <b>${total}</b> kết quả tìm được`;
-    const html = data.length === 0 ? '<div class="search-alert text-center color-red py-4 px-3"><p>Không thể tìm thấy kết quả phù hợp.</p><p>Vui lòng thử với từ khóa khác...</p></div>' : Hura.Template.parse(tpl, data);
+    const html = data.length === 0 ? '<div class="search-results__alert"><p>Không thể tìm thấy kết quả phù hợp.</p><p>Vui lòng thử với từ khóa khác...</p></div>' : Hura.Template.parse(tpl, data);
 
     $result_total.html(noffy).attr('href', href);
     $result_list.html(html);
     $result.show();
   }
+
+  // close search results while click outside
+  $(document).on("click", function (e) {
+    const $block = $(".js-search-bar");
+    const $result = $(".js-search-results");
+    if (!$block.is(e.target) && $block.has(e.target).length === 0) $result.fadeOut();
+  });
 }
 
 // Add product to cart
 function addProductToCart(product_id, redirect) {
+  // variants
   const quantity = $(".js-buy-quantity").length ? $(".js-buy-quantity").val() : 1;
   const variant_id = $("#js-product-variant-id").length ? $("#js-product-variant-id").val() : 0;
   const variant_stock = $("#js-product-quantity").length ? parseInt($("#js-product-quantity").val()) : 1;
 
+  // if quantity = 0, return alert
   if (variant_stock < 1) {
     QiuModal({
       type: "error",
@@ -245,43 +268,55 @@ function addProductToCart(product_id, redirect) {
     return;
   }
 
+  // ajax 
   const product_props = {
     quantity: quantity,
     buyer_note: '',
   };
 
   Hura.Cart.Product.add(product_id, variant_id, product_props).then(function (response) {
+    // error response
     if (response.status === "error") {
-      if (response.error_type == "item-in-cart") QiuModal({
-        type: "error",
-        title: "Sản phẩm đã trong giỏ hàng!",
-        content: "Vui lòng đến giỏ hàng để thay đổi số lượng hoặc xóa sản phẩm.",
-        submitButtonText: "Đến giỏ hàng",
-        submitButtonUrl: "/cart"
-      });
-      else if (response.error_type == "invalid-item-id") QiuModal({
-        type: "error",
-        title: "ID sản phẩm không đúng!",
-        content: "Vui lòng báo lại cho quản trị website."
-      });
-      else QiuModal({
-        type: "error",
-        content: response.message
-      });
+      if (response.error_type == "item-in-cart") { // item exit in cart, return alert with option go to cart
+        QiuModal({
+          type: "error",
+          title: "Sản phẩm đã trong giỏ hàng!",
+          content: "Vui lòng đến giỏ hàng để thay đổi số lượng hoặc xóa sản phẩm.",
+          submitButtonText: "Đến giỏ hàng",
+          submitButtonUrl: "/cart"
+        });
+      }
+      else if (response.error_type == "invalid-item-id") { // item not exit or deleted, return alert
+        QiuModal({ 
+          type: "error",
+          title: "ID sản phẩm không đúng!",
+          content: "Vui lòng báo lại cho quản trị website."
+        });
+      }
+      else { // other error message
+        QiuModal({
+          type: "error",
+          content: response.message
+        });
+      }
       return;
     }
 
-    successCart();
-    headerCartRender(response);
+    // success response
+    successCart(); // display success cart popup
+    headerCartRender(response); // display item in header cart popup (if exit)
 
-    if (redirect) setTimeout(function () { 
-      window.location.href = redirect;
-    }, 1500);
+    if (redirect) { // if hava link redirect, go to link
+      setTimeout(function () { 
+        window.location.href = redirect;
+      }, 1500);
+    }
   });
 }
 
 // Cart header
 function headerCartHandle() {
+  // ger new cart list show popup header cart while hover (1 time)
   $(".header-cart").on("mouseenter", function () {
     const $target = $('#js-cart-ttip-container');
     if ($target.hasClass('loaded')) return;
@@ -292,6 +327,7 @@ function headerCartHandle() {
     })
   })
 
+  // get new cart summary display in header white init load page (1 time)
   Hura.Cart.getSummary().then(function (data) {
     const $target = $("#js-header-cart-amount");
     if (data.total_item > 0) $target.show().html(data.total_item);
