@@ -1,0 +1,170 @@
+{% raw %}
+<script>
+  const buildPc_popup_tpl = `
+    <div class="buildpc-popup">
+      <div class="popup-select">
+        <div class="popup-header">
+          <p>Chọn linh kiện</p>
+          <button class="mobile-btn-close" type="button" onclick="$('#js-modal-popup').html('');Fancybox.close();"></button>
+          <form class="popup-search-holder" id="js-buildpc-search-form" data-url="{%= item.search_url %}" onsubmit="return objBuildPCVisual.showProductSearch();">
+            <input type="text" class="input-search" id="js-buildpc-search-keyword" placeholder="Bạn cần tìm linh kiện gì?">
+            <button class="btn-search fa fa-search" type="submit" aria-label="Tìm kiếm"></button>
+          </form>
+          <div class="icon-menu-filter-mobile js-mobile-filter-btn" onclick="$('#js-popup-filter-group').slideToggle();">
+            <i class="fas fa fa-filter" style="transform: translateY(1px);"></i>
+            <span>Lọc</span>
+            {%# buildpcMobileFilterTotal(item) %}
+          </div>
+        </div>
+
+        <div class="popup-main">
+          <div class="popup-filter-group" id="js-popup-filter-group">
+            <p class="group-titlle"> Lọc sản phẩm theo </p>
+
+            <div class="popup-filter-holder">
+              <div class="filter-item brand-filter" id="js-brand-filter">
+                <!-- Ajax holder -->
+              </div>
+              <div class="filter-item" id="js-price-filter">
+                <!-- Ajax holder -->
+              </div>
+              <div id="js-attr-list">
+                <!-- Ajax holder -->
+              </div>
+            </div>
+            
+            <div class="popup-filter-mobile">
+              <button class="popup-filter-mobile-close btn-clear-mobile" type="button" onclick="objBuildPCVisual.showProductFilterClear();" style="margin-right: 12px;background: #ec1b23;">
+                Xóa bộ lọc
+              </button>
+              
+              <button class="popup-filter-mobile-close" type="button" onclick="$('#js-popup-filter-group').slideUp();">Đóng bộ lọc</button>
+            </div>
+          </div>
+
+          <div class="popup-content-group">
+            <div class="sort-paging-group">
+              <div class="sort-block">
+                <div class="sort-wrapper">
+                  <span>Sắp xếp: </span>
+                  <select class="sort-select" id="js-sort-holder" onchange="objBuildPCVisual.showProductFilter(this.value);">
+                    
+                  </select>
+                </div>
+                
+                <div class="sort-other">
+                  {% if (item.search_url.indexOf('other_filter') != -1) { %}
+                  <button class="sort-btn btn-stock current" type="button" onclick="objBuildPCVisual.showProductFilter('{%= item.search_url.replace('&other_filter=in-stock', '') %}');">
+                    Còn hàng
+                  </button>
+                  {% } else { %}
+                  <button class="sort-btn btn-stock" type="button" onclick="objBuildPCVisual.showProductFilter('{%= item.search_url %}&other_filter=in-stock');">
+                    Còn hàng
+                  </button>
+                  {% } %}
+                  
+                  <button class="sort-btn btn-clear btn-clear-pc" type="button" onclick="objBuildPCVisual.showProductFilterClear();">
+                    Xóa bộ lọc
+                  </button>
+                </div>
+              </div>
+              <div class="popup-paging js-paging">
+                <!-- Ajax holder -->
+              </div>
+            </div>
+            <div class="popup-product-list" id="js-holder-p_item">
+              <!-- Ajax holder -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const filter_tpl = `
+    <label onclick="objBuildPCVisual.showProductFilter('{%= item.url %}');">
+      <input type="checkbox" {% if (item.is_selected == 1) { %}checked{% } %} /> 
+      <span class="value-filter">{%= item.name %} ({%= item.count %})</span>
+    </label>
+  `;
+
+  const filter_attribute = `
+    <div class="filter-item">
+      <p class="filter-name">{%= item.name %}</p>
+      <div class="filter-list-holder" id="js-price-filter">
+        {% for (let i = 0; i < item.value_list.length; i++) { %}<!-- -->
+        <label>
+          <input type="checkbox" onclick="objBuildPCVisual.showProductFilter('{%=item.value_list[i].url%}');" {% if (item.value_list[i].is_selected == 1) { %}checked{% } %} /> 
+          <span class="value-filter">{%= item.value_list[i].name %} ({%= item.value_list[i].count %})</span>
+        </label>
+        {% } %}
+      </div>
+    </div>
+  `;
+
+  const sortBy = `
+  	<option value="{%= item.url %}" data-key="{%= item.key %}">{%= item.name %}</option>
+  `;
+
+  const prodTpl = `
+    <div class="p-item">
+      <a href='{%= item.productUrl %}' class="item-img">
+        <img src="{%= item.productImage.large %}" alt="{%= item.productName %}" width="" height="" />
+      </a>
+
+      <div class="item-text">
+        <a href='{%= item.productUrl %}' target="_blank" class='item-name'>
+          {%= item.productName %}
+        </a>
+        <p class="item-info">
+          <span>Mã SP:</span>
+          <b> {%= item.productSKU %} </b>
+        </p>
+        <p class="item-info">
+          <span>Bảo hành:</span>
+          <b>{%= item.warranty %}</b>
+        </p>
+        <p class="item-info">
+          <span>Kho hàng: </span>
+          {% if (item.quantity > 0) { %}<b style="color: green;">Còn hàng</b>{% } else { %} <b style="color: #ec1b23;">Liên hệ</b>{% } %}
+        </p>
+        <p class='p-price'>
+          {% if (item.price > 0) { %}{%= formatCurrency(item.price) %}đ{% } else { %}Liên hệ{% } %}
+        </p>
+        {% if (item.specialOffer.all.length > 0) { %}
+        <div class="p-offer-container">
+          <p class="box-title" onclick="$(this).parents('.p-offer-container').toggleClass('active');">
+            Khuyến mãi của sản phẩm
+          </p>
+          <div class="offer-list-group">
+            {%# render_Special(item.specialOffer) %}
+            
+            {% if (item.specialOfferGroup != '') { %}
+            {%# render_SpecialOfferGroup(item.specialOfferGroup) %}
+            {% } %}
+          </div>
+        </div>
+        {% } %}
+      </div>
+
+      {% if (Object.keys(item.variant_option).length > 0) { %}
+      <button class='btn-buy js-open-variant-popup' data-id="{%= item.productId %}">Thêm vào cấu hình <i class='fa fa-angle-right'></i></button>
+      {% } else { %}
+      <button class='btn-buy js-select-product' data-id="{%= item.productId %}">Thêm vào cấu hình <i class='fa fa-angle-right'></i></button>
+      {% } %}
+    </div>
+  `;
+
+  const paging_item = `
+    <a href="javascript:;" class="{% if (item.is_active == 1) { %}active{% } %}" onclick="objBuildPCVisual.showProductFilter('{%= item.url %}');"> 
+      {% if (item.name == 'next') { %}
+      <i class="fa fa-angle-right"></i>
+      {% } else if (item.name == 'prev') { %}
+      <i class="fa fa-angle-left"></i>
+      {% } else { %}
+      {%= item.name %}
+      {% } %}
+    </a>
+  `;
+</script>
+{% endraw %}

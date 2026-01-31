@@ -1,0 +1,202 @@
+<link rel="stylesheet" href="{{ 'buildpc_v2.css'|asset_url }}?v={{ 'now'|date: '%d.%m.%Y.%H.%M.%S' }}" />
+
+<!-- MAIN -->
+<div class="buildpc-page">
+  <div class="container">
+    <h1 class="page-title"> Chọn linh kiện xây dựng cấu hình </h1>
+
+    {% if global.is_admin_login == 'yes' -%}
+    <!--GUILD-->
+    <div id="js-buildpc-guild" style="padding: 20px;margin: 24px 0;border: 2px solid red;">
+      <div class="text-align: center;">
+        <h2 style="font-size: 20px;font-weight: 700;">
+          Hướng dẫn Cài đặt Danh mục tại [Build PC] cho phép "chọn nhiều sản phẩm 1 lúc"
+        </h2>	
+          
+        <p style="color: red;">(Chỉ hiển thị với tài khoản Quản trị viên)</p>
+        <p style="color: blue;font-weight: 700;">
+          <a id="js-buildpc-guild-toggle" href="javascript:;" data-state="0" onclick="">
+            Ẩn hiển thị
+          </a>
+        </p>
+      </div>
+
+      <div id="js-buildpc-guild-content">
+        <div style="display: flex;gap: 32px;">
+          <div>
+            <h3 style="margin-top: 16px;"><b>Hướng dẫn</b></h3>
+
+            <ol style="list-style: decimal;padding-left: 16px;margin-top: 8px;">
+              <li>
+                Truy cập quản trị <a href="/admin/?opt=system&view=store-design&section=other" target="_blank" style="color: red;"><b>tại đây</b></a>.
+              </li>
+              <li>
+                Tìm đến dòng có ô <b style="color: #1435c3;">Chú thích</b>: <i style="color: green;">Danh sách ID danh mục trang BuildPC cho phép chọn nhiều sản phẩm</i>.
+              </li>
+              <li>
+                Tìm ID danh mục <a href="/admin/?opt=pcbuilder" target="_blank" style="color: red;"><b>tại đây</b></a>, cột <b>ID danh mục</b>.
+              </li>
+              <li>
+                Điền <b>ID Danh mục</b> vào ô <b style="color: #1435c3;">Giá trị</b>, mỗi <b>ID</b> cách nhau bởi dấu phẩy(,). Ví dụ: <i style="color: green;">2,3,4,5</i>.
+              </li>
+              <li>
+                <b style="color: red;">Lưu ý:</b> Điền duy nhất số <b>0</b> vào ô <b style="color: #1435c3;">Giá trị</b> để cho phép <i style="color: green;">toàn bộ Danh mục chọn
+                nhiều sản phẩm</i>.
+              </li>
+              <li>
+                <b style="color: #1435c3;">Cập nhật</b> để lưu.
+              </li>
+            </ol>
+          </div>
+
+          <div style="flex: 1;">
+            <h3 style="margin-top: 16px;"><b>Danh mục đã chọn (ID)</b></h3>
+
+            <ul id="js-buildpc-guild-mutil-category-selected" style="padding-left: 16px;margin-top: 8px;list-style: decimal;">
+              <li>Đang tải...</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% endif -%}
+
+    <div class="btn-buildpc-group" id="js-buildpc-tab">
+      <a href="javascript:;" onclick="buildpcSetup(1);BuildPC_Multiple.changeTab(this);" class="active">Cấu hình 1</a>
+      <a href="javascript:;" onclick="buildpcSetup(2);BuildPC_Multiple.changeTab(this);">Cấu hình 2</a>
+      <a href="javascript:;" onclick="buildpcSetup(3);BuildPC_Multiple.changeTab(this);">Cấu hình 3</a>
+      <a href="javascript:;" onclick="buildpcSetup(4);BuildPC_Multiple.changeTab(this);">Cấu hình 4</a>
+      <a href="javascript:;" onclick="buildpcSetup(5);BuildPC_Multiple.changeTab(this);">Cấu hình 5</a>
+      <a href="javascript:;" onclick="buildpcCompare();" style="background: #ec1b23;">
+        So sánh
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="15" height="15" fill="#FFFFFF"><path d="M384 32l128 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L398.4 96c-5.2 25.8-22.9 47.1-46.4 57.3L352 448l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0-192 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0 0-294.7c-23.5-10.3-41.2-31.6-46.4-57.3L128 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l128 0c14.6-19.4 37.8-32 64-32s49.4 12.6 64 32zm55.6 288l144.9 0L512 195.8 439.6 320zM512 416c-62.9 0-115.2-34-126-78.9c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C627.2 382 574.9 416 512 416zM126.8 195.8L54.4 320l144.9 0L126.8 195.8zM.9 337.1c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C242 382 189.7 416 126.8 416S11.7 382 .9 337.1z" /></svg>
+      </a>
+    </div>
+
+    <div class="buildpc-detail-group">
+      <a href="#popup-rebuild_config" data-fancybox class="btn-reset">
+        Làm mới <i class="fa fa-undo"></i>
+      </a>
+
+      <div class="buildpc-info-group">
+        <p><span style="color: var(--color-primary);">Chi phí dự tính:</span> <span class="js-config-summary"></span></p>
+        <div class="buildpc-promotion-content js-buildpc-promotion-content">
+          <!-- // Khuyến mại buildpc -->
+        </div>
+      </div>
+    </div>
+
+    <div class="buildpc-holder-container" id="js-buildpc-layout">
+      <!-- Danh sách danh mục + sản phẩm -->
+      <i class="buildpc-loading fa fa-spinner fa-spin fa-10x" style="line-height: 258px;"></i>
+    </div>
+
+    <div class="buildpc-info-group">
+      <p><span style="color: var(--color-primary);">Chi phí dự tính:</span> <span class="js-config-summary"></span> </p>
+      <div class="buildpc-promotion-content js-buildpc-promotion-content">
+        <!-- // Khuyến mại buildpc -->
+      </div>
+    </div>
+
+    <div class="buildpc-btn-action" id="js-buildpc-action">
+      <button class="item" data-action="create-image"> Tải ảnh cấu hình <i class="fa fa-image"></i> </button>
+      <button class="item" data-action="download-excel"> Tải file excel cấu hình <i class="fa fa-file-excel"></i> </button>
+      <button class="item" data-action="view"> Xem & In <i class="fa fa-print"></i> </button>
+      <button class="item" data-action="add-cart" style="background: #ec1b23;"> Thêm vào giỏ hàng <i class="fa fa-shopping-cart"></i> </button>
+    </div>
+
+    <div class="buildpc-modal-popup-container" id="js-modal-popup" style="display: none;padding: 0;">
+      <!-- Popup select product -->
+    </div>
+  </div>
+</div>
+
+<!-- POPUP SAVE CONFIG -->
+<div class="buildpc-popup-container buildpc-popup-save" id="popup-save_config">
+  <div class="popup-content-group">
+    <button class="btn-close js-close-popup" aria-label="Đóng" onclick="Fancybox.close();">
+      <i class="fa fa-times"></i>
+    </button>
+
+    {% if global.customer_info -%}
+    <div class="content-popup">
+      <p class="group-title"> Nhập tên cấu hình để lưu </p>
+      <input type="hidden" id="js-save-config-id" value="">
+      <div>
+        <input type="text" value="" id="js-save-config-name">
+        <div class="popup-btn-group">
+          <button class="btn-cancel js-close-popup"> Hủy </button>
+          <button class="btn-red" onclick="saveConfig();"> Lưu lại </button>
+        </div>
+        <p id='js-save-config-status'></p>
+      </div>
+    </div>
+
+    {% else -%}
+    <div class="content-popup">
+      <p class="group-title"> Nhập tên cấu hình để lưu </p>
+      <p style="font-size: 15px;text-align: center;">
+        Quý khách vui lòng <a href="/dang-nhap?return_url=/buildpc" style="font-size: 15px;color: blue;">đăng nhập</a> để sử dụng chức năng này.
+      </p>
+    </div>
+
+    {% endif -%}
+  </div>
+</div>
+
+<!-- POPUP REBUILD -->
+<div class="buildpc-popup-container buildpc-popup-rebuild" id="popup-rebuild_config">
+  <div class="popup-content-group">
+    <i class="fa fa-exclamation-circle"></i>
+    <b>LÀM MỚI</b>
+    <p>Cảnh báo: Toàn bộ linh kiện của bộ PC hiện tại sẽ bị xóa đi</p>
+    <div class="popup-btn-group">
+      <button class="btn-cancel js-close-popup" onclick="Fancybox.close();"> Hủy </button>
+      <button class="btn-red" onclick="reBuild();">Xác nhận</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP ERROR -->
+<div class="buildpc-popup-container buildpc-popup-rebuild" id="fancybox-opps">
+  <div class="popup-content-group">
+    <i class="fa fa-exclamation-circle"></i>
+    <b>OPPS...</b>
+    <p>Bạn chưa chọn sản phẩm nào</p>
+    <div class="popup-btn-group">
+      <button class="btn-red js-close-popup" onclick="Fancybox.close();"> OK </button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP VARIANT 2 -->
+<!-- <div class="popup-select-variant-container" id="js-popup-select-variant-container">
+  <div class="popup-select-content">
+    <div class="popup-title">
+      <div>
+        <a href="javascript:;" onclick="$('.popup-select-variant-container').hide();$('#js-product-selected-info-holder, #js-variant-containe').html('');" class="fas fa-arrow-left" style="margin-right: 6px;"></a>
+        <span>CHỌN CẤU HÌNH</span>
+      </div>
+      <a href="javascript:;" onclick="$('.popup-select-variant-container').hide();$('#js-product-selected-info-holder, #js-variant-containe').html('');" class="fas fa-times"></a>
+    </div>
+    <div id="js-product-selected-info-holder">
+
+    </div>
+    <div class="popup-select-holder" id="js-variant-container">
+
+    </div>
+    <a href="javascript:;" class="popup-select-btn" onclick="objBuildPCVisual.selectVariant()">
+      CHỌN CẤU HÌNH NÀY
+    </a>
+  </div>
+</div>-->
+
+<!-- POPUP COMPARE -->
+<div class="buildpc-compare" id="js-buildpc-compare">
+  <h2 class="buildpc-compare-heading">So sánh cấu hình</h2>
+  <div class="buildpc-compare-table" id="js-buildpc-compare-table">
+    <!--Ajax holder-->
+    <i class="fa fa-spinner fa-spin fa-10x" style="display: table;margin: auto;padding: 20px;color:#d91605"></i>
+  </div>
+</div>

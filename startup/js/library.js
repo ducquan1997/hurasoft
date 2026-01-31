@@ -252,25 +252,27 @@ function searchHandle(target, type, tpl, limit, option) {
 // Add product to cart
 function addProductToCart(product_id, redirect) {
   // variants
-  const quantity = $(".js-buy-quantity").length ? $(".js-buy-quantity").val() : 1;
-  const variant_id = $("#js-product-variant-id").length ? $("#js-product-variant-id").val() : 0;
-  const variant_stock = $("#js-product-quantity").length ? parseInt($("#js-product-quantity").val()) : 1;
+  const product_selected = ITEM_ID && ITEM_ID == product_id;
+  const product_quantity = ITEM_QUANTITY && product_selected ? ITEM_QUANTITY :  1;
+  const variant_data = VARIANT_SELECTED && product_selected ? VARIANT_SELECTED : {};
+  const variant_id = variant_data.id ? variant_data.id : 0;
+  const variant_quantity = variant_data.quantity ? variant_data.quantity : 1;
 
-  // if quantity = 0, return alert
-  if (variant_stock < 1) {
+  // if variant quantity = 0, return alert
+  if (variant_quantity < 1) {
     QiuModal({
       type: "error",
       title: "Cấu hình sản phẩm này không có sẵn!",
-      content: "Quý khách vui lòng chọn cấu hình hoặc tham khảo sản phẩm khác. Để biết thêm thông tin vui lòng liên hệ lại cửa hàng.",
+      content: "Quý khách vui lòng chọn Cấu hình khác hoặc tham khảo Sản phẩm tương tự.<br/> Vui lòng <b>Gọi Hotline</b> hoặc <b>Liên hệ</b> trực tiếp với cửa hàng để được tư vấn chi tiết.",
       submitButtonText: "Liên hệ",
       submitButtonUrl: "/lien-he"
     });
     return;
   }
 
-  // ajax 
+  // ajax
   const product_props = {
-    quantity: quantity,
+    quantity: product_quantity,
     buyer_note: '',
   };
 

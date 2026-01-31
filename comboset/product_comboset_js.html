@@ -1,0 +1,49 @@
+<!-- COMBOSET HANDLE - [Template: 'javascript/product_comboset'] -->
+<link rel="stylesheet" href="{{ global.domain }}{{ 'jqueryui.css' | asset_url }}?v=01.01.2026.1" />
+<script src="{{ global.domain }}{{ 'jqueryui.js' | asset_url }}?v=01.01.2026.1"></script>
+<script src="{{ global.domain }}{{ 'ComboSet.js' | asset_url }}?v=01.01.2026.1"></script>
+<script src="{{ global.domain }}{{ 'ComboSetVisual.js' | asset_url }}?v=01.01.2026.1"></script>
+
+<script>
+  // price range filter database
+  var priceDataMax = 50000000;
+  var priceDatabase = [
+    {
+      id: "0-500000",
+      name: "Dưới 500 nghìn"
+    },
+    {
+      id: "500000-1000000",
+      name: "500 nghìn - 1 triệu"
+    },
+    {
+      id: "1000000-2000000",
+      name: "1 - 2 triệu"
+    },
+    {
+      id: "2000000-3000000",
+      name: "2 - 3 triệu"
+    },
+    {
+      id: "3000000-4000000",
+      name: "3 - 4 triệu"
+    },
+    {
+      id: "4000000-5000000",
+      name: "4 - 5 triệu"
+    },
+    {
+      id: "5000000-10000000",
+      name: "5 - 10 triệu"
+    },
+    {
+      id: "10000000-" + priceDataMax,
+      name: "Trên 10 triệu"
+    }
+  ];
+
+  // call new ComboSet
+  $(document).ready(function () {
+    ComboSetVisual.setup(ITEM_ID);
+  })
+</script>

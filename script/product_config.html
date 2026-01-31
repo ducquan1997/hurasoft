@@ -18,7 +18,7 @@
 
 <div id="js-pro-config" class="pro-config"></div>
 <div id="js-pro-config-alert" class="pro-config-alert">
-  Cấu hình không có sẵn. Vui lòng chọn Cấu hình, Sản phẩm khác, hoặc Liên hệ lại cửa hàng để được tư vấn.
+  Cấu hình không có sẵn. Vui lòng chọn Cấu hình, Sản phẩm khác, hoặc <a href="/lien-he" target="_blank" rel="noopener noreferrer">Liên hệ</a> lại Cửa hàng để được tư vấn.
 </div>
 
 <script>
@@ -77,7 +77,7 @@
         const group = ".js-config-group";
         const items = ".js-variant-item";
 
-        $(items).on("click", function () {
+        $(items).off().on("click", function () {
           const $group = $(this).closest(group);
           const label = $(this).attr("data-label");
 
@@ -94,15 +94,15 @@
 
       // DISPLAY CONFIG
       function _display() {
-        $("#js-product-quantity").attr("value", "0");
+        const $alert = "#js-pro-config-alert";
 
         const items = $(".js-variant-item.selected").toArray().map((item) => [$(item).parents(".js-config-group").attr("data-key"), $(item).attr("data-value")]);
         const selected = Object.fromEntries(items);
         const variant = v_list.filter(v => Object.entries(selected).sort().toString() === Object.entries(v.attribute).sort().toString())[0];
-        const alert = "#js-pro-config-alert";
 
         if (!variant) {
-          $(alert).show();
+          VARIANT_SELECTED.quantity = 0;
+          $alert.show();
           return;
         }
 
@@ -113,14 +113,14 @@
         $("#js-variant-price").html(variant_price); // CHANGE NEW PRICE
 
         // SET DATA
-        $("#js-product-price").attr("value", variant.sale_price);
-        $("#js-product-quantity").attr("value", variant.stock_quantity);
-        $("#js-product-variant-id").attr("value", variant.id);
-        $("#js-product-variant-name").attr("value", variant_name);
+        VARIANT_SELECTED.id = variant.id;
+        VARIANT_SELECTED.price = variant.sale_price;
+        VARIANT_SELECTED.quantity = variant.stock_quantity;
+        VARIANT_SELECTED.name = variant_name;
         
         if (variant.thumbnail != "0" && variant.thumbnail != "") _image(); // CHANGE NEW IMAGE
-        if (variant.stock_quantity == 0) $(alert).fadeIn(); // ARLET NO STOCK QUANTITY
-        else $(alert).hide();
+        if (variant.stock_quantity == 0) $alert.fadeIn(); // ARLET NO STOCK QUANTITY
+        else $alert.hide();
 
         // CHANGE IMAGE WHEN CLICK (SWIPER JS, url = url_image_original, data-index on element class swiper-slide)
         function _image() {

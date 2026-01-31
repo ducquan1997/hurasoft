@@ -1,0 +1,653 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+<script src="{{ 'BuildPC_V2.js' || asset_url }}?v={{ 'now' | date: '%d.%m.%Y.%H.%M.%S' }}"></script>
+<script src="{{ 'BuildPCVisual_V2.js' || asset_url }}?v={{ 'now' | date: '%d.%m.%Y.%H.%M.%S' }}"></script>
+
+<script>
+  var category_multiple = "{{ global.settings.buildpc_categories_ids_multi_select|strip|default: '' }}";
+  // var category_config = {{ page.category_config|default: "null" }};
+
+  var SEARCH_URL = "";
+  var SAVE_BUILD_ID = '';
+  var objBuildPC;
+  var objBuildPCVisual;
+
+  $(document).ready(function () {
+    buildpcHandle();
+  });
+
+  function buildpcHandle() {
+    if (!category_config) {
+      console.log('Chưa cài đặt Danh mục sản phẩm tại Xây dựng máy tính!');
+      return;
+    }
+
+    Fancybox.bind("[data-fancybox]", {});
+
+    if (hura_read_cookie('save_config') == '1') {
+      Fancybox.show([{ src: '#popup-save_config', type: "inline" }]);
+      hura_erase_cookie("save_config");
+    }
+
+    buildpcActions();
+    buildpcVarriantModal();
+    buildpcCategoryMultiSelect();
+    buildpcSetup(1);
+    buildpcCategoryMultiGuild();
+  }
+</script>
+
+<script>
+  /* == Buldpc multiple  ==*/
+  const BuildPC_Multiple = (function () {
+    function changeTab(holder) {
+      $('#js-buildpc-tab a').removeClass('active');
+      $(holder).addClass('active')
+    }
+
+    function closePopup() {
+      $('#js-modal-popup').html('');
+      $('body').css('overflow', 'auto');
+    }
+
+    return {
+      closePopup,
+      changeTab
+    }
+  })();
+  /* ======*/
+
+  /* == Khuyến mại sản phẩm  ==*/
+  function render_Special(data) {
+    var _offerList = [];
+    // Khuyến mại riêng
+    if (data.other) {
+      _offerList.push(`<div class="item">${data.other[0].title}</div>`)
+    }
+
+    // Nhóm khuyến mại
+    if (data.gift) {
+      var gift = data.gift;
+      gift.forEach(function (item) {
+        var url = (item.url != '') ? `<a href="${item.url}" target="_blank">Xem chi tiết</a>` : '';
+        _offerList.push(`<div class="item"><span>${item.title}</span> ${url}</div>`)
+      });
+    }
+
+    if (data.product) {
+      var product = data.product;
+      product.forEach(function (item) {
+        var url = (item.url != '') ? `<a href="${item.url}" target="_blank">Xem chi tiết</a>` : '';
+        _offerList.push(`<div class="item"><span>${item.title}</span> ${url}</div>`)
+      });
+    }
+
+    if (data.service) {
+      var service = data.service;
+      service.forEach(function (item) {
+        var url = (item.url != '') ? `<a href="${item.url}" target="_blank">Xem chi tiết</a>` : '';
+        _offerList.push(`<div class="item"><span>${item.title}</span> ${url}</div>`)
+      });
+    }
+
+    return _offerList.join('')
+  }
+
+  function render_SpecialOfferGroup(data) {
+    if (data) {
+      let _offerGroup = [];
+      var offerGroup = Object.values(data);
+
+      offerGroup.forEach(function (item) {
+        _offerGroup.push(`<div class="specialOfferGroup-container"><p class="group-title">` + item.title + `</p>`);
+
+        Object.values(item.promotion).forEach(function (promotion) {
+          var url = (promotion.url != '') ? '<a href="' + promotion.url + '" target="_blank">Xem chi tiết</a>' : '';
+          _offerGroup.push(`<div class="item"><span>` + promotion.title + `</span> ` + url + `</div>`)
+        });
+
+        _offerGroup.push(`</div>`);
+      });
+
+      return _offerGroup.join('');
+    }
+  }
+  /* ======*/
+</script>
+
+<script>
+  //Hien thi thong bao noi dung khuyen mai neu co
+  function showUserBuildPCPromotion(promotion, promotion_title) {
+    var $holder = $(".js-buildpc-promotion-content");
+
+    if (promotion_title == '') {
+      $holder.html('');
+      return;
+    }
+
+    var summary = objBuildPCVisual.getConfigSummary();
+    var paid_amount = summary.total_value - strToNumber(promotion.cash);
+    var show_html = `
+      <table>
+        <tr><td>Khuyến mại cho PC trên</td> <td> ${promotion_title}</td></tr>
+        <tr><td>KM 1: Giảm ngay tiền mặt</td> <td> ${promotion.cash} đ</td></tr>
+        <tr><td>KM 2: Không giảm tiền mặt, chọn gói sản phẩm trị giá</td> <td> ${promotion.optional_package_value} đ</td></tr>
+        <tr><td>Tổng tiền thanh toán (Theo KM 1 giảm tiền mặt)</td> <td> ${formatCurrency(paid_amount)} đ</td></tr>
+      </table>
+    `;
+
+    $holder.html(show_html);
+  }
+
+  function checkPromotionByCondition(current_value, arr_category_list) {
+    let url = `/ajax/get_json.php?action=promotion&action_type=condition&value=${current_value}&category=${arr_category_list.join('-')}`;
+    $.get(url, function (res) {
+      if (res.status === 'success') {
+        alert(res.data.promotion);
+      }
+    })
+  }
+
+  function buildpcActions() {
+    $("#js-buildpc-action").on("click", function (e) {
+      var node = e.target;
+      var user_action = node.getAttribute("data-action");
+
+      if (JSON.stringify(objBuildPC.getConfig(), true, 4).length <= 2) {//>
+        Fancybox.show([{ src: "#fancybox-opps", type: "inline" }]);
+        return false;
+      }
+
+      switch (user_action) {
+        case "save"://luu cau hinh
+          Hura.User.updateInfo(SAVE_BUILD_ID, objBuildPC.getConfig(), function (res) {
+            if (res.status == 'success') {
+              alert("Lưu thành công !");
+            }
+          });
+          break;
+
+        case "download-excel": //tai file excel
+          window.location = exportUrl('xls');
+          break;
+
+        case "view"://xem va in
+          window.location = exportUrl('html');
+          break;
+
+        case "create-image"://tao anh
+          //alert("Chức năng đang chờ bổ sung!");
+          downloadImage();
+          break;
+
+        case "add-cart"://them gio hang
+          //alert("Chức năng đang chờ bổ sung!");
+          addConfigToCart();
+          break;
+      }
+    });
+  }
+
+  // Tải excel
+  function exportUrl(ftype) {
+    var export_url = "/export_file.php?content_type=" + SAVE_BUILD_ID + "&u=" + Hura.User.getUserId() + "&file_type=";
+    return export_url + ftype;
+  }
+
+  // Tải ảnh
+  function downloadImage() {
+    let seconds = new Date().getTime() / 1000;
+    let export_url = `/export_file.php?content_type=${SAVE_BUILD_ID}&f=${parseInt(seconds)}&u=${Hura.User.getUserId()}&file_type=`;
+    let url = "{{ global.domain }}" + export_url + 'image';
+    let tool = "https://screenshot.hurasoft.com/screenshot.php?url=";
+    window.open(tool + encodeURIComponent(url), '_blank');
+  }
+
+  // Lưu cấu hình
+  function saveConfig() {
+    var config_name = $("#js-save-config-name").val();
+    if (config_name.length < 5) {//>
+      alert("Chưa nhập tên cấu hình ");
+    } else {
+
+      var $status_holder = $("#js-save-config-status");
+      //$status_holder.html('...');
+
+      var params = {
+        action_type: "save-buildpc",
+        uid: Hura.User.getUserId(),
+        config_id: 1,
+        config_name: config_name
+      };
+
+      Hura.Ajax.post("user", params).then(function (data) {
+        $("#js-save-config-id").val(data.data);
+        alert("Đã lưu thành công");
+        $.fancybox.close();
+      })
+    }
+  }
+
+  // Thêm sp vào giỏ
+  function addConfigToCart() {
+    Hura.User.updateInfo(SAVE_BUILD_ID, objBuildPC.getConfig(), function (res) {
+      if (res.status == 'success') {
+        console.log("Lưu thành công !");
+      }
+    });
+
+    //get config saved
+    Hura.User.getInfo(SAVE_BUILD_ID, function (pc_config) {
+      modalSuccess();
+
+      _ajax().then(function () {
+        location.href = "/cart";
+      });
+
+      async function _ajax() {
+        const pc_config_sorted = _sort(Object.values(pc_config));
+
+        for (let i = 0; i < pc_config_sorted.length; i++) {//>
+          const product_list = pc_config_sorted[i].items;
+
+          for (let i = 0; i < product_list.length; i++) {//>
+            const product = product_list[i];
+            const product_id = product.productId;
+            const variant_id = product.variant_id;
+            const quantity = product.quantity;
+
+            await Hura.Cart.Product.add(product_id, variant_id, { quantity: quantity });
+          }
+        }
+      }
+
+      function _sort(data) {
+        const indexs = $(".js-item-row").toArray().map(i => $(i).attr("data-id"));
+        return [...data].sort((a, b) => indexs.indexOf(a.info.id) - indexs.indexOf(b.info.id));
+      }
+    });
+  }
+
+  // Xóa cấu hình
+  function reBuild() {
+    objBuildPCVisual.deleteSelectedConfig();
+    Hura.User.updateInfo(SAVE_BUILD_ID, {}, function (res) {
+      if (res.status == 'success') {
+        location.href = '/buildpc';
+      }
+    });
+  }
+
+  // Xây dựng cấu hình
+  function buildpcSetup(id) {
+    SAVE_BUILD_ID = 'buildpc-' + id;
+    objBuildPC = new BuildPC(SAVE_BUILD_ID);
+    objBuildPCVisual = BuildPCVisual(objBuildPC);
+
+    //show clean layout
+    objBuildPCVisual.showLayout();
+    $(".js-buildpc-promotion-content").html('');
+
+    //offer text wave (test demo)
+    buildpcSpecialOffer();
+
+    //show product layout
+    Hura.User.getInfo(SAVE_BUILD_ID, function (response) {
+      // set new pc config
+      let pc_config = response ? response : {};
+      objBuildPC.setConfig(pc_config);
+
+      // add product from product detail handle
+      let item_info;
+      const item_store = localStorage.getItem("buildpc_product_new");
+      if (item_store) {
+        localStorage.removeItem("buildpc_product_new");
+
+        const item_data = JSON.parse(item_store);
+        if (item_data && item_data.product && item_data.categoriesIds) {
+          item_info = item_data.product;
+          const item_cat_ids = item_data.categoriesIds;
+
+          // find category of product new
+          const category_info = category_config.find((cat) => item_cat_ids.filter((catId) => catId === String(cat.id)).length);
+          if (!category_info) return;
+
+          // check product exit in pc config
+          const category_id = category_info.id;
+          if (objBuildPC.isItemInCategory(category_id, item_info.id)) {
+
+          } else {
+            // add product to pc config
+            objBuildPCVisual.addProductToList(category_info, item_info);
+            // set new pc config
+            pc_config = objBuildPC.getConfig();
+          }
+        }
+      }
+
+      // update new pc config
+      Hura.User.updateInfo(SAVE_BUILD_ID, pc_config, function (res) {
+        if (res.status == 'success') {
+          console.log("Lưu thành công !");
+        }
+      });
+
+      // display layout
+      for (let category_id in pc_config) {
+        if (pc_config.hasOwnProperty(category_id)) {
+          // display product per category in layout
+          objBuildPCVisual.displayProductInCategory(category_id);
+
+          // scroll to product new after add this to pc config
+          if (item_info) {
+            const target = '.js-item-drive[data-item_id="' + item_info.id + '"]';
+            if ($(target).length) {
+              setTimeout(function () {
+                document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
+              }, 500);
+            }
+          }
+        }
+      }
+
+      objBuildPCVisual.displaySummary();
+    });
+  }
+
+  // buildpc category multi select
+  function buildpcCategoryMultiSelect() {
+    // no multi && return
+    if (!category_multiple) {
+      return;
+    }
+
+    // multi == 0 && multi all category
+    if (category_multiple === "0") {
+      _setMultiConfig();
+      return;
+    }
+
+    // multi category set
+    const category_multiple_list = category_multiple.split(",").map((id) => parseInt(id));
+    if (category_multiple_list.length === 0) return;
+    _setMultiConfig();
+
+    // handle
+    function _setMultiConfig() {
+      category_config = category_config.map((cat) => {
+        const multi_check = category_multiple === "0" || category_multiple_list.filter((id) => id === cat.id).length;
+        const multi_select = multi_check ? 1 : 0;
+
+        return {
+          ...cat,
+          multi_select: multi_select
+        }
+      })
+    }
+  }
+
+  // buildpc category multi guild
+  function buildpcCategoryMultiGuild() {
+    _setupDisplay();
+    _toggleDisplay();
+
+    function _setupDisplay () {
+      const $selected_list = $("#js-buildpc-guild-mutil-category-selected");
+      if ($selected_list.length === 0) return;
+
+      // no multi && return
+      if (!category_multiple) {
+        $selected_list.html("<li>Không có danh mục nào được chọn</li>");
+        return;
+      }
+
+      // multi == 0 && multi all category
+      if (category_multiple === "0") {
+        $selected_list.html("<li>Tất cả danh mục được chọn</li>");
+        return;
+      }
+
+      const category_selected = category_config.map((cat) => cat.multi_select ? "<li>" + cat.name + " (" + cat.id + ")</li>" : ""); // guild
+      $selected_list.html(category_selected); // guild
+    }
+
+    function _toggleDisplay() {
+      const $guild_toggle = $("#js-buildpc-guild-toggle");
+      const $guild_content = $('#js-buildpc-guild-content');
+      const guild_session = "buildpc_guild_display";
+
+      if ($guild_content.length === 0) return;
+
+      if (sessionStorage.getItem(guild_session)) {
+        $guild_content.hide();
+        $guild_toggle.html("Hiển thị").attr("data-state", "1");
+      }
+
+      $guild_toggle.on("click", function () {
+        const guild_state = $guild_toggle.attr("data-state");
+
+        if (guild_state === "0") {
+          $guild_toggle.html("Hiển thị").attr("data-state", "1");
+          $guild_content.slideUp();
+          sessionStorage.setItem(guild_session, 'none');
+          return;
+        }
+
+        $guild_toggle.html("Ẩn hiển thị").attr("data-state", "0");
+        $guild_content.slideDown();
+        sessionStorage.removeItem(guild_session);
+      })
+    }
+  }
+
+  // display total filter selected mobile layout
+  function buildpcMobileFilterTotal(data) {
+    const brand = data.brand_filter_list.filter(item => item.is_selected === true).length;
+    const price = data.price_filter_list.filter(item => item.is_selected === 1).length;
+    const attribute = data.attribute_filter_list.map(item => item.value_list).flat(1).filter(item => item.is_selected === true).length;
+    const total = brand + price + attribute;
+
+    if (total === 0) return;
+    return `<span class="icon-menu-filter-mobile-num">${total}</span>`;
+  }
+
+  // build variant product popup
+  function buildpcVarriantModal() {
+    $("body").append(`
+  	  <!-- POPUP VARIANT -->
+      <div class="popup-select-variant-container" id="js-popup-select-variant-container">
+        <div class="popup-select-content">
+          <div class="popup-select-title">
+            CHỌN CẤU HÌNH
+            <a class="popup-select-close fas fa-times" href="javascript:void(0);" onclick="$('#js-popup-select-variant-container').hide();$('#js-product-selected-info-holder, #js-variant-container').html('');"></a>
+          </div>
+          <div class="popup-select-product" id="js-popup-select-variant-product">
+            <!-- load variant product -->
+          </div>
+          <div class="popup-select-holder" id="js-popup-select-variant-holder">
+            <!-- load variant list -->
+          </div>
+          <a href="javascript:void(0);" class="popup-select-btn" onclick="objBuildPCVisual.selectVariant();">
+            CHỌN CẤU HÌNH NÀY
+          </a>
+        </div>
+      </div>
+  	`);
+  }
+
+  // Hàm hỗ trợ
+  function hura_erase_cookie(name) {
+    hura_create_cookie(name, "", -1);
+  }
+
+  function hura_read_cookie(e) {
+    for (var n = e + "=", r = document.cookie.split(";"), t = 0; t < r.length; t++) {//>
+      for (var o = r[t]; " " == o.charAt(0);) o = o.substring(1, o.length);
+      if (0 == o.indexOf(n))
+        return Base64.decode(o.substring(n.length, o.length));
+    }
+    return null;
+  }
+
+  function strToNumber(r) {
+    for (r += ""; 0 < r.indexOf(".");) r = r.replace(".", "");//>
+    var e = parseFloat(r);
+    return isNaN(e) ? 0 : e;
+  }
+
+  function GetURLParameter(e, t) {
+    for (var r = decodeURIComponent(t).split("&"), n = 0; n < r.length; n++) {//>
+      var o = r[n].split("=");
+      if (o[0] == e) return o[1];
+    }
+  }
+</script>
+
+<script>
+  // speical offer text wave (option)
+  function buildpcSpecialOffer() {
+    const specialOffer = [
+      // {{ global.settings.builpc_category_special_offer }}
+    ];
+    if (specialOffer.length === 0) return;
+
+    specialOffer.forEach(function (item) {
+      const id = item.id_danh_muc;
+      const text = item.khuyen_mai;
+      const text_wave = _wave(text);
+
+      $(`#js-open-selection-${id}`).after(`<span class="text-wave">${text_wave}</span>`);
+    });
+
+    function _wave(text) {
+      return text
+        .split("")
+        .map(function (letter, index) {
+          if (letter === " ") letter = "&nbsp;";
+          return `<span style='--i:${index + 1}'>${letter}</span>`;
+        })
+        .join("");
+    }
+  }
+
+  // pc config compare (option)
+  async function buildpcCompare() {
+    // VARIANTS
+    let raw = [];
+    const maxbuild = 5;
+    const keywords = "buildpc-";
+    const holder = "#js-buildpc-compare-table";
+    const note = "#js-buildpc-compare-note";
+
+    // POPUP
+    Fancybox.show([{ src: "#js-buildpc-compare" }], {
+      dragToClose: false,
+      on: {
+        destroy: (fancybox) => {
+          $(holder).html('<i class="fa fa-spinner fa-spin fa-10x" style="display: table;margin: auto;padding: 20px;color:#d91605"></i>');
+        },
+      },
+    });
+
+    // AJAX PC CONFIG
+    for (i = 1; i < maxbuild + 1; i++) {//>
+      await Hura.User.getInfo(keywords + i, function (pc_config) {
+        raw = [...raw, pc_config && Object.values(pc_config).length ? pc_config : null];
+      });
+    }
+
+    // CHECK
+    const check = raw.filter((config) => config !== null).length;
+    if (check < 2) {//>
+      $(holder).html('<p class="buildpc-compare-alert"><b>Vui lòng Xây dựng tối thiểu 2 bộ PC để xem so sánh!</b></p>');
+      return;
+    }
+
+    // BUILD
+    let orders = [];
+    const results = raw.map((config, index) =>
+      config
+        ? Object.values(config).map((i) => {
+          return { ...i, index: index + 1 };
+        })
+        : undefined
+    );
+    const filter = results.filter((config, index) => {
+      orders = config !== undefined ? [...orders, index + 1] : orders;
+      return config !== undefined;
+    });
+
+    const total = orders.length;
+    const data = filter.flat();
+    const categories = [...new Set(data.map((config) => config.info.id))];
+    const classify = categories.map((catID) => data.filter((config) => config.info.id === catID));
+    const dumps = classify.map((config) => {
+      const list =
+        config.length === total
+          ? config.map((i) => i.items)
+          : orders.map((configOrder) => {
+            const selected = config.filter((i) => i.index === configOrder);
+            return selected.length ? selected[0].items : undefined;
+          });
+
+      return {
+        category: config.filter((i) => i !== undefined)[0].info.name,
+        list: list,
+      };
+    });
+
+    if (total > 2) $(note).show();
+
+    const thead = '<tr><td align="center" width="110">Linh kiện</td>' + orders.map((i) => `<td align="center" width="220"><b>Cấu hình ${i}</b></td>`).join("") + "</tr>";
+
+    const tbody = dumps
+      .map((row) => {
+        const category = '<td align="center"><b class="bpc-cp-category">' + row.category + "</b></td>";
+        const list = row.list.map((items) => {
+          let html = "";
+          const space = '<div style="border-bottom: 1px solid #efefef;margin: 10px -10px;"></div>';
+
+          if (items !== undefined) {
+            html = items.map((item) => `
+              <div class="bpc-cp-item">
+                <p class="bpc-cp-pic">
+                  <img class="bpc-cp-img" src="${item.image.replace('/media/product/75_', '/media/product/250_')}" alt="${item.name}" width="120" height="120" />
+                </p>
+                <a href="${item.url}" target="_blank" rel="noopener noreferrer">
+                  <h3 class="bpc-cp-name">${item.name}</h3>
+                </a>
+                ${item.variant_title ? '<p class="bpc-cp-variant">Cấu hình: <b style="color: green;">' + item.variant_title + "</b></p>" : ""}
+                <p class="bpc-cp-quantity">Số lượng: <b>${item.quantity}</b></p>
+                <p class="bpc-cp-price">Giá: <b style="color: red;">${item.price_sum === "0" ? "Liên hệ" : formatCurrency(item.price_sum) + " đ"}</b></p>
+                <p class="bpc-cp-warranty">Bảo hành: <b>${item.warranty}</b></p>
+              </div>
+            `).join(space);
+          }
+
+          return '<td>' + html + '</td>';
+        }).join("");
+        return `<tr>${category + list}</tr>`;
+      })
+      .join("");
+
+    const twidth = total === 2 ? 800 : total === 3 ? 1000 : total === 4 ? 1200 : 1400;
+    const ttotal = filter
+      .map((config) => {
+        const configTotalPrice = config.reduce((totalPrice, category) => {
+          const categorytotalPrice = category.items.reduce((total, item) => total + parseInt(item.price_sum), 0);
+          return totalPrice + categorytotalPrice;
+        }, 0);
+        return `<td align="center"><b class="bpc-cp-total-price">${formatCurrency(configTotalPrice)} đ</b></td>`;
+      })
+      .join("");
+    const tfooter = '<tr><td align="center"><b class="bpc-cp-category">Tổng giá</b></td>' + ttotal + "</tr>";
+
+    const table = `
+      <table border="1" width="${twidth}" data-total="${total}">
+        <thead>${thead}</thead>
+        <tbody>${tbody}${tfooter}</tbody>
+      </table>
+    `;
+    $(holder).html(table);
+  }
+</script>
