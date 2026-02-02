@@ -10,11 +10,29 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
 
   <!-- TAILWIND CSS V3 -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script data-type="config/tailwindcss">
+    tailwind.config = {
+      theme: {
+        extend: {
+          screens: {
+            'xs': '376px',
+            'sm': '576px',
+            '3xl': '1600px',
+          },
+          colors: {
+            'primary': '#ff5636',
+            'secondary': '#002023',
+            'tertiary': '004147',
+          },
+        },
+      },
+    }
+  </script>
   <style type="text/tailwindcss">
     @theme {
       --color-primary: #ff5636;
@@ -22,20 +40,17 @@
       --color-tertiary: #004147;
     }
     @layer base {
-      html {
-        font-family: Inter,sans-serif;
-      }
-      body {
-        word-break: break-word;
-      }
-      th, td {
-        border: revert-layer;
-        padding: revert-layer;
-      }
-    }
-    @layer components {
-      a:hover {
-        color: var(--color-primary);
+      html{font-family:Roboto,sans-serif}
+      body{word-break:break-word}
+      td,th{border:revert-layer;padding:revert-layer}
+      a{-webkit-transition:all .2s;-o-transition:all .2s;transition:all .2s}
+      a:hover{color:var(--color-primary)}
+      button{-webkit-transition:all .2s;-o-transition:all .2s;transition:all .2s;cursor:pointer}
+      input{outline-color:var(--color-primary);max-width:100%}
+      textarea{outline-color:var(--color-primary);max-width:100%}
+      select{outline-color:var(--color-primary);-webkit-appearance:menulist-button}
+      @media (max-width:576px){
+        input[type=email]:focus,input[type=password]:focus,input[type=text]:focus,select:focus,textarea:focus{font-size:1rem!important}
       }
     }
   </style>
