@@ -1,4 +1,4 @@
-// COMBOSET VISUAL 14.08.2025
+// COMBOSET VISUAL 01.01.2026
 const ComboSetVisual = (function () {
   let ajaxParams = {}; // current category ajax params
   let defaultParams = {}; // default category ajax params
@@ -19,7 +19,7 @@ const ComboSetVisual = (function () {
   const modalPriceSelected = ".js-slider-selected";
 
   // SETUP
-  function _setup(product_id) {
+  function _setUp(product_id) {
     if ($('#js-pd-combo').length === 0) return;
 
     ComboSet.setUp(product_id); // set new combo
@@ -571,7 +571,7 @@ const ComboSetVisual = (function () {
 
       const defaultPriceMax = currentPriceMax ? currentPriceMax : priceDataMax;
       const defaultPriceMin = currentPriceMin ? currentPriceMin : 0;
-      _modalPriceSliderMove(currentPriceMin, currentPriceMax);
+      _modalPriceSliderMove(defaultPriceMin, defaultPriceMax);
     }
 
     // reset [button select all] ("Chọn tất cả")
@@ -732,20 +732,20 @@ const ComboSetVisual = (function () {
 
   function _modalPriceSliderInput() {
     $('.js-input-price-filter').on('change', function () {
-      let min = $('.js-input-min-price-filter-temp').val();
-      let max = $('.js-input-max-price-filter-temp').val();
+      const inputValue = $(this).val().split('.').join('');
+      let minValue = $('.js-input-min-price-filter-temp').val();
+      let maxValue = $('.js-input-max-price-filter-temp').val();
 
-      const value = $(this).val().split('.').join('');
-      if ($(this).hasClass('min')) min = value;
-      else max = value;
+      if ($(this).hasClass('min')) minValue = inputValue;
+      else maxValue = inputValue;
 
-      _modalPriceSliderMove(min, max); // price slider handle while set new max, min price filter input
+      _modalPriceSliderMove(minValue, maxValue); // price slider handle while set new max, min price filter input
     })
   }
 
   function _modalPriceSliderMove(min, max) {
-    const minValue = parseInt(min);
-    const maxValue = parseInt(max);
+    const minValue = parseInt(min) ? parseInt(min) : 0;
+    const maxValue = parseInt(max) ? parseInt(max) : priceDataMax;
     const priceMin = minValue > maxValue ? maxValue : minValue;
     const priceMax = minValue > maxValue ? minValue : maxValue;
 
@@ -756,12 +756,12 @@ const ComboSetVisual = (function () {
     $('.js-selected-min-price-filter').html(formatCurrency(priceMin));
     $('.js-selected-max-price-filter').html(formatCurrency(priceMax));
 
-    _modalPriceSliderFilter(priceMax, priceMin); // set new value [filter price item value]
+    _modalPriceSliderFilter(priceMin, priceMax); // set new value [filter price item value]
   }
 
-  function _modalPriceSliderFilter(priceMax, priceMin) {
-    $("#js-pd-combo-popup-filter-price-max").addClass("active").attr({ "data-id": priceMax, "data-name": priceMax, "data-title": "Giá" }); // select filter price max
+  function _modalPriceSliderFilter(priceMin, priceMax) {
     $("#js-pd-combo-popup-filter-price-min").addClass("active").attr({ "data-id": priceMin, "data-name": priceMin, "data-title": "Giá" }); // select filter price max
+    $("#js-pd-combo-popup-filter-price-max").addClass("active").attr({ "data-id": priceMax, "data-name": priceMax, "data-title": "Giá" }); // select filter price max
 
     $(modalPriceSelected).show();
     if ($(modalPriceSlider).hasClass("ui-slider")) $(modalPriceSlider).slider("values", [priceMin, priceMax]); // set new [positon price] of [drag button] in [price slider]
@@ -769,7 +769,7 @@ const ComboSetVisual = (function () {
 
   // HANDLE
   return {
-    setup: _setup,
+    setUp: _setUp,
     checkout: _checkout,
     categoryOpen: _categoryOpen,
     removeProduct: _removeProduct,

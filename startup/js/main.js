@@ -22,6 +22,16 @@ function fancyboxHandle() {
           right: ["autoplay", "thumbs", "close"],
         },
       },
+      breakpoints: {
+        "(min-width: 768px)": {
+          Toolbar: {
+            display: {
+              left: ["counter"],
+              right: ["autoplay", "thumbs", "close"],
+            },
+          },
+        },
+      },
     }
   });
 }

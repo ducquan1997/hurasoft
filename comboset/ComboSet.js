@@ -1,4 +1,4 @@
-// COMBOSET 14.08.2025
+// COMBOSET 01.01.2026
 const ComboSet = (function () {
   let PRODUCT_ID = 0;
   let VARIANT_ID = 0;
@@ -168,14 +168,19 @@ const ComboSet = (function () {
       return null;
     }
 
+    if (isNaN(parseInt(PRODUCT_ID))) {
+      alert("ID sản phẩm chính không hợp lệ!");
+      return null;
+    }
+
     let config = {
       id: PRODUCT_ID + "_" + VARIANT_ID,
       set_id: set_id,
       items: selectedProduct[set_id]
     }
 
-    console.log(JSON.stringify(config, true, 4));
     // alert("Mua Combo sản phẩm thành công!");
+    console.log(JSON.stringify(config, true, 4));
     const url = "/comboset?config=" + Base64.encode(JSON.stringify(config));
     window.location = url;
   }
