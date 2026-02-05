@@ -1,6 +1,6 @@
 {% raw %}
 <script>
-  const buildPc_popup_tpl = `
+  const buildPC_popup_tpl = `
     <div class="buildpc-popup">
       <div class="popup-select">
         <div class="popup-header">
@@ -81,14 +81,14 @@
     </div>
   `;
 
-  const filter_tpl = `
+  const buildPC_filter_tpl = `
     <label onclick="objBuildPCVisual.showProductFilter('{%= item.url %}');">
       <input type="checkbox" {% if (item.is_selected == 1) { %}checked{% } %} /> 
       <span class="value-filter">{%= item.name %} ({%= item.count %})</span>
     </label>
   `;
 
-  const filter_attribute = `
+  const buildPC_filter_attribute = `
     <div class="filter-item">
       <p class="filter-name">{%= item.name %}</p>
       <div class="filter-list-holder" id="js-price-filter">
@@ -102,11 +102,7 @@
     </div>
   `;
 
-  const sortBy = `
-  	<option value="{%= item.url %}" data-key="{%= item.key %}">{%= item.name %}</option>
-  `;
-
-  const prodTpl = `
+  const buildPC_product_tpl = `
     <div class="p-item">
       <a href='{%= item.productUrl %}' class="item-img">
         <img src="{%= item.productImage.large %}" alt="{%= item.productName %}" width="" height="" />
@@ -155,7 +151,7 @@
     </div>
   `;
 
-  const paging_item = `
+  const buildPC_paging_tpl = `
     <a href="javascript:;" class="{% if (item.is_active == 1) { %}active{% } %}" onclick="objBuildPCVisual.showProductFilter('{%= item.url %}');"> 
       {% if (item.name == 'next') { %}
       <i class="fa fa-angle-right"></i>

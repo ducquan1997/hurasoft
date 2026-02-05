@@ -11,8 +11,9 @@ var BuildPCVisual = function (_objBuildPC) {
   const BUILD_PRODUCT_TYPE = objBuildPC.getBuildId();
   const ACTION_URL = "/ajax/get_json.php";
   const $layout_container = $("#js-buildpc-layout");
-  const $modal_container = $("#js-modal-popup");
   const $summary_holder = $(".js-config-summary");
+  const $modal_container = $("#js-modal-popup");
+  const $modal_search = $("#js-buildpc-search-keyword");
 
   // template
   const row_tpl = `
@@ -225,62 +226,55 @@ var BuildPCVisual = function (_objBuildPC) {
 
   // render popup template
   function renderAjaxData(data) {
-    // popup
-    const html = Hura.Template.parse(buildPc_popup_tpl, data);
-    Hura.Template.render("#js-modal-popup", html);
+    // modal popup
+    const popup_html = Hura.Template.parse(buildPC_popup_tpl, data);
+    Hura.Template.render("#js-modal-popup", popup_html);
     // product list
-    const productTpl = Hura.Template.parse(prodTpl, Object.values(data.product_list));
-    Hura.Template.render("#js-holder-p_item", productTpl);
-    // paging
-    const paging_ = Hura.Template.parse(paging_item, data.paging_collection);
-    Hura.Template.render(".js-paging", paging_);
-    // filter brand
+    const product_html = Hura.Template.parse(buildPC_product_tpl, Object.values(data.product_list));
+    Hura.Template.render("#js-holder-p_item", product_html);
+    // product filter brand
     if (typeof data.brand_filter_list != "undefined" && data.brand_filter_list != "") {
-      const brand_filter = Hura.Template.parse(filter_tpl, Object.values(data.brand_filter_list));
+      const brand_filter = Hura.Template.parse(buildPC_filter_tpl, Object.values(data.brand_filter_list));
       Hura.Template.render("#js-brand-filter", `<p class="filter-name">Hãng sản xuất</p><div class="filter-list-holder">${brand_filter}</div>`);
     }
-    // filter price
+    // product filter price
     if (typeof data.price_filter_list != "undefined" && data.price_filter_list != "") {
-      const price_filter = Hura.Template.parse(filter_tpl, data.price_filter_list);
-      Hura.Template.render("#js-price-filter", `<p class="filter-name">Khoảng giá</p><div class="filter-list-holder">  ${price_filter} </div>`);
+      const price_filter = Hura.Template.parse(buildPC_filter_tpl, data.price_filter_list);
+      Hura.Template.render("#js-price-filter", `<p class="filter-name">Khoảng giá</p><div class="filter-list-holder">${price_filter}</div>`);
     }
-    // filter attribute
+    // product filter attribute
     if (typeof data.attribute_filter_list != "undefined" && data.attribute_filter_list != "") {
-      const attr_filter = Hura.Template.parse(filter_attribute, data.attribute_filter_list);
+      const attr_filter = Hura.Template.parse(buildPC_filter_attribute, data.attribute_filter_list);
       Hura.Template.render("#js-attr-list", attr_filter);
     }
-    // sort
+    // product paging
+    const paging_html = Hura.Template.parse(buildPC_paging_tpl, data.paging_collection);
+    Hura.Template.render(".js-paging", paging_html);
+    // product sort
     const sort_default = data.search_url.split("&sort=")[0] + "&sort=order";
-    const sort_options = data.sort_by_collection
-      .map(function (item) {
-        const is_selected = item.key == data.sort_option ? "selected" : "";
-        return `<option value="${item.url}" ${is_selected}>${item.name}</option>`;
-      })
-      .join("");
+    const sort_options = data.sort_by_collection.map(function (item) {
+      const is_selected = item.key == data.sort_option ? "selected" : "";
+      return `<option value="${item.url}" ${is_selected}>${item.name}</option>`;
+    }).join("");
     const sort_html = '<option value="' + sort_default + '">Tùy chọn</option>' + sort_options;
     Hura.Template.render("#js-sort-holder", sort_html);
-    // search
-    const $input = $("#js-buildpc-search-keyword");
-    $input.val(data.search_query);
-    // close
+    // modal search
+    $modal_search.val(data.search_query);
+    // modal close button
     if ($(".js-modal-button-close").length) return;
-    $modal_container.append(
-      '<button data-fancybox-close="" class="f-button is-close-btn js-modal-button-close" title="Close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" tabindex="-1"><path d="M20 20L4 4m16 0L4 20"></path></svg></button>'
-    );
+    $modal_container.append('<button data-fancybox-close="" class="f-button is-close-btn js-modal-button-close" title="Close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" tabindex="-1"><path d="M20 20L4 4m16 0L4 20"></path></svg></button>');
   }
 
   // tim kiem popup
   function showProductSearch() {
-    const $input = $("#js-buildpc-search-keyword");
-    const search_query = $input.val();
+    const search_query = $modal_search.val();
 
     if (search_query.length < 2) {
       alert("Vui lòng nhập tối thiểu 2 ký tự để tìm kiếm sản phẩm!");
       return false;
     }
 
-    const $form = $("#js-buildpc-search-form");
-    const search_url = $form.attr("data-url");
+    const search_url = $("#js-buildpc-search-form").attr("data-url");
     objBuildPCVisual.showProductFilter(search_url + "&q=" + encodeURIComponent(search_query));
 
     return false;
