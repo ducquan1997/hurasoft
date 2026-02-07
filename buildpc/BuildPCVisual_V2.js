@@ -5,6 +5,8 @@
 var BuildPCVisual = function (_objBuildPC) {
   let open_product_info;
   let open_category_info;
+  let open_search_url;
+  let open_search_query;
 
   const objBuildPC = _objBuildPC;
   //const BUILD_PRODUCT_TYPE = (typeof window.BUILD_PRODUCT_TYPE !== 'undefined') ? window.BUILD_PRODUCT_TYPE : 'buildpc';
@@ -251,7 +253,8 @@ var BuildPCVisual = function (_objBuildPC) {
     const paging_html = Hura.Template.parse(buildPC_paging_tpl, data.paging_collection);
     Hura.Template.render(".js-paging", paging_html);
     // product sort
-    const sort_default = data.search_url.split("&sort=")[0] + "&sort=order";
+    open_search_url = data.search_url;
+    const sort_default = open_search_url.split("&sort=")[0] + "&sort=order";
     const sort_options = data.sort_by_collection.map(function (item) {
       const is_selected = item.key == data.sort_option ? "selected" : "";
       return `<option value="${item.url}" ${is_selected}>${item.name}</option>`;
@@ -259,10 +262,12 @@ var BuildPCVisual = function (_objBuildPC) {
     const sort_html = '<option value="' + sort_default + '">Tùy chọn</option>' + sort_options;
     Hura.Template.render("#js-sort-holder", sort_html);
     // modal search
-    $modal_search.val(data.search_query);
+    open_search_query = data.search_query;
+    $modal_search.val(open_search_query);
     // modal close button
-    if ($(".js-modal-button-close").length) return;
-    $modal_container.append('<button data-fancybox-close="" class="f-button is-close-btn js-modal-button-close" title="Close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" tabindex="-1"><path d="M20 20L4 4m16 0L4 20"></path></svg></button>');
+    if ($(".js-modal-button-close").length === 0) {
+      $modal_container.append('<button data-fancybox-close="" class="f-button is-close-btn js-modal-button-close" title="Close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" tabindex="-1"><path d="M20 20L4 4m16 0L4 20"></path></svg></button>');
+    }
   }
 
   // tim kiem popup
@@ -300,6 +305,15 @@ var BuildPCVisual = function (_objBuildPC) {
     Hura.Ajax.getUrl(filter_url).then(function (data) {
       renderAjaxData(data);
     });
+  }
+
+  // product filter in stock
+  function showProductFilterInStock() {
+    const in_stock_params = "&other_filter=in-stock";
+    const in_stock_filter = open_search_url.indexOf(in_stock_params) > -1 ? open_search_url.replace(in_stock_params, "") : open_search_url + in_stock_params;
+    const in_stock_search = open_search_query ? "&q=" + open_search_query : "";
+    const in_stock_url = in_stock_filter + in_stock_search;
+    showProductFilter(in_stock_url);
   }
 
   // product filter clear
@@ -736,6 +750,7 @@ var BuildPCVisual = function (_objBuildPC) {
     showLayout: showLayout,
     showProductFilter: showProductFilter,
     showProductFilterClear: showProductFilterClear,
+    showProductFilterInStock: showProductFilterInStock,
     showAllProductFilter: showAllProductFilter,
     showProductSearch: showProductSearch,
     showSelectedConfig: showSelectedConfig,

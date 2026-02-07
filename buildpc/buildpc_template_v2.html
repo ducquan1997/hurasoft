@@ -53,15 +53,9 @@
                 </div>
                 
                 <div class="sort-other">
-                  {% if (item.search_url.indexOf('other_filter') != -1) { %}
-                  <button class="sort-btn btn-stock current" type="button" onclick="objBuildPCVisual.showProductFilter('{%= item.search_url.replace('&other_filter=in-stock', '') %}');">
+                  <button class="sort-btn btn-stock {% if (item.search_url.indexOf('other_filter') != -1) { %}current{% } %}" type="button" onclick="objBuildPCVisual.showProductFilterInStock();">
                     Còn hàng
                   </button>
-                  {% } else { %}
-                  <button class="sort-btn btn-stock" type="button" onclick="objBuildPCVisual.showProductFilter('{%= item.search_url %}&other_filter=in-stock');">
-                    Còn hàng
-                  </button>
-                  {% } %}
                   
                   <button class="sort-btn btn-clear btn-clear-pc" type="button" onclick="objBuildPCVisual.showProductFilterClear();">
                     Xóa bộ lọc
