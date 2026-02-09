@@ -998,23 +998,23 @@ function QiuViewMore(...params) {
 
       // if not meet limited, return
       if (_total <= _limited) {
-        $content.removeClass("blur");
-        $holder.find(button_class).remove();
+        $content.length ? $content.removeClass("blur") : null;
+        $button.length ? $button.remove() : null;
         return;
       }
 
       // if true, startup by type
       switch (_type) {
         case "static":
-          $content.addClass("condensed");
+          $content.length ? $content.addClass("condensed") : null;
           break;
 
         case "list":
-          $itemOver.hide();
+          $itemOver.lenght ? $itemOver.hide() : null;
           break;
 
         case "paging":
-          $itemOver.hide();
+          $itemOver.lenght ? $itemOver.hide() : null;
           _pagingHandle();
           return;
 
