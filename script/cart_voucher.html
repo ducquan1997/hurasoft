@@ -1,4 +1,4 @@
-<!-- CART VOUCHER -->
+<!-- HTML -->
 <div class="cart-voucher px-12px">
   <div class="wrapper-voucher d-flex gap-8 mb-3">
     <div class="wrapper-voucher p-relative flex-1">
@@ -10,7 +10,7 @@
   <div id="js-voucher-message" class="text-12 my-3"></div>
 </div>
 
-<!-- CART VOUCHER POPUP -->
+<!-- POPUP -->
 <div class="cart-voucher-popup" id="js-cart-voucher-popup" style="display: none;">
   <div class="v-popup-container">
     <div class="d-flex align-items-center justify-content-between">
@@ -50,6 +50,7 @@
   <div class="v-popup-bg" onclick="VoucherHandle.popupClose();"></div>
 </div>
 
+<!-- STYLE -->
 <style>
   .cart-page .cart-btn{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;color:#fff;width:100%;height:41px;background:#ff5c00;border-radius:5px;font-size:16px;text-transform:uppercase;font-weight:500;border:0;cursor:pointer}
   .cart-page .cart-voucher .cart-voucher-wrapper{display:-webkit-box;display:-ms-flexbox;display:flex;gap:8px;margin-bottom:16px;padding:0 10px}
@@ -101,25 +102,25 @@
   }
 </style>
 
-<!-- VOUCHER -->
+<!-- SCRIPT -->
 <script>
   $(document).ready(function() {
-    VoucherHandle.setup();
+    VoucherHandle.setUp();
   })
 
-  // VOUCHER SCRIPT
+  // VOUCHER
   const VoucherHandle = (() => {
     // voucher variants
     const $voucher_input = $("#js-voucher-input");
     const $voucher_message = $("#js-voucher-message");
     const $voucher_discount = $("#js-discount-voucher");
 
-    let _voucher_disable = [];
-    let _cart_change = 0;
-    let _cart_products = "{{ page.cart_items|map: item_info.id|join: ',' }}";
+    let voucher_disable = [];
+    let cart_change = 0;
+    let cart_products = "{{ page.cart_items|map: item_info.id|join: ',' }}";
 
-    // setup
-    function _setup() {
+    // voucher setup
+    function _voucherSetUp() {
       _voucherListen();
       _popupBuild();
     }
@@ -139,16 +140,17 @@
         // check product deal exit, return
         const check_deal = $(".js-item-row-deal").length;
         if (check_deal) {
-          $voucher_message.show().html('<b style="color: red;">Mã voucher không được áp dụng. Vui lòng xóa sản phẩm [DEAL] trong giỏ hàng</b>');
+          voucher_message = '<b style="color: red;">Mã voucher không được áp dụng. Vui lòng xóa sản phẩm [DEAL] trong giỏ hàng</b>';
+          _voucherHandle("", voucher_message, 0);
           return;
         }
 
         // check invalid voucher exit, return
-        const voucher_error = _voucher_disable.filter(voucher => voucher.code === voucher_code);
+        const voucher_error = voucher_disable.filter(voucher => voucher_code.indexOf(voucher.code) > -1);
         if (voucher_error.length > 0) {
-          const error = voucher_error[0].message ? voucher_error[0].message : "Voucher đã hết hạn hoặc quá số lượng sử dụng!";
-          const message = '<b id="js-coupon-info" data-type="error" style="color: red;">Lỗi xảy ra. ' + error + '</b>';
-          _voucherHandle("", message, 0);
+          const voucher_alert = voucher_error[0].message ? voucher_error[0].message : "Voucher đã hết hạn hoặc quá số lượng sử dụng!";
+          voucher_message = '<b id="js-coupon-info" data-type="error" style="color: red;">Lỗi xảy ra. ' + voucher_alert + '</b>';
+          _voucherHandle("", voucher_message, 0);
           return;
         }
 
@@ -157,20 +159,12 @@
           action_type: "check",
           code: voucher_code,
           order_value: total_cart,
-          product_ids: _cart_products,
+          product_ids: cart_products,
         };
 
         Hura.Ajax.post("coupon", params).then(function (voucher_info) {
           //console.log(voucher_info);
-
-          let voucher_note = "";
           let voucher_message = voucher_info.message;
-          const voucher_off = voucher_info.total_cash_discount;
-          const voucher_discount = voucher_info.coupon_info.cash_discount;
-          const voucher_code = voucher_info.coupon_info.code;
-          const voucher_type = voucher_info.coupon_info.type;
-          const voucher_content = voucher_info.coupon_info.content;
-          const voucher_description = voucher_info.coupon_info.description;
 
           // status == "error", return
           if (voucher_info.status == "error") {
@@ -179,35 +173,60 @@
             return;
           }
 
+          const voucher_coupon = voucher_info.coupon_info;
+          const voucher_total_discount = voucher_info.total_cash_discount;
+
           // status == "success", but no voucher apply, return
-          if (voucher_info.coupon_info.length === 0) {
+          if (voucher_coupon.length === 0) {
             voucher_message = "Lỗi xảy ra! Có thể mã khuyến mại không tồn tại, hết hạn hoặc không hợp lệ. Vui lòng kiểm tra và thử lại.";
             _voucherHandle("", voucher_message, 0);
             return;
           }
+          
+          const voucher_list = voucher_coupon.map((voucher_item) => {
+            let item_text = "";
+            const item_discount = voucher_item.cash_discount;
+            const item_code = voucher_item.code;
+            const item_type = voucher_item.type;
+            const item_content = voucher_item.content;
+            const item_desc = voucher_item.description;
 
-          // display voucher info
-          switch (voucher_type) {
-            case "cash":
-              voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Trừ tiền mặt <span style='color: #29A07E;'>" + formatCurrency(voucher_off) + "₫</span>)</b>";
-              break;
+            // display voucher info
+            switch (item_type) {
+              case "cash":
+                item_text = " <b style='display: inline-block;transform: translateY(-2px);'>(Trừ tiền mặt <span style='color: #29A07E;'>" + formatCurrency(voucher_total_discount) + "₫</span>)</b>";
+                break;
 
-            case "priceoff":
-              voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Giảm giá <span style='color: #29A07E;'>" + voucher_content + "%</span>)</b>";
-              break;
+              case "priceoff":
+                item_text = " <b style='display: inline-block;transform: translateY(-2px);'>(Giảm giá <span style='color: #29A07E;'>" + item_content + "%</span>)</b>";
+                break;
 
-            case "pro":
-              voucher_note = " <b style='display: inline-block;transform: translateY(-2px);'>(Tặng sản phẩm: <a target='_blank' href='" + voucher_description + "' style='color: #29A07E;'>" + voucher_content + "</a>)</b>";
-              break;
+              case "pro":
+                item_text = " <b style='display: inline-block;transform: translateY(-2px);'>(Tặng sản phẩm: <a target='_blank' href='" + item_desc + "' style='color: #29A07E;'>" + item_content + "</a>)</b>";
+                break;
 
-            case "other":
-              break;
-          }
+              case "other":
+                break;
 
-          voucher_message = "Bạn đang sử dụng mã coupon/voucher: <b id='js-coupon-info' style='color: #f00;font-size: 16px;' data-type='" + voucher_type + "'>" + voucher_code + "</b>" + voucher_note;
-          _voucherHandle(voucher_code, voucher_message, voucher_off);
+              default:
+                break;
+            }
+
+            const item_note = "<b id='js-coupon-info' style='color: #f00;font-size: 16px;' data-type='" + item_type + "'>" + item_code + "</b>" + item_text;
+
+            return {
+              note: item_note,
+              code: item_code
+            }
+          });
+
+          const voucher_note = voucher_list.map((item) => item.note).join("<br/>");
+          const voucher_code = voucher_list.map((item) => item.code).join(",");
+
+          voucher_message = "Bạn đang sử dụng mã coupon/voucher: <br/>" + voucher_note;
+          _voucherHandle(voucher_code, voucher_message, voucher_total_discount);
         });
-      }, 100));
+      }, 200));
     }
 
     // voucher handle
@@ -225,8 +244,8 @@
 
     // voucher reset
     function _voucherReset(change) {
-      _cart_change = change;
-      _voucher_disable = [];
+      cart_change = change;
+      voucher_disable = [];
     }
 
     // voucher re-calculate
@@ -237,11 +256,12 @@
         return;
       }
 
-      const target = "#js-coupon-info";
-      if ($(target).length === 0) return;
+      const $coupon = "#js-coupon-info";
+      if ($coupon.length === 0) return;
 
-      const type = $(target).attr("data-type");
-      if (type !== "priceoff" && type !== "error") return;
+      const coupon_typeA = $coupon.toArray().map((coupon) => $(coupon).attr("data-type"));
+      const coupon_typeF = [...new Set(coupon_typeA)].join(",")
+      if (coupon_typeF !== "priceoff" && coupon_typeF !== "error") return;
 
       $voucher_input.trigger("change");
     }
@@ -249,7 +269,7 @@
     // popup variants
     const $popup_container = $("#js-cart-voucher-popup");
     const $popup_input = $("#js-v-popup-input");
-    const $popup_message = $("#js-v-popup-message")
+    const $popup_message = $("#js-v-popup-message");
     const _popup_item = ".js-v-popup-item";
 
     // popup display voucher list
@@ -285,7 +305,7 @@
           const check_status = voucher.can_use_with_cart.status === "yes";
           const check_all = check_time && check_remain && check_status;
 
-          if (!check_all) _voucher_disable.push({ code: voucher.code, message: voucher.can_use_with_cart.message });
+          if (!check_all) voucher_disable.push({ code: voucher.code, message: voucher.can_use_with_cart.message });
 
           return `
             <div class="v-popup-item ${check_all ? 'available js-v-popup-item' : ''}" onclick="VoucherHandle.popupSelect(this, '${voucher.code}');">
@@ -318,7 +338,7 @@
     function _popupOpen() {
       $("body").addClass("overflow-hidden");
       $popup_container.show();
-      if (_cart_change) _popupBuild();
+      if (cart_change) _popupBuild();
     }
 
     // popup close
@@ -331,7 +351,7 @@
 
     // return
     return {
-      setup: _setup,
+      setUp: _voucherSetUp,
       reCalculate: _reCalculate,
       popupOpen: _popupOpen,
       popupClose: _popupClose,
