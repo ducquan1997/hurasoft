@@ -1,4 +1,4 @@
-.container{max-width:1220px;width:100%;padding:0 10px;margin:0 auto}
+.container{max-width:1220px!important;width:100%;padding:0 10px;margin:0 auto}
 .scroll-mt{scroll-margin-top:50px}
 .paging{padding:0 10px 32px;margin-top:42px;text-align:center}
 .paging-link.active,.paging-link:hover{color:#fff;background:var(--color-primary);font-weight:500}
