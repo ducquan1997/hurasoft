@@ -49,7 +49,11 @@ var BuildPCVisual = function (_objBuildPC) {
             <div class="item-quantity-group">
               <b class="js-item-price">{{price}} đ</b>
               <span>x</span>
-              <input type="number" class="js-item-quantity item-quantity" value="{{quantity}}" min="1" max="50" />
+              <span class="item-quantity-change">
+                <a href="javascript:;" class="fa-solid fa-minus item-quantity-btn js-item-quantity-btn" data-value="-1"></a>
+                <input type="number" class="item-quantity js-item-quantity" value="{{quantity}}" min="1" max="999" />
+                <a href="javascript:;" class="fa-solid fa-plus item-quantity-btn js-item-quantity-btn" data-value="1"></a>
+              </span>
               <span>=</span>
               <b class="item-price js-item-total-price">{{price_sum}} đ</b>
             </div>
@@ -95,6 +99,7 @@ var BuildPCVisual = function (_objBuildPC) {
 
     // layout listener on click
     $layout_container.on("click", function (e) {
+      // open category
       var $target = $(e.target);
       var $container = $target.closest(".js-item-drive-info");
       if ($container.length === 0) return;
@@ -108,13 +113,17 @@ var BuildPCVisual = function (_objBuildPC) {
         return true;
       }
 
+      // selected product
+      var $product = $target.closest(".js-item-drive");
+      if ($product.length === 0) return;
+
+      var item_id = $product.data("item_id");
+      var variant_id = $product.data("variant_id");
+      var product_id = $product.data("product_id");
+      var product_holder = `.js-item-drive[data-product_id="${product_id}"][data-variant_id="${variant_id}"]`;
+
       // edit product
       if ($target.hasClass("js-edit-item")) {
-        var $product = $target.closest(".js-item-drive");
-        var item_id = $product.data("item_id");
-        var product_id = $product.data("product_id");
-        var variant_id = $product.data("variant_id");
-
         open_product_info = {
           id: item_id,
           productId: product_id,
@@ -127,12 +136,6 @@ var BuildPCVisual = function (_objBuildPC) {
 
       // remove product
       if ($target.hasClass("js-remove-item")) {
-        var $product = $target.closest(".js-item-drive");
-        var item_id = $product.data("item_id");
-        var product_id = $product.data("product_id");
-        var variant_id = $product.data("variant_id");
-        var product_holder = `.js-item-drive[data-product_id="${product_id}"][data-variant_id="${variant_id}"]`;
-
         const display_callback = function (category_id, item_id) {
           const category_exit = objBuildPC.getConfig()[category_id];
           const category_class = category_exit ? "" : "item-loaded item-multi-seletect";
@@ -151,9 +154,23 @@ var BuildPCVisual = function (_objBuildPC) {
 
         return true;
       }
+
+      // change product quantity
+      if ($target.hasClass("js-item-quantity-btn")) {
+        var $product_quantity = $product.find(".js-item-quantity");
+        var product_quantity = parseInt($product_quantity.val());
+        
+        var new_value = $target.data("value");
+        var new_change = new_value + product_quantity;
+        var new_quantity = isNaN(new_change) || new_change < 1 ? 1 : new_change;
+        if (new_quantity === product_quantity) return false;
+
+        $product_quantity.val(new_quantity).trigger("change");
+        return true;
+      }
     });
 
-    // layout product quantity change
+    // layout listener on change
     $layout_container.on("change", function (e) {
       var $target = $(e.target);
       var $product = $target.closest(".js-item-drive");
@@ -162,21 +179,26 @@ var BuildPCVisual = function (_objBuildPC) {
 
       // change product quantity
       if ($target.hasClass("js-item-quantity")) {
-        var product_price = parseInt(parsePrice($product.find(".js-item-price").html()));
-        var product_quantity = parseInt($product.find(".js-item-quantity").val());
-        var new_quantity = product_quantity < 1 ? 1 : product_quantity;
+        var $product_quantity = $product.find(".js-item-quantity");
+        var $product_price = $product.find(".js-item-price");
+        
+        var product_price = parseInt(parsePrice($product_price.html()));
+        var product_quantity = parseInt($product_quantity.val());
+        var new_quantity = isNaN(product_quantity) || product_quantity < 1 ? 1 : product_quantity;
         var new_price = new_quantity * product_price;
 
         objBuildPC.updateItem(category_id, product_id, "quantity", new_quantity);
         objBuildPC.updateItem(category_id, product_id, "price_sum", new_price);
+        
         $product.find(".js-item-total-price").html(writeStringToPrice(new_price) + " đ");
-
+        $product_quantity.val(new_quantity);
+		
         saveConfig();
         return true;
       }
     });
 
-    // modal listener
+    // modal listener on click
     $modal_container.on("click", function (e) {
       var $target = $(e.target);
       var product_id = $target.data("id");

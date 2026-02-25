@@ -308,7 +308,7 @@ function addProductToCart(product_id, redirect) {
     successCart(); // display success cart popup
     headerCartRender(response); // display item in header cart popup (if exit)
 
-    if (redirect) { // if hava link redirect, go to link
+    if (redirect) { // if link redirect exit, go to link
       setTimeout(function () { 
         window.location.href = redirect;
       }, 1500);
@@ -391,7 +391,7 @@ function ratingHover() {
 }
 
 // Get review/comment list
-function getReviewCommentList(type, action_type, sort, search_text, search_field) {
+function getReviewComment(type, action_type, sort, tpl, search_text, search_field) {
   const holder = `#js-${type}-list`;
 
   isOnScreenHandle({
@@ -420,52 +420,59 @@ function getReviewCommentList(type, action_type, sort, search_text, search_field
 
       const dataApproved = data.filter(obj => { return obj.approved == "1" });
       const dataFinal = dataApproved.map(item => { return { ...item, type: type } });
-      let html = Hura.Template.parse(review_comment_tpl, dataFinal);
+      let html = Hura.Template.parse(tpl, dataFinal);
       Hura.Template.render(holder, html);
     });
   }
 }
 
 // Post review/comment
-function postComment(id, reply, type) {
+function postReviewComment(id, reply, type) {
   const checkForm = QiuForm(`#js-${type}-form-${id}`);
   if (!checkForm.result) return false;
 
-  const item_type = $("[name='user_post[item_type]']").val();
-  const item_id = $("[name='user_post[item_id]']").val();
-  const item_title = $("[name='user_post[item_title]']").val();
-  const title = $("[name='user_post[title]']").val();
-  const rate = $(".rating-comment input:checked").val() ? $(".rating-comment input:checked").val() : 5;
-  // const avatar = $("[name='user_post[user_avatar]']").val();
+  const alert_type = type === "comment" ? "bình luận" : "đánh giá";
+  const alert_text = reply ? "phản hồi " + alert_type : alert_type;
+  const alert_html = `Bạn đã gửi ${alert_text} thành công!`;
 
-  const alert_title = type === "comment" ? "bình luận" : "đánh giá";
-  const alert_text = reply ? "phản hồi " : "";
-  const alert_html = `Bạn đã gửi ${alert_text + alert_title} thành công!`;
+  const user_name = QiuFormValue(checkForm, "name");
+  const user_email = QiuFormValue(checkForm, "email");
+  const user_tel = QiuFormValue(checkForm, "tel");
+  const user_content = QiuFormValue(checkForm, "content");
 
-  const name = QiuFormValue(checkForm, "name");
-  const email = QiuFormValue(checkForm, "email");
-  const tel = QiuFormValue(checkForm, "tel");
-  const content = QiuFormValue(checkForm, "content");
+  const user_rate = $(".rating-comment input:checked").val() ? $(".rating-comment input:checked").val() : 5;
+  const user_title = `Khách hàng ${alert_text + (ITEM_TYPE === "product" ? 'Sản phẩm ' : 'Bài viết ') + ITEM_NAME}`;
+  const user_avatar = "";
+  const user_note = "";
+  const user_files = "";
 
   const info = {
-    item_type: item_type,
-    item_id: item_id,
-    item_title: item_title,
-    user_email: email,
-    user_name: name,
-    user_tel: tel,
-    user_avatar: "",
-    user_note: "",
-    rate: rate,
-    title: title,
-    content: content,
-    files: "",
+    item_type: ITEM_TYPE,
+    item_id: ITEM_ID,
+    item_title: ITEM_NAME,
+    user_email: user_email,
+    user_name: user_name,
+    user_tel: user_tel,
+    user_avatar: user_avatar,
+    user_note: user_note,
+    content: user_content,
+    title: user_title,
+    rate: user_rate,
+    files: user_files,
   }
-  const params = reply === "" ? { action_type: type, info: info } : { action_type: `${type}-reply`, info: { ...info, reply_to: id } };
+
+  const params = 
+    reply ? 
+      { action_type: `${type}-reply`, info: { ...info, reply_to: id } } : 
+      { action_type: type, info: info };
 
   Hura.Ajax.post("customer", params).then(function (data) {
-    if (data.status == "success") QiuModal({ type: "success", content: alert_html, closeButtonUrl: "" });
-    else QiuModal({ type: "error", content: "Lỗi không xác định. Vui lòng kiểm tra thông tin và thử lại!" });
+    if (data.status == "success") {
+      QiuModal({ type: "success", content: alert_html, closeButtonUrl: "" })
+      return;
+    }
+    
+    QiuModal({ type: "error", content: "Lỗi không xác định. Vui lòng kiểm tra thông tin và thử lại!" });
   });
 }
 

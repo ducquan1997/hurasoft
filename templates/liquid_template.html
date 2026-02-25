@@ -15,6 +15,39 @@
   {% endfor -%}
 -->
 
+<!-- HEADER SEARCH HTML -->
+<div class="header-search relative search-bar js-search-bar" id="js-search-bar">
+  <form class="search-bar__form" method="get" action="/tim" enctype="multipart/form-data">
+    <input class="search-bar__input js-search-bar-input" type="text" name="q" placeholder="Tìm kiếm sản phẩm...">
+
+    <select class="search-bar__category" name="category" id="search-bar-category">
+      <option value="">Tất cả danh mục</option>
+      <option value="1003355586">PC GAMING</option>
+      <option value="1003486516">PC WORKSTATION 2D 3D</option>
+      <option value="1004131917">PC AMD GAMING</option>
+      <option value="1004133040">PC MINI</option>
+      <option value="1004131911">PC VĂN PHÒNG</option>
+      <option value="1004493570">Linh kiện máy tính</option>
+      <option value="1004052695">PC GIẢ LẬP ẢO HÓA</option>
+      <option value="1003486567">Màn hình máy tính</option>
+      <option value="1001347452">Gaming Gear</option>
+      <option value="1004167839">Full Bộ PC Kèm Màn Hình</option>
+      <option value="1004301539">Loa máy tính</option>
+      <option value="1003530620">OnSale</option>
+      <option value="1004108807">CARD MẠNG KHÔNG DÂY</option>
+    </select>
+
+    <button class="search-bar__btn" type="submit" title="Tìm kiếm" aria-label="Tìm kiếm">
+      <i class="ttgshop-icons icon-search-1"></i>
+    </button>
+  </form>
+
+  <div class="search-results">
+    <div class="search-results__list js-search-results-list"></div>
+    <a href="javascript:;" class="search-results__total js-search-results-total"></a>
+  </div>
+</div>
+
 <!-- GLOBAL JAVASCRIPT TEMPLATE -->
 <script>
   var web_layout = "{{ global.layout }}";
@@ -80,35 +113,13 @@
   }
 </script>
 
-<!-- HEADER SEARCH HTML -->
-<div class="header-search relative search-bar js-search-bar" id="js-search-bar">
-  <form class="search-bar__form" method="get" action="/tim" enctype="multipart/form-data">
-    <input class="search-bar__input js-search-bar-input" type="text" name="q" placeholder="Tìm kiếm sản phẩm...">
+<!-- ARTICLE JAVASCRIPT TEMPLATE -->
+<script>
+  var ITEM_TYPE = 'article';
+  var ITEM_ID = '{{ page.article_detail.id }}';
+  var ITEM_NAME = `{{ page.article_detail.title }}`;
 
-    <select class="search-bar__category" name="category" id="search-bar-category">
-      <option value="">Tất cả danh mục</option>
-      <option value="1003355586">PC GAMING</option>
-      <option value="1003486516">PC WORKSTATION 2D 3D</option>
-      <option value="1004131917">PC AMD GAMING</option>
-      <option value="1004133040">PC MINI</option>
-      <option value="1004131911">PC VĂN PHÒNG</option>
-      <option value="1004493570">Linh kiện máy tính</option>
-      <option value="1004052695">PC GIẢ LẬP ẢO HÓA</option>
-      <option value="1003486567">Màn hình máy tính</option>
-      <option value="1001347452">Gaming Gear</option>
-      <option value="1004167839">Full Bộ PC Kèm Màn Hình</option>
-      <option value="1004301539">Loa máy tính</option>
-      <option value="1003530620">OnSale</option>
-      <option value="1004108807">CARD MẠNG KHÔNG DÂY</option>
-    </select>
+  function articleHandle() {
 
-    <button class="search-bar__btn" type="submit" title="Tìm kiếm" aria-label="Tìm kiếm">
-      <i class="ttgshop-icons icon-search-1"></i>
-    </button>
-  </form>
-
-  <div class="search-results">
-    <div class="search-results__list js-search-results-list"></div>
-    <a href="javascript:;" class="search-results__total js-search-results-total"></a>
-  </div>
-</div>
+  }
+</script>

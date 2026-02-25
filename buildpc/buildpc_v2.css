@@ -35,9 +35,13 @@
 .buildpc-page .contain-item-drive .item-img{width:80px;margin:0 10px 0 0}
 .buildpc-page .contain-item-drive .item-text{width:calc(100% - 90px);display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start}
 .buildpc-page .contain-item-drive .item-name{font-weight:500;display:table}
-.buildpc-page .contain-item-drive .item-left{-webkit-box-flex:1;-ms-flex:1;flex:1;max-width:calc(100% - 350px)}
+.buildpc-page .contain-item-drive .item-left{-webkit-box-flex:1;-ms-flex:1;flex:1;max-width:calc(100% - 350px);margin-right:10px}
 .buildpc-page .contain-item-drive .item-right{min-width:350px;display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:end}
-.buildpc-page .contain-item-drive .item-right .item-quantity{text-align:center;height:30px;border:1px solid #ccc;border-radius:4px;font-weight:700;margin:0;padding:0 5px}
+.buildpc-page .contain-item-drive .item-right .item-quantity{outline:0;text-align:center;max-width:90px;height:30px;border:1px solid #ddd;border-radius:4px;font-weight:700;margin:0;padding:0 25px}
+.buildpc-page .contain-item-drive .item-right .item-quantity-change{position:relative;display:inline-block;padding:0;margin:0 5px}
+.buildpc-page .contain-item-drive .item-right .item-quantity-btn{position:absolute;top:0;width:25px;font-size:13px;font-size:12px;padding:9px 0;background:#ddd}
+.buildpc-page .contain-item-drive .item-right .item-quantity-btn.fa-minus{left:0;border-radius:4px 0 0 4px}
+.buildpc-page .contain-item-drive .item-right .item-quantity-btn.fa-plus{right:0;border-radius:0 4px 4px 0}
 .buildpc-page .contain-item-drive .item-quantity-group{margin-right:10px}
 .buildpc-page .contain-item-drive .item-quantity-group>span{text-align:center;padding:0 5px}
 .buildpc-page .contain-item-drive .item-quantity-group .item-price{display:inline-block;min-width:97px;text-align:right;color:#f71400}
