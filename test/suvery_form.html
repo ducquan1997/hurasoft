@@ -1,268 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SUVERY FORM</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
-
-  <style>
-    /* GLOBAL CSS - LIBARY INCLUDE THIS */
-    /* *,::after,::before{padding:0;margin:0;-webkit-box-sizing:inherit;box-sizing:inherit}
-    :root{--color-primary-1:#673ab7;--color-secondary-2:#dadce0;--red:#e80000}
-    body{font-family:Inter,sans-serif;font-weight:400;letter-spacing:.15px}
-    a{text-decoration:none;font-size:inherit;line-height:inherit;color:inherit}
-    a:hover{color:var(--color-primary-1)}
-    img{max-width:100%;max-height:100%;height:auto}
-    input{max-width:100%;outline-color:var(--color-primary-1)}
-    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-family:inherit}
-    input::-moz-placeholder,textarea::-moz-placeholder{font-family:inherit}
-    input:-ms-input-placeholder,textarea:-ms-input-placeholder{font-family:inherit}
-    input::-ms-input-placeholder,textarea::-ms-input-placeholder{font-family:inherit}
-    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-family:inherit}
-    input::-moz-placeholder,textarea::-moz-placeholder{font-family:inherit}
-    input:-ms-input-placeholder,textarea:-ms-input-placeholder{font-family:inherit}
-    input::-ms-input-placeholder,textarea::-ms-input-placeholder{font-family:inherit}
-    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-family:inherit}
-    input::-moz-placeholder,textarea::-moz-placeholder{font-family:inherit}
-    input:-ms-input-placeholder,textarea:-ms-input-placeholder{font-family:inherit}
-    input::-ms-input-placeholder,textarea::-ms-input-placeholder{font-family:inherit}
-    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-family:inherit}
-    input::-moz-placeholder,textarea::-moz-placeholder{font-family:inherit}
-    input:-ms-input-placeholder,textarea:-ms-input-placeholder{font-family:inherit}
-    input::-ms-input-placeholder,textarea::-ms-input-placeholder{font-family:inherit}
-    input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-family:inherit}
-    input::-moz-placeholder,textarea::-moz-placeholder{font-family:inherit}
-    input:-ms-input-placeholder,textarea:-ms-input-placeholder{font-family:inherit}
-    input::-ms-input-placeholder,textarea::-ms-input-placeholder{font-family:inherit}
-    input,input::placeholder,select,textarea,textarea::placeholder{font-family:inherit}
-    input[type=number]::-webkit-inner-spin-button{opacity:1}
-    textarea{display:inherit;resize:none;outline-color:var(--color-primary-1)}
-    @media (max-width:576px){
-    input[type=email]:focus,input[type=password]:focus,input[type=text]:focus,select:focus,textarea:focus{font-size:16px!important}
-    }
-    button{outline:0;border:0;background:0 0;cursor:pointer;font-size:inherit;font-family:inherit;line-height:inherit}
-    .flex-1{-webkit-box-flex:1;-ms-flex:1;flex:1}
-    .mb-3{margin-bottom:16px}
-    .d-none{display:none}
-    .color-red{color:var(--red)}
-    .global-popup-frame{display:none;position:fixed;top:50%;left:50%;right:-50%;bottom:-50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);overflow:hidden;background:rgba(0,0,0,.5);z-index:99999}
-    .global-popup-frame.hide-modal{-webkit-animation:hide-modal .7s ease-in-out both;animation:hide-modal .7s ease-in-out both}
-    .global-popup-modal{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);max-width:500px;min-width:400px;padding-bottom:20px;background:#fff;border-radius:3px;-webkit-box-shadow:4px 8px 12px 0 rgba(0,0,0,.4);box-shadow:4px 8px 12px 0 rgba(0,0,0,.4);overflow:hidden;-webkit-animation:show-modal .7s ease-in-out;animation:show-modal .7s ease-in-out}
-    .global-popup-modal.hide-modal{-webkit-animation:hide-modal .6s ease-in-out both;animation:hide-modal .6s ease-in-out both}
-    .global-popup-modal__container{--color-primary:#ec3434;--color-hover:#f65656;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center}
-    .global-popup-modal__icon{fill:var(--color-primary);margin-top:32px;font-size:28px}
-    .global-popup-modal__title{display:block;font-size:18px;line-height:24px;font-weight:600;margin:14px 0 5px 0}
-    .global-popup-modal__noffy{font-size:14px;font-weight:500;line-height:20px;padding:0 30px;margin:16px 0}
-    .global-popup-modal__noffy ul{padding-left:20px;text-align:left}
-    .global-popup-modal__button-box{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-column-gap:60px;-moz-column-gap:60px;column-gap:60px;padding:0 20px}
-    .global-popup-modal__button{display:none;line-height:40px;font-size:14px;padding:0 20px;margin-top:16px;border-radius:5px;font-weight:600;cursor:pointer;-webkit-transition:background .3s ease-in-out;-o-transition:background .3s ease-in-out;transition:background .3s ease-in-out}
-    .global-popup-modal__button.show{display:block}
-    .global-popup-modal__button.close{display:block;color:var(--color-primary);border:1px solid var(--color-primary)}
-    .global-popup-modal__button.close:hover{color:#fff;background:var(--color-primary)}
-    .global-popup-modal__button.close.default{color:#fff;background:var(--color-primary);border:0}
-    .global-popup-modal__button.close.default:hover{background:var(--color-hover)}
-    .global-popup-modal__button.submit{background:var(--color-primary);color:#fff}
-    .global-popup-modal__button.submit:hover{background:var(--color-hover)}
-    .global-popup-modal__button.cancel{text-decoration:underline;color:#999}
-    .global-popup-modal__button.cancel:hover{color:#000}
-    .global-popup-modal__container.success{--color-primary:#24cb01;--color-hover:#35dd35}
-    .global-popup-modal__container.warning{--color-primary:#ffcc00;--color-hover:#fcd94c}
-    .global-popup-modal__container.comfirm .global-popup-modal__button.cancel,.global-popup-modal__container.comfirm .global-popup-modal__button.submit{display:block}
-    .global-popup-modal__container.comfirm .global-popup-modal__button.close{display:none}
-    @media (max-width:576px){
-    .global-popup-modal{max-width:360px;width:100%;min-width:initial}
-    }
-    @media (max-width:375px){
-    .global-popup-modal{max-width:310px}
-    }
-    @-webkit-keyframes show-modal{
-    0%{-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0)}
-    60%{-webkit-transform:translate(-50%,-50%) scale(1.1);transform:translate(-50%,-50%) scale(1.1)}
-    80%{-webkit-transform:translate(-50%,-50%) scale(.95);transform:translate(-50%,-50%) scale(.95)}
-    100%{-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}
-    }
-    @keyframes show-modal{
-    0%{-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0)}
-    60%{-webkit-transform:translate(-50%,-50%) scale(1.1);transform:translate(-50%,-50%) scale(1.1)}
-    80%{-webkit-transform:translate(-50%,-50%) scale(.95);transform:translate(-50%,-50%) scale(.95)}
-    100%{-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}
-    }
-    @-webkit-keyframes hide-modal{
-    0%{-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}
-    20%{-webkit-transform:translate(-50%,-50%) scale(1.1);transform:translate(-50%,-50%) scale(1.1)}
-    100%{-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0)}
-    }
-    @keyframes hide-modal{
-    0%{-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}
-    20%{-webkit-transform:translate(-50%,-50%) scale(1.1);transform:translate(-50%,-50%) scale(1.1)}
-    100%{-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0)}
-    } */
-  </style>
-
-  <style>
-    /* .bpc-page .bpc-container{max-width:800px;width:100%;margin:48px auto;letter-spacing:.15px;line-height:calc(100% + 6px);font-weight:500;word-break:break-word}
-    .bpc-page .bpc-box{position:relative;background-color:#fff;border:1px solid #dadce0;border-radius:8px;margin-top:12px;margin-bottom:12px;padding:24px}
-    .bpc-page .bpc-box.error{border-color:var(--red)}
-    .bpc-page .bpc-box-top{padding:0}
-    .bpc-page .bpc-box-top::before{content:"";position:absolute;top:0;left:0;width:100%;height:10px;background:var(--color-primary-1);border-radius:8px 8px 0 0}
-    .bpc-page .bpc-title-primary{font-size:32px;line-height:40px;font-weight:600;text-align:center;padding:32px 24px 24px}
-    .bpc-page .bpc-title-secondary{font-size:14px;line-height:44px;font-weight:600;padding:0 24px;border-top:1px solid var(--color-secondary-2)}
-    .bpc-page .bpc-wrapper{width:50%;padding-bottom:10px}
-    .bpc-page .bpc-error{display:none;color:var(--red);margin-top:20px}
-    .bpc-page .bpc-error-noffy{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:12px}
-    .bpc-page .bpc-required{color:var(--red)}
-    .bpc-page .bpc-label{display:block;font-size:16px;margin-bottom:20px;border:0}
-    .bpc-page .bpc-input{width:100%;font-size:14px;line-height:30px;border:0;outline:0}
-    .bpc-page .bpc-input-line{position:relative;height:1px;background:rgba(0,0,0,.12);-webkit-transition:all .3s;-o-transition:all .3s;transition:all .3s}
-    .bpc-page .bpc-input-line::after{content:"";position:absolute;bottom:0;left:50%;right:50%;height:2px;background:var(--color-primary-1);-webkit-transition:all .5s;-o-transition:all .5s;transition:all .5s}
-    .bpc-page .bpc-input:focus~.bpc-input-line::after{left:0;right:0}
-    .bpc-page .bpc-radio-select{width:100%}
-    .bpc-page .bpc-radio-option{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;gap:10px;font-size:16px;line-height:30px;padding:8px 0;cursor:pointer}
-    .bpc-page .bpc-radio-option::before{content:"";position:relative;display:inline-block;top:5px;width:20px;height:20px;border-radius:50%;border:1px solid var(--color-primary-1);background-color:transparent}
-    .bpc-page .bpc-radio-option.selected::after{content:" ";position:absolute;top:17px;left:5px;display:block;width:12px;height:12px;border-radius:50%;background:var(--color-primary-1)}
-    .bpc-page .bpc-send{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;margin-top:24px}
-    .bpc-page .bpc-button{font-size:16px;line-height:40px;font-weight:500;border-radius:5px;padding:0 20px}
-    .bpc-page .bpc-button.btn-submit{color:#fff;background:var(--color-primary-1)}
-    .bpc-page .bpc-button.btn-submit:hover{-webkit-box-shadow:0 1px 10px rgba(103,58,183,.5);box-shadow:0 1px 10px rgba(103,58,183,.5)}
-    .bpc-page .bpc-button.btn-reset{color:var(--color-primary-1);background:0 0}
-    .bpc-page .bpc-button.btn-reset:hover{background:rgba(103,58,183,.1)}
-    @media (max-width:768px){
-    .bpc-page .bpc-wrapper{width:100%}
-    } */
-  </style>
-</head>
-
-<body>
-  <div class="bpc-page">
-    <!--DATA TABLE-->
-    <div id="js-buildpc-data" class="d-none">
-      <table style="height: 157px;" width="838">
-        <tbody>
-          <tr>
-            <td>Họ và Tên*[[name]]</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Số điện thoại*[[tel]]</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Email*[[email]]</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Địa chỉ</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Bạn muốn mua PC không?*</td>
-            <td>
-              <p>Có</p>
-              <p>Không</p>
-              <p>Thảo khảo (mua sau)</p>
-            </td>
-          </tr>
-          <tr>
-            <td>Mục đích mua PC của bạn làm gì?*[[checkbox]]</td>
-            <td>
-              <p>Chơi Game Esport: Đột kích, LOL, FIFA, CSGO, PUBG</p>
-              <p>Chơi Game nặng + Livestream : GTA 5, Game AAA, Game Offline nặng</p>
-              <p>Làm Việc đồ họa 2D: Adobe PTS, Premiere, Afterffect</p>
-              <p>Làm việc đồ họa 3D: Lumion, Blender, 3D Mark, AUTO CAD</p>
-              <p>Làm việc Training AI</p>
-            </td>
-          </tr>
-          <tr>
-            <td>Ngân sách, tài chính mà bạn dự định? *</td>
-            <td>
-              <p>Dưới 10 triệu</p>
-              <p>Từ 10 triệu - 20 triệu</p>
-              <p>Từ 20 triệu - 30 triệu</p>
-              <p>Từ 30 triệu - 40 triệu</p>
-              <p>Trên 50 triệu</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!--MAIN CONTAINER-->
-    <div class="bpc-container">
-      <!--SEND FORM-->
-      <div class="bpc-form" id="js-bpc-form">
-        <div class="bpc-box bpc-box-top">
-          <h2 class="bpc-title-primary">
-            Tư Vấn Mua Máy Tính Giá Rẻ - Hiệu năng cao - Gaming - Làm việc - Đồ Họa - Train AI
-          </h2>
-          <p class="bpc-title-secondary">Hotline Tư Vấn 24/7 : <a href="tel:xxxxxxxxxx">XXXX XXX XXX</a></p>
-          <p class="bpc-title-secondary color-red"><span class="bpc-required">*</span> Biểu thị câu hỏi bắt buộc</p>
-        </div>
-
-        <div class="bpc-box">
-          <p class="mb-3">
-            Đây là bài khảo sát giúp chung tôi tiếp nhận thêm ý kiến, phản hồi của các bạn để nâng cao chất lượng phục
-            vụ, tư vấn trong tương lai. Xin cảm ơn!
-          </p>
-          <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/08/build-pc-do-hoa-30-trieu-3.jpg"
-            alt="Build PC">
-        </div>
-      </div>
-
-      <!--SEND BUTTON-->
-      <div class="bpc-send" id="js-bpc-send">
-        <button class="bpc-button btn-submit" onclick="bpcSendForm();">Gửi</button>
-        <button class="bpc-button btn-reset" onclick="bpcResetForm();">Xóa tất cả câu trả lời</button>
-      </div>
-    </div>
-
-    <!-- MODAL -->
-    <div class="global-popup-frame">
-      <div class="global-popup-modal"></div>
-    </div>
+<!-- HTML -->
+<div class="bpc-page">
+  <!-- Data table holder -->
+  <div id="js-buildpc-data" class="d-none">
+    <table style="height: 157px;" width="838">
+      <tbody>
+        <tr>
+          <td>Họ và Tên*[[name]]</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Số điện thoại*[[tel]]</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Email*[[email]]</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Địa chỉ</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Bạn muốn mua PC không?*</td>
+          <td>
+            <p>Có</p>
+            <p>Không</p>
+            <p>Thảo khảo (mua sau)</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Mục đích mua PC của bạn làm gì?*[[checkbox]]</td>
+          <td>
+            <p>Chơi Game Esport: Đột kích, LOL, FIFA, CSGO, PUBG</p>
+            <p>Chơi Game nặng + Livestream : GTA 5, Game AAA, Game Offline nặng</p>
+            <p>Làm Việc đồ họa 2D: Adobe PTS, Premiere, Afterffect</p>
+            <p>Làm việc đồ họa 3D: Lumion, Blender, 3D Mark, AUTO CAD</p>
+            <p>Làm việc Training AI</p>
+          </td>
+        </tr>
+        <tr>
+          <td>Ngân sách, tài chính mà bạn dự định? *</td>
+          <td>
+            <p>Dưới 10 triệu</p>
+            <p>Từ 10 triệu - 20 triệu</p>
+            <p>Từ 20 triệu - 30 triệu</p>
+            <p>Từ 30 triệu - 40 triệu</p>
+            <p>Trên 50 triệu</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-  <script>
-    // FORM JS
-    $(document).ready(function () {
-      bpcRenderBox();
-      bpcInputCheckHandler();
-      bpcSelectCheckHandler();
-    })
+  <!-- Container -->
+  <div class="bpc-container">
+    <!-- Form -->
+    <form class="bpc-form" id="js-bpc-form" onsubmit="return false;">
+      <div class="bpc-box bpc-box-top">
+        <h2 class="bpc-title-primary">
+          Tư Vấn Mua Máy Tính Giá Rẻ - Hiệu năng cao - Gaming - Làm việc - Đồ Họa - Train AI
+        </h2>
+        <p class="bpc-title-secondary">Hotline Tư Vấn 24/7 : <a href="tel:xxxxxxxxxx">XXXX XXX XXX</a></p>
+        <p class="bpc-title-secondary color-red"><span class="bpc-required">*</span> Biểu thị câu hỏi bắt buộc</p>
+      </div>
 
-    function bpcRenderBox() {
+      <div class="bpc-box">
+        <p>
+          Đây là bài khảo sát giúp chung tôi tiếp nhận thêm ý kiến, phản hồi của các bạn để nâng cao chất lượng phục vụ, tư vấn trong tương lai. Xin cảm ơn!
+        </p>
+        <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/08/build-pc-do-hoa-30-trieu-3.jpg" alt="Build PC" width="1200" height="675">
+      </div>
+    </form>
+
+    <!-- Button -->
+    <div class="bpc-send" id="js-bpc-send">
+      <button class="bpc-button btn-submit" type="submit" onclick="SuveryForm.submit();">
+        Gửi
+      </button>
+      <button class="bpc-button btn-reset" type="reset" onclick="">
+        Xóa tất cả câu trả lời
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- STYLE -->
+<style>
+  .bpc-page .bpc-container{max-width:800px;width:100%;margin:48px auto;letter-spacing:.15px;line-height:calc(100% + 6px);font-weight:500;word-break:break-word}
+  .bpc-page .bpc-box{position:relative;background-color:#fff;border:1px solid #dadce0;border-radius:8px;margin-top:12px;margin-bottom:12px;padding:24px}
+  .bpc-page .bpc-box.error{border-color:var(--red)}
+  .bpc-page .bpc-box-top{padding:0}
+  .bpc-page .bpc-box-top::before{content:"";position:absolute;top:0;left:0;width:100%;height:10px;background:var(--color-primary-1);border-radius:8px 8px 0 0}
+  .bpc-page .bpc-title-primary{font-size:32px;line-height:40px;font-weight:600;text-align:center;padding:32px 24px 24px}
+  .bpc-page .bpc-title-secondary{font-size:14px;line-height:44px;font-weight:600;padding:0 24px;border-top:1px solid var(--color-secondary-2)}
+  .bpc-page .bpc-wrapper{width:50%;padding-bottom:10px}
+  .bpc-page .bpc-error{display:none;color:var(--red);margin-top:20px}
+  .bpc-page .bpc-error-noffy{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:12px}
+  .bpc-page .bpc-required{color:var(--red)}
+  .bpc-page .bpc-label{display:block;font-size:16px;margin-bottom:20px;border:0}
+  .bpc-page .bpc-input{width:100%;font-size:14px;line-height:30px;border:0;outline:0}
+  .bpc-page .bpc-input-line{position:relative;height:1px;background:rgba(0,0,0,.12);-webkit-transition:all .3s;-o-transition:all .3s;transition:all .3s}
+  .bpc-page .bpc-input-line::after{content:"";position:absolute;bottom:0;left:50%;right:50%;height:2px;background:var(--color-primary-1);-webkit-transition:all .5s;-o-transition:all .5s;transition:all .5s}
+  .bpc-page .bpc-input:focus~.bpc-input-line::after{left:0;right:0}
+  .bpc-page .bpc-radio-select{width:100%}
+  .bpc-page .bpc-radio-option{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;gap:10px;font-size:16px;line-height:30px;padding:8px 0;cursor:pointer}
+  .bpc-page .bpc-radio-option::before{content:"";position:relative;display:inline-block;top:5px;width:20px;height:20px;border-radius:50%;border:1px solid var(--color-primary-1);background-color:transparent}
+  .bpc-page .bpc-radio-option.selected::after{content:" ";position:absolute;top:17px;left:5px;display:block;width:12px;height:12px;border-radius:50%;background:var(--color-primary-1)}
+  .bpc-page .bpc-send{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;margin-top:24px}
+  .bpc-page .bpc-button{font-size:16px;line-height:40px;font-weight:500;border-radius:5px;padding:0 20px}
+  .bpc-page .bpc-button.btn-submit{color:#fff;background:var(--color-primary-1)}
+  .bpc-page .bpc-button.btn-submit:hover{-webkit-box-shadow:0 1px 10px rgba(103,58,183,.5);box-shadow:0 1px 10px rgba(103,58,183,.5)}
+  .bpc-page .bpc-button.btn-reset{color:var(--color-primary-1);background:0 0}
+  .bpc-page .bpc-button.btn-reset:hover{background:rgba(103,58,183,.1)}
+  @media (max-width:768px){
+    .bpc-page .bpc-wrapper{width:100%}
+  }
+</style>
+
+<!-- LIBRARY - "/startup/js/library"
+  1. debounce, validateEmail, validateTel
+  2. QiuModal
+-->
+
+<!-- SCRIPT -->
+<script>
+  $(document).ready(function () {
+    SuveryForm.setUp();
+  })
+
+  const SuveryForm = (() => {
+    // variants
+    const $suveryForm = $("#js-bpc-form");
+
+    // setUp
+    function _setUp() {
+      _renderForm();
+      _inputHandle();
+      _radioHandle();
+    }
+
+    // render
+    function _renderForm() {
+      const $tableRow = $("#js-buildpc-data table tr");
+      if ($tableRow.length === 0) return;
+
       let html = "";
-
-      $("#js-buildpc-data table tr").each(function (index) {
+      $tableRow.each(function (row_index) {
         const td_1 = $(this).find("td:first-child").text().trim();
         const td_2 = $(this).find("td:last-child").text().trim();
-        const required = td_1.indexOf("*") !== -1;
+        const td_required = td_1.indexOf("*") !== -1;
         const td_regex = td_1.replace(/\[.+?\]]/g, "");
-        const type = td_1.match(/\[.+?\]]/g) ? td_1.match(/\[.+?\]]/g)[0].replace("[[", "").replace("]]", "") : "";
-        const name = required ? td_regex.substring(0, td_regex.length - 1) + '<span class="bpc-required">*</span>' : td_regex;
+        const td_type = td_1.match(/\[.+?\]]/g) ? td_1.match(/\[.+?\]]/g)[0].replace("[[", "").replace("]]", "") : "";
+        const td_name = td_required ? td_regex.substring(0, td_regex.length - 1) + '<span class="bpc-required">*</span>' : td_regex;
 
-        let wrapper = `
+        let td_wrapper = `
           <div class="bpc-wrapper">
-            <input class="bpc-input js-bpc-input${type ? ' check-' + type : ''}${required ? '' : ' check-disable'}" type="text">
+            <input class="bpc-input js-bpc-input${td_type ? ' check-' + td_type : ''}${td_required ? '' : ' check-disable'}" type="text">
             <div class="bpc-input-line"></div>
           </div>
         `;
 
         if (td_2) {
           const list = td_2.trim().split("\n");
-          const list_trim = list.map((text) => text.trim());
-          const list_filter = list_trim.filter((text) => text.length > 0);
+          const list_filter = list_trim.map((text) => text.trim()).filter((text) => text.length > 0);
           const list_html = list_filter.map((text) => `<div class="bpc-radio-option"><span class="flex-1">${text}</span></div>`).join("");
 
-          wrapper = `
+          td_wrapper = `
             <div class="bpc-wrapper bpc-radio-select js-bpc-radio-select">
               ${list_html}
-              <label for="bpc-radio-option-input-${index}" class="bpc-radio-option option-input">
+              <label for="bpc-radio-option-input-${row_index}" class="bpc-radio-option option-input">
                 <span>Khác: </span>
                 <div class="flex-1">
-                  <input id="bpc-radio-option-input-${index}" class="bpc-input check-disable js-bpc-input" type="text">
+                  <input id="bpc-radio-option-input-${irow_indexx}" class="bpc-input check-disable js-bpc-input" type="text">
                   <div class="bpc-input-line"></div>
                 </div>
               </label>
@@ -272,27 +181,30 @@
 
         html += `
           <div class="bpc-box">
-            <label class="bpc-label">${name}</label>
-            ${wrapper}
+            <label class="bpc-label">
+              ${td_name}
+            </label>
+
+            ${td_wrapper}
+
             <div class="bpc-error">
               <div class="bpc-error-noffy">
-                <svg class="bpc-error-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"
-                  fill="#ff0000">
-                  <path
-                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                <svg class="bpc-error-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" fill="#ff0000">
+                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
                 </svg>
                 <span class="bpc-error-text">Đây là một câu hỏi bắt buộc</span>
               </div>
             </div>
-            <input type="hidden" data-question="${td_regex.replace('*', '').trim()}" class="js-data-send${type ? ' js-data-send-' + type : ''}${required ? ' required' : ''}">
+            <input type="hidden" data-question="${td_regex.replace('*', '').trim()}" class="js-data-send${td_type ? ' js-data-send-' + td_type : ''}${td_required ? ' required' : ''}">
           </div>
         `;
       })
 
-      $("#js-bpc-form").append(html);
+      $suveryForm.append(html);
     }
 
-    function bpcInputCheckHandler() {
+    // input handle
+    function _inputHandle() {
       const $inputs = $(".js-bpc-input");
 
       $inputs.on("blur", debounce(function () {
@@ -311,7 +223,7 @@
         if (!value) showError("Đây là một câu hỏi bắt buộc");
         else if (isEmail && !validateEmail(value)) showError("Địa chỉ email không hợp lệ");
         else if (isPhone && !validateTel(value)) showError("Số điện thoại không hợp lệ");
-        else bpcSetInputDefault(this);
+        else _defaultHandle(this);
 
         function showError(error) {
           $box.addClass("error");
@@ -323,11 +235,12 @@
 
       $inputs.on("keydown", function () {
         if ($(this).val()) return;
-        bpcSetInputDefault(this);
+        _defaultHandle(this);
       })
     }
 
-    function bpcSelectCheckHandler() {
+    // radio handle
+    function _radioHandle() {
       $(".js-bpc-radio-select").each(function () {
         const $options = $(this).find(".bpc-radio-option");
         const $input = $(this).find(".bpc-input");
@@ -338,14 +251,15 @@
           $(this).addClass("selected");
           $input.addClass("check-disable");
           $send.val($(this).text());
-          bpcSetInputDefault($input);
+          _defaultHandle($input);
 
           if ($(this).hasClass("option-input")) $input.removeClass("check-disable");
         })
       })
     }
 
-    function bpcSetInputDefault(target) {
+    // default handle
+    function _defaultHandle(target) {
       const $box = $(target).closest(".bpc-box");
       const $error = $box.find(".bpc-error");
 
@@ -353,8 +267,11 @@
       $error.hide();
     }
 
-    function bpcSendForm() {
-      setTimeout(function () {
+    // submit form
+    function _submitForm() {
+      setTimeout(_submit, 300);
+
+      function _submit() {
         let error = "";
         let content = "KHẢO SÁT XÂY DỰNG CẤU HÌNH MÁY TÍNH\n\n";
 
@@ -373,7 +290,7 @@
         })
 
         if (error) {
-          QiuModal.call({
+          QiuModal({
             type: "error",
             content: "Vui lòng kiểm tra lại các câu hỏi bắt buộc, điền câu trả lời phù hợp và gửi lại."
           });
@@ -397,141 +314,20 @@
         };
 
         Hura.Ajax.post("customer", params).then(function (data) {
-          QiuModal.call({
+          QiuModal({
             type: "success",
             title: "Bạn đã gửi thành công!",
             content: "<p>Những đóng góp quý giá của bạn sẽ giúp chúng tôi nâng cao chất lượng dịch vụ khách hàng tốt hơn nữa</p><p>Mong một ngày không xa sẽ được làm việc với các bạn 🤩🤩🤩</p>",
-            closeButtonUrl: ""
           });
+
+          $suveryForm.trigger("reset");
         });
-      }, 300)
-    }
-
-    function bpcResetForm() {
-      location.reload();
-    }
-  </script>
-
-  <script>
-    // INCLUDE LIBARY JS
-    const QiuModal = {
-      call: async function (params) { return await createQiuModal(params) }
-    };
-
-    function createQiuModal(params) {
-      return new Promise(function (resolve, reject) {
-        createUIQiuModal(params);
-
-        $(".global-popup-modal__button.submit").on("click", function () {
-          hideQiuModal(params.submitButtonUrl);
-          resolve({ status: "submit", result: true });
-        });
-        $(".global-popup-modal__button.cancel").on("click", function () {
-          hideQiuModal(params.cancelButtonUrl);
-          resolve({ status: "cancel", result: false });
-        });
-        $(".global-popup-modal__button.close").on("click", function () {
-          hideQiuModal(params.closeButtonUrl);
-          resolve({ status: "close", result: null });
-        });
-      });
-    }
-
-    function createUIQiuModal(params) {
-      let icon, close;
-      let title = params.title ? params.title : "";
-      const type = params.type ? params.type : "";
-      const content = params.content ? params.content : "";
-      const submit = params.submitButtonText
-        ? `<div class="global-popup-modal__button submit show">${params.submitButtonText}</div>`
-        : '<div class="global-popup-modal__button submit">Xác nhận</div>';
-      const cancel = params.cancelButtonText
-        ? `<div class="global-popup-modal__button cancel show">${params.cancelButtonText}</div>`
-        : '<div class="global-popup-modal__button cancel">Hủy bỏ</div>';
-
-      if (params.submitButtonText || params.cancelButtonText || type === "comfirm")
-        close = params.closeButtonText
-          ? `<div class="global-popup-modal__button close show">${params.closeButtonText}</div>`
-          : '<div class="global-popup-modal__button close">Đóng</div>';
-      else
-        close = params.closeButtonText
-          ? `<div class="global-popup-modal__button close default show">${params.closeButtonText}</div>`
-          : '<div class="global-popup-modal__button close default">Đóng</div>';
-
-      switch (type) {
-        case "success":
-          if (!title) title = "Thành công";
-          icon =
-            "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z";
-          break;
-        case "error":
-          if (!title) title = "Có lỗi xảy ra";
-          icon =
-            "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z";
-          break;
-        case "warning":
-          if (!title) title = "Cảnh báo";
-          icon =
-            "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z";
-          break;
-        case "comfirm":
-          if (!title) title = "Xác nhận";
-          icon =
-            "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z";
-          break;
-        default:
-          break;
-      }
-
-      const html = `
-        <div class="global-popup-modal__container ${type}">
-          <svg class="global-popup-modal__icon" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 512 512"><path d="${icon}"/></svg>
-          <span class="global-popup-modal__title">${title}</span>
-          <div class="global-popup-modal__noffy">${content}</div>
-          <div class="global-popup-modal__button-box">${close}${cancel}${submit}</div>
-        </div>
-      `;
-
-      $(".global-popup-modal").html(html).removeClass("hide-modal");
-      $(".global-popup-frame").removeClass("hide-modal").fadeIn();
-      $("body").css("overflow", "hidden");
-    }
-
-    function hideQiuModal(href) {
-      $(".global-popup-frame").addClass("hide-modal");
-      $(".global-popup-modal").addClass("hide-modal");
-      $("body").css("overflow", "auto");
-
-      if (href !== undefined) {
-        setTimeout(function () {
-          if (href !== "") window.location.href = href;
-          else location.reload();
-        }, 1200);
       }
     }
-
-    function debounce(a, b, c) {
-      var d;
-      return function () {
-        var e = this,
-          f = arguments,
-          g = c && !d;
-        clearTimeout(d),
-          (d = setTimeout(function () {
-            (d = null), c || a.apply(e, f);
-          }, b)),
-          g && a.apply(e, f);
-      };
+    // return
+    return {
+      setUp: _setUp,
+      submit: _submitForm,
     }
-
-    function validateEmail(a) {
-      return /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(a);
-    }
-
-    function validateTel(a) {
-      return ((vnf_regex_tel = /((09|03|07|08|05|02)+([0-9]{8, 9})\b)/g), vnf_regex_tel.test(a));
-    }
-  </script>
-</body>
-
-</html>
+  })();
+</script>

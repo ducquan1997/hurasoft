@@ -411,6 +411,7 @@ var BuildPCVisual = function (_objBuildPC) {
         )
       );
     }
+    
     // show promotion
     checkPromotionByCondition(summary.total_value, Object.keys(objBuildPC.getConfig()));
   }
