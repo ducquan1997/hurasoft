@@ -5,39 +5,43 @@
 <script type="text/javascript" src="{{ global.domain }}{{ 'translate.js' | asset_url }}?v=1.0"></script> -->
 
 <script>
-  const globalTranslate = (() => {
-    const primary = "vi|vi";
-    const storage = "googtrans_selected";
+  const GlobalTranslate = (() => {
+    const _lang_primary = "vi|vi";
+    const _lang_storage = "googtrans_selected";
 
-    function _setup() {
-      if (_check()) return;
-      _api();
+    // setUp
+    function _setUp() {
+      if (_checkExit()) return;
+      _callAPI();
     }
 
-    function _click(lang) {
-      if (_check()) return;
+    // change lang
+    function _changeLang(lang) {
+      if (_checkExit()) return;
 
-      _api().then(function () {
+      _callAPI().then(function () {
         doGTranslate(lang);
-        localStorage.setItem(storage, lang);
+        localStorage.setItem(_lang_storage, lang);
       });
     }
 
-    function _check() {
-      const googtrans = localStorage.getItem(storage);
-      const selected = googtrans ? googtrans : primary;
-      return selected === primary;
+    // check lang exit
+    function _checkExit() {
+      const lang_store = localStorage.getItem(_lang_storage);
+      const lang_selected = lang_store ? lang_store : _lang_primary;
+      return lang_selected === _lang_primary;
     }
 
-    async function _api() {
+    // call Google Translate API
+    async function _callAPI() {
       const holder = "#google_translate_element2";
       if ($(holder).hasClass("trans-loaded")) return;
       $(holder).addClass("trans-loaded").after(`\x3Cscript src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2" type="text/javascript">\x3C/script>\x3Cscript src="{{ 'translate.js' | asset_url }}?v=1.0">\x3C/script>`);
     }
 
     return {
-      setup: _setup,
-      click: _click
+      setUp: _setUp,
+      change: _changeLang
     }
   })();
 </script>

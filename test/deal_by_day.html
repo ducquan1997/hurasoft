@@ -72,7 +72,7 @@
 <script>
   const deal_new_tpl = `
     <div class="p-item" style="position: relative;">
-      {% if (item.deal_time_happen < 0) { %}<div class="flash-sale-unable">Sắp diễn ra {%= dealNew.style(item.from_time.split(", ")[1]) %}</div>{% } %}
+      {% if (item.deal_time_happen < 0) { %}<div class="flash-sale-unable">Sắp diễn ra {%= DealByDay.style(item.from_time.split(", ")[1]) %}</div>{% } %}
       
       <div class="p-wrapper" {% if (item.deal_time_happen < 0) { %}style="opacity: 0.5;pointer-events: none;"{% } %}>
         <div class="p-thumbs">
@@ -152,10 +152,10 @@
 
 <script>
   $(document).ready(function () {
-    dealNew.setup(4);
+    DealByDay.setup(4);
   })
 
-  const dealNew = (() => {
+  const DealByDay = (() => {
     // DEAL VARIANT
     let dl_data = [];
     let dl_interval;
@@ -181,7 +181,7 @@
           const date = item.date.split('-')[0] + '/' + item.date.split('-')[1];
 
           return `
-            <div class="flash-sale-item js-flash-sale-item ${active}" onclick="dealNew.date('${item.date}', this);">
+            <div class="flash-sale-item js-flash-sale-item ${active}" onclick="DealByDay.date('${item.date}', this);">
               <div class="flash-sale-block">
                 <div class="flash-sale-day">
                   <div class="ripple"></div><span>${date}</span>
@@ -268,7 +268,7 @@
         const time_start = _style(d.time);
 
         return `
-          <button type="button" class="flash-sale-title-time-effective js-flash-sale-time-item" onclick="dealNew.time('${date}', '${d.time}', this);">
+          <button type="button" class="flash-sale-title-time-effective js-flash-sale-time-item" onclick="DealByDay.time('${date}', '${d.time}', this);">
             ${time_start} - ${time_end}
           </button>
         `;

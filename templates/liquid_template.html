@@ -104,7 +104,7 @@
   var ITEM_NAME = `{{ page.product_info.productName }}`;
   var ITEM_PRICE = '{{ page.product_info.price }}';
   var ITEM_QUANTITY = '{{ page.product_info.quantity }}';
-  var CAT_ID = '{% assign _last_cat = page.product_info.productPath.0.path|last %}{% if _last_cat %}{{ _last_cat.id }}{% else %}0{% endif %}';
+  var CAT_ID = '{% assign _last_cat = page.product_info.productPath.0.path|last %}{{ _last_cat.id|default: 0 }}';
   var BRAND_ID = '{{ page.product_info.brand.id }}';
   var VARIANT_SELECTED = {};
 

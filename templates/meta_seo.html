@@ -32,7 +32,7 @@
     {% if global.module.view == 'product-detail' %}{% assign _og_type = 'product' -%}
     {% elsif global.module.name == 'article' %}{% assign _og_type = 'article' -%}
     {% endif -%}
-    <meta property="og:type" content="{{ _og_type }}">
+    <meta property="og:type"         content="{{ _og_type }}">
 
     {% assign _og_image = global.settings.logo_file -%}
     {% if global.module.view == 'product-detail' -%}
@@ -44,7 +44,7 @@
     {% elsif global.module.name == 'article' and global.module.view == 'detail' and page.image != '' -%}
     {% assign _og_image = page.image -%}
     {% endif -%}
-	<meta property="og:image" name="twitter:image" content="{{ _og_image|prepend: global.domain }}" />
+	<meta property="og:image"        content="{{ _og_image|prepend: global.domain }}" name="twitter:image" />
 
     {% assign _canonical = global.url|replace: global.domain, '' -%}
     {% if global.module.name == 'product' and global.module.view == 'category' -%}

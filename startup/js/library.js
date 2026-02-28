@@ -16,7 +16,7 @@ var Swiper=function(){"use strict";function e(e){return null!==e&&"object"==type
 // Utilities
 var lazy_load_group = [];
 function lazyLoadInstance() {
-  new LazyLoad({ elements_selector: ".lazy" });
+  new LazyLoad({ elements_selector: "[lazyload]" });
 }
 function GetURLParameter2(b, c) {
   var d = new URL(b),
@@ -132,7 +132,7 @@ function reSizeVideoIframe(target) {
 
     const iframe = `
       <p style="position: relative;padding-top: 56.25%;overflow: hidden;">
-        <iframe class="lazy" data-src="${url}" width="560" height="315" title="YouTube video player" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;margin: 0;border: 0;"></iframe>
+        <iframe lazyload data-src="${url}" width="560" height="315" title="YouTube video player" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;margin: 0;border: 0;"></iframe>
       </p>
     `;
     $(this).replaceWith(iframe);
