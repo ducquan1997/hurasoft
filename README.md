@@ -1,6 +1,6 @@
 # Code example, demo, test and Tools for Hurasoft
 
-- buildpc: Chọn nhiều sản phẩm trong 1 danh mục sản phẩm <đăng nhập admin để xem hướng dẫn tại trang build pc> [https://ttgshop.vn/buildpc]
+- buildpc: So sánh cấu hình + Chọn nhiều sản phẩm trong 1 danh mục sản phẩm [https://ttgshop.vn/buildpc] <đăng nhập admin để xem hướng dẫn tại trang build pc>
 - comboset: Giao diện mới cho pcmarket và ttgshop [https://ttgshop.vn/pc-ttg-gaming-i5-11400f-8gb-ddr4-rtx-3050-8gb]
 - hura_project: Mẫu bắt đầu 1 Dự án website mới (HTML/CSS/JS)
 - libs: Thư viện Javascript bên thứ 3
