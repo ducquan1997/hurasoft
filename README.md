@@ -5,7 +5,7 @@
 - hura_project: Mẫu bắt đầu 1 Dự án website mới (HTML/CSS/JS)
 - libs: Thư viện Javascript bên thứ 3
 - script: Code mẫu các chức năng cơ bản tại Template Admin
-- tailwind_project: Mẫu bắt đầu 1 Dự án website mới với Tailwind CSS V3, <V4 có nhiều thuộc tính CSS không hỗ trợ các trình duyệt cũ, hệ điều hành cũ, đặc biệt là Iphone cũ (IOS)> (HTML/CSS-TAILWIND V3/JS) [https://v3.tailwindcss.com/docs/installation]
+- tailwind_project: Mẫu bắt đầu 1 Dự án website mới với Tailwind CSS V3 CDN, <V4 có nhiều thuộc tính CSS không hỗ trợ các trình duyệt cũ, hệ điều hành cũ, đặc biệt là Iphone cũ (IOS)> (HTML/CSS-TAILWIND V3/JS) [https://tailwindcss.com/docs/compatibility]
 - templates: Code mẫu template core tại Template Admin
 - test: Code mẫu test, demo chức năng CSKH y/c (chưa bao giờ sử dụng trên Website chạy chính)
 - tools: Các Tool cơ bản sử dụng trong các dự án, cần thư mục "/libs" để chạy
