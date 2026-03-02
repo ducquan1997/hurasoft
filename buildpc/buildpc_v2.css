@@ -25,7 +25,7 @@
 .buildpc-holder-container .item-drive .item-drive-info.item-loaded{padding:0}
 .buildpc-holder-container .item-drive .item-drive-info.item-loaded .text-wave{display:none}
 .buildpc-holder-container .item-drive .item-drive-info.item-loaded .open-selection{display:none}
-.buildpc-holder-container .item-drive .item-drive-info.item-multi-seletect .open-selection{display:block;margin:12px 16px}
+.buildpc-holder-container .item-drive .item-drive-info.item-multi-seletect .open-selection{display:block;margin:12px 16px;margin-left:auto}
 .buildpc-holder-container .item-drive .item-drive-info.item-multi-seletect .open-selection-multi{display:block}
 .buildpc-holder-container .item-drive .item-drive-info.item-multi-seletect .open-selection-default{display:none}
 .buildpc-holder-container .item-drive .item-drive-info.item-multi-seletect .contain-item-drive{border-bottom:1px solid #e1e1e1}
